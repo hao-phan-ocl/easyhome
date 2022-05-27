@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { CreateTenantDto } from './create-tenant.dto'
 
+import { CreateTenantDto } from './create-tenant.dto'
 import { TenantsService } from './tenants.service'
 
-@Controller('users')
+@Controller('tenants')
 export class TenantsController {
   constructor(private readonly tenantsService: TenantsService) {}
 
@@ -13,7 +13,7 @@ export class TenantsController {
   }
 
   @Post('/create')
-  async createUser(@Body() createTenantDto: CreateTenantDto) {
+  createUser(@Body() createTenantDto: CreateTenantDto) {
     return this.tenantsService.createUser(createTenantDto)
   }
 }

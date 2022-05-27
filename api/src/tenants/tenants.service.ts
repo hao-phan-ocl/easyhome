@@ -11,7 +11,7 @@ export class TenantsService {
     @InjectModel(Tenant.name) private tenantModel: Model<TenantDocument>,
   ) {}
 
-  async getAll() {
+  async getAll(): Promise<Tenant[]> {
     return await this.tenantModel.find()
   }
 
