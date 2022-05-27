@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 
-import { UsersModule } from './users/users.module'
+import { TenantsModule } from './tenants/tenants.module'
 
 @Module({
   imports: [
-    UsersModule,
+    TenantsModule,
     MongooseModule.forRoot('mongodb://localhost:27017/bestbuy'),
   ],
 })
