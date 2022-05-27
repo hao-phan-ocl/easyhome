@@ -6,7 +6,7 @@ import { TenantsModule } from './tenants/tenants.module'
 @Module({
   imports: [
     TenantsModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/bestbuy'),
+    MongooseModule.forRoot('mongodb://localhost:27017/easyhome'),
   ],
 })
 export class AppModule {}
