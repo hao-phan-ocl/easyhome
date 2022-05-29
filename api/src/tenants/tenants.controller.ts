@@ -1,19 +1,34 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put } from '@nestjs/common'
 
-import { CreateTenantDto } from './create-tenant.dto'
+import { FavoriteDto } from './favorite.dto'
+import { RegisterTenantDto } from './register-tenant.dto'
 import { TenantsService } from './tenants.service'
 
 @Controller('tenants')
 export class TenantsController {
   constructor(private readonly tenantsService: TenantsService) {}
 
-  @Get('/all')
+  @Get('all')
   getAll() {
     return this.tenantsService.getAll()
   }
 
-  @Post('/create')
-  createUser(@Body() createTenantDto: CreateTenantDto) {
-    return this.tenantsService.createUser(createTenantDto)
+  @Post('register')
+  registerTenant(@Body() registerTenantDto: RegisterTenantDto) {
+    return this.tenantsService.registerTenant(registerTenantDto)
+  }
+
+  @Put('add-favorite')
+  addFav(@Body() favDto: FavoriteDto) {
+    const { tenantId, roomId } = favDto
+
+    return this.tenantsService.addFav(tenantId, roomId)
+  }
+
+  @Put('remove-favorite')
+  removeFav(@Body() favDto: FavoriteDto) {
+    const { tenantId, roomId } = favDto
+
+    return this.tenantsService.removeFav(tenantId, roomId)
   }
 }
