@@ -5,6 +5,7 @@ import { Model } from 'mongoose'
 import { Owner, OwnerDocument } from 'src/owners/owner.schema'
 import { AddRoomDto } from './add-room.dto'
 import { Room, RoomDocument } from './room.schema'
+import { SearchDto } from './search.dto'
 
 @Injectable()
 export class RoomsService {
@@ -41,5 +42,9 @@ export class RoomsService {
     })
 
     return 'Room removed successfully'
+  }
+
+  async search(searchDto: SearchDto) {
+    return searchDto
   }
 }
