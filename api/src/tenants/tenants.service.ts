@@ -79,4 +79,14 @@ export class TenantsService {
 
     return updatedTenant
   }
+
+  async deleteTenant(tenantId: string) {
+    const foundTenant = await this.tenantModel.findByIdAndDelete(tenantId)
+
+    if (!foundTenant) {
+      throw new NotFoundException('Tenant not found')
+    }
+
+    return 'Tenant deleted successfully'
+  }
 }

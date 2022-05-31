@@ -23,19 +23,13 @@ export class Room {
   availableFrom: Date
 
   @Prop({ required: true })
-  numberOfPrivateRooms: number
-
-  @Prop({ required: true })
-  numberOfSharedRooms: number
-
-  @Prop({ required: true })
-  bathRoomType: string
+  bathroomType: string
 
   @Prop({ required: true })
   kitchenType: string
 
-  @Prop()
-  furnished?: boolean
+  @Prop({ required: true })
+  furnished: string
 
   @Prop({ required: true })
   street: string

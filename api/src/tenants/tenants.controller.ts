@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 
 import { FavoriteDto } from './favorite.dto'
 import { RegisterTenantDto } from './register-tenant.dto'
@@ -30,5 +30,10 @@ export class TenantsController {
     const { tenantId, roomId } = favDto
 
     return this.tenantsService.removeFav(tenantId, roomId)
+  }
+
+  @Delete('delete/:tenantId')
+  deleteTenant(@Param('tenantId') tenantId: string) {
+    return this.tenantsService.deleteTenant(tenantId)
   }
 }

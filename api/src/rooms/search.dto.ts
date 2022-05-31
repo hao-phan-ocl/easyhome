@@ -1,11 +1,11 @@
 export class SearchDto {
   housingType: string
-  surface: number
-  rent: number
+  surfaceMin: number
+  surfaceMax: number
+  rentMin: number
+  rentMax: number
   availableFrom: Date
-  numberOfPrivateRooms: number
-  numberOfSharedRooms: number
-  bathRoomType: string
+  bathroomType: string
   kitchenType: string
-  furnished: boolean
+  furnished: string
 }

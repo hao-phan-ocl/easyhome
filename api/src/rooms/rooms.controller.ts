@@ -23,8 +23,39 @@ export class RoomsController {
     return this.roomsService.removeRoom(roomId)
   }
 
+  // @Get(
+  //   'search/:housingType/:surface/:rent/:availableFrom/:numberOfRooms/:bathroomType/:kitchenType/:furnished',
+  // )
+  // search(
+  //   @Param('housingType') housingType: 'shared' | 'studio' | 'apartment',
+  //   @Param('surfaceMin') surfaceMin: number,
+  //   @Param('surfaceMax') surfaceMax: number,
+  //   @Param('rentMin') rentMin: number,
+  //   @Param('rentMax') rentMax: number,
+  //   @Param('availableFrom') availableFrom: Date,
+  //   @Param('numberOfRooms') numberOfRooms: number,
+  //   @Param('bathroomType') bathroomType: 'private' | 'shared',
+  //   @Param('kitchenType')
+  //   kitchenType: 'inRoom' | 'shared' | 'privateAndSeperate',
+  //   @Param('furnished') furnished: boolean,
+  // ) {
+  //   const searchDto = {
+  //     housingType,
+  //     surfaceMin,
+  //     surfaceMax,
+  //     rentMin,
+  //     rentMax,
+  //     availableFrom,
+  //     numberOfRooms,
+  //     bathroomType,
+  //     kitchenType,
+  //     furnished,
+  //   }
+  //   return this.roomsService.search(searchDto)
+  // }
+
   @Get('search')
-  search(@Body() searchDto: SearchDto) {
+  search(@Body() searchDto: Partial<SearchDto>) {
     return this.roomsService.search(searchDto)
   }
 }
