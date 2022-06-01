@@ -54,6 +54,8 @@ export class RoomsService {
       availableFrom,
       bathroomType,
       kitchenType,
+      smoking,
+      pets,
       furnished,
     } = searchDto
 
@@ -79,6 +81,16 @@ export class RoomsService {
       query.furnished = furnished
     }
 
+    // Smoking
+    if (smoking) {
+      query.smoking = smoking
+    }
+
+    // Pets
+    if (pets) {
+      query.pets = pets
+    }
+
     // Rent
     if (rentMin) {
       query.rent = { $gte: rentMin }
@@ -101,7 +113,10 @@ export class RoomsService {
       query.surface = { $gte: surfaceMin, $lt: surfaceMax }
     }
 
-    console.log(query)
+    // Date
+    if (availableFrom) {
+      query.availableFrom = { $lte: availableFrom }
+    }
 
     return await this.roomModel.find(query)
   }

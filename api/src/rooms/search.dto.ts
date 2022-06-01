@@ -7,5 +7,7 @@ export class SearchDto {
   availableFrom: Date
   bathroomType: string
   kitchenType: string
+  smoking: string
+  pets: string
   furnished: string
 }

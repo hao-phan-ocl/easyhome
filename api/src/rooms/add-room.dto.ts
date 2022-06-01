@@ -1,7 +1,8 @@
-import { IsNotEmpty } from 'class-validator'
+import { IsDate, IsMongoId, IsNotEmpty } from 'class-validator'
 
 export class AddRoomDto {
   @IsNotEmpty()
+  @IsMongoId()
   owner: string
 
   @IsNotEmpty()
@@ -14,6 +15,7 @@ export class AddRoomDto {
   rent: number
 
   @IsNotEmpty()
+  @IsDate()
   availableFrom: Date
 
   @IsNotEmpty()
@@ -21,6 +23,12 @@ export class AddRoomDto {
 
   @IsNotEmpty()
   kitchenType: string
+
+  @IsNotEmpty()
+  smoking: string
+
+  @IsNotEmpty()
+  pets: string
 
   @IsNotEmpty()
   furnished: boolean

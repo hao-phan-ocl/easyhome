@@ -29,6 +29,12 @@ export class Room {
   kitchenType: string
 
   @Prop({ required: true })
+  smoking: string
+
+  @Prop({ required: true })
+  pets: string
+
+  @Prop({ required: true })
   furnished: string
 
   @Prop({ required: true })
