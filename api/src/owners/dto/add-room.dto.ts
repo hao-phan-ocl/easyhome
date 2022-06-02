@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer'
 import {
   IsDateString,
+  IsInt,
   IsMongoId,
   IsNotEmpty,
   ValidateNested,
@@ -32,6 +33,7 @@ export class AddRoomDto {
   surface: number
 
   @IsNotEmpty()
+  @IsInt()
   rent: number
 
   @IsNotEmpty()

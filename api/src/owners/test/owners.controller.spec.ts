@@ -38,7 +38,7 @@ describe('OwnersController', () => {
     const createOwnerDto = {
       firstName: 'Hao',
       lastName: 'Phan',
-      email: 'test@a.io',
+      email: 'test@gmail.com',
     }
 
     const res = await controller.registerOwner(createOwnerDto)

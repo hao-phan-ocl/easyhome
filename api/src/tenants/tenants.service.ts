@@ -48,7 +48,7 @@ export class TenantsService {
       throw new InternalServerErrorException('Room already added')
     }
 
-    const updatedTenant = await this.tenantModel.findByIdAndUpdate(
+    const updatedFavLists = await this.tenantModel.findByIdAndUpdate(
       tenantId,
       {
         $push: { favLists: roomId },
@@ -56,7 +56,7 @@ export class TenantsService {
       { new: true },
     )
 
-    return updatedTenant
+    return updatedFavLists
   }
 
   async removeFav(tenantId: string, roomId: string) {
@@ -71,7 +71,7 @@ export class TenantsService {
       throw new NotFoundException('Room not found')
     }
 
-    const updatedTenant = await this.tenantModel.findByIdAndUpdate(
+    const updatedFavLists = await this.tenantModel.findByIdAndUpdate(
       tenantId,
       {
         $pull: { favLists: roomId },
@@ -79,7 +79,7 @@ export class TenantsService {
       { new: true },
     )
 
-    return updatedTenant
+    return updatedFavLists
   }
 
   async deleteTenant(tenantId: string) {

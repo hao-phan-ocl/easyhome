@@ -1,55 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
-import { OwnerDocument } from 'src/owners/owner.schema'
-import { AddRoomDto } from './dto/add-room.dto'
 import { RoomDocument } from './room.schema'
 import { SearchDto } from './dto/search.dto'
 
 @Injectable()
 export class RoomsService {
-  constructor(
-    @InjectModel('Room') private roomModel: Model<RoomDocument>,
-    @InjectModel('Owner') private ownerModel: Model<OwnerDocument>,
-  ) {}
+  constructor(@InjectModel('Room') private roomModel: Model<RoomDocument>) {}
 
   async getAll(): Promise<RoomDocument[]> {
     return await this.roomModel.find()
-  }
-
-  async addRoom(addRoomDto: AddRoomDto): Promise<RoomDocument> {
-    const { owner } = addRoomDto
-
-    const foundOwner = await this.ownerModel.findById(owner)
-
-    if (!foundOwner) {
-      throw new NotFoundException('Owner not found')
-    }
-
-    const addedRoom = await this.roomModel.create(addRoomDto)
-
-    // Add addedRoom id to the referenced owner
-    await this.ownerModel.findByIdAndUpdate(addedRoom.owner, {
-      $push: { properties: addedRoom._id },
-    })
-
-    return addedRoom
-  }
-
-  async removeRoom(roomId: string) {
-    const foundRoom = await this.roomModel.findByIdAndDelete(roomId)
-
-    if (!foundRoom) {
-      throw new NotFoundException('Room not found')
-    }
-
-    // Remove addedRoom id to the referenced owner
-    await this.ownerModel.findByIdAndUpdate(foundRoom.owner, {
-      $pull: { properties: roomId },
-    })
-
-    return 'Room removed successfully'
   }
 
   async search(searchDto: Partial<SearchDto>) {
