@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 
-import { FavoriteDto } from './favorite.dto'
-import { RegisterTenantDto } from './register-tenant.dto'
+import { FavoriteDto } from './dto/favorite.dto'
+import { RegisterTenantDto } from './dto/register-tenant.dto'
 import { TenantsService } from './tenants.service'
 
 @Controller('tenants')

@@ -6,22 +6,24 @@ import {
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
-import { Room, RoomDocument } from 'src/rooms/room.schema'
-import { RegisterTenantDto } from './register-tenant.dto'
-import { Tenant, TenantDocument } from './tenant.schema'
+import { RoomDocument } from 'src/rooms/room.schema'
+import { RegisterTenantDto } from './dto/register-tenant.dto'
+import { TenantDocument } from './tenant.schema'
 
 @Injectable()
 export class TenantsService {
   constructor(
-    @InjectModel(Tenant.name) private tenantModel: Model<TenantDocument>,
-    @InjectModel(Room.name) private roomModel: Model<RoomDocument>,
+    @InjectModel('Tenant') private tenantModel: Model<TenantDocument>,
+    @InjectModel('Room') private roomModel: Model<RoomDocument>,
   ) {}
 
-  async getAll(): Promise<Tenant[]> {
+  async getAll(): Promise<TenantDocument[]> {
     return await this.tenantModel.find()
   }
 
-  async registerTenant(registerTenantDto: RegisterTenantDto): Promise<Tenant> {
+  async registerTenant(
+    registerTenantDto: RegisterTenantDto,
+  ): Promise<TenantDocument> {
     return await this.tenantModel.create(registerTenantDto)
   }
 

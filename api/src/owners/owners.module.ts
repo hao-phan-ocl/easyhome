@@ -3,11 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose'
 
 import { OwnersService } from './owners.service'
 import { OwnersController } from './owners.controller'
-import { Owner, OwnerSchema } from './owner.schema'
+import { OwnerSchema } from './owner.schema'
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Owner.name, schema: OwnerSchema }]),
+    MongooseModule.forFeature([{ name: 'Owner', schema: OwnerSchema }]),
   ],
   controllers: [OwnersController],
   providers: [OwnersService],

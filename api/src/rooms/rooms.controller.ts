@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 
-import { AddRoomDto } from './add-room.dto'
+import { AddRoomDto } from './dto/add-room.dto'
 import { RoomsService } from './rooms.service'
-import { SearchDto } from './search.dto'
+import { SearchDto } from './dto/search.dto'
 
 @Controller('rooms')
 export class RoomsController {

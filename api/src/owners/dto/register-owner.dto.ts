@@ -10,5 +10,5 @@ export class RegisterOwnerDto {
   @IsEmail()
   email: string
 
-  properties: string[]
+  properties?: string[]
 }

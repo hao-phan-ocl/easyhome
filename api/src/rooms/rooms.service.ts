@@ -2,23 +2,31 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
-import { Owner, OwnerDocument } from 'src/owners/owner.schema'
-import { AddRoomDto } from './add-room.dto'
-import { Room, RoomDocument } from './room.schema'
-import { SearchDto } from './search.dto'
+import { OwnerDocument } from 'src/owners/owner.schema'
+import { AddRoomDto } from './dto/add-room.dto'
+import { RoomDocument } from './room.schema'
+import { SearchDto } from './dto/search.dto'
 
 @Injectable()
 export class RoomsService {
   constructor(
-    @InjectModel(Room.name) private roomModel: Model<RoomDocument>,
-    @InjectModel(Owner.name) private ownerModel: Model<OwnerDocument>,
+    @InjectModel('Room') private roomModel: Model<RoomDocument>,
+    @InjectModel('Owner') private ownerModel: Model<OwnerDocument>,
   ) {}
 
-  async getAll(): Promise<Room[]> {
+  async getAll(): Promise<RoomDocument[]> {
     return await this.roomModel.find()
   }
 
-  async addRoom(addRoomDto: AddRoomDto): Promise<Room> {
+  async addRoom(addRoomDto: AddRoomDto): Promise<RoomDocument> {
+    const { owner } = addRoomDto
+
+    const foundOwner = await this.ownerModel.findById(owner)
+
+    if (!foundOwner) {
+      throw new NotFoundException('Owner not found')
+    }
+
     const addedRoom = await this.roomModel.create(addRoomDto)
 
     // Add addedRoom id to the referenced owner

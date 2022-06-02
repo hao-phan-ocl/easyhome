@@ -1,21 +1,15 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document } from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 
-export type TenantDocument = Tenant & Document
-
-@Schema()
-export class Tenant {
-  @Prop({ required: true })
+export type TenantDocument = Document & {
   firstName: string
-
-  @Prop({ required: true })
   lastName: string
-
-  @Prop({ required: true, unique: true })
   email: string
-
-  @Prop([String])
   favLists?: string[]
 }
 
-export const TenantSchema = SchemaFactory.createForClass(Tenant)
+export const TenantSchema = new mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  favLists: [String],
+})

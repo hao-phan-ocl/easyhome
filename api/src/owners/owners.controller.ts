@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
 
-import { RegisterOwnerDto } from './register-owner.dto'
+import { RegisterOwnerDto } from './dto/register-owner.dto'
 import { OwnersService } from './owners.service'
 
 @Controller('owners')

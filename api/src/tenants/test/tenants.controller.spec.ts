@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { TenantsController } from './tenants.controller'
-import { TenantsService } from './tenants.service'
+import { TenantsController } from '../tenants.controller'
+import { TenantsService } from '../tenants.service'
 
 describe('TenantsController', () => {
   let controller: TenantsController

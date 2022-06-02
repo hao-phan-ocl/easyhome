@@ -10,5 +10,5 @@ export class RegisterTenantDto {
   @IsEmail()
   email: string
 
-  favLists: string[]
+  favLists?: string[]
 }
