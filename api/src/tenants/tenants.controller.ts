@@ -1,7 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common'
 
+import { LocalAuthGuard } from 'src/auth/local-auth.guard'
 import { FavoriteDto } from './dto/favorite.dto'
-import { LoginTenantDto } from './dto/login-tenant.dto'
 import { RegisterTenantDto } from './dto/register-tenant.dto'
 import { TenantsService } from './tenants.service'
 
@@ -14,9 +24,10 @@ export class TenantsController {
     return this.tenantsService.getAll()
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  loginTenant(@Body() loginTenantDto: LoginTenantDto) {
-    return this.tenantsService.findOne(loginTenantDto)
+  loginTenant(@Request() req: any) {
+    return req.user
   }
 
   @Post('register')

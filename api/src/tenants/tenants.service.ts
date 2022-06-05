@@ -9,7 +9,6 @@ import { Model } from 'mongoose'
 import * as bcrypt from 'bcrypt'
 
 import { RoomDocument } from 'src/rooms/room.schema'
-import { LoginTenantDto } from './dto/login-tenant.dto'
 import { RegisterTenantDto } from './dto/register-tenant.dto'
 import { TenantDocument } from './tenant.schema'
 
@@ -24,10 +23,8 @@ export class TenantsService {
     return await this.tenantModel.find()
   }
 
-  async findOne(loginTenantDto: LoginTenantDto) {
-    const { username } = loginTenantDto
-
-    return await this.tenantModel.find({ username: username })
+  async findOne(username: string): Promise<TenantDocument | undefined> {
+    return await this.tenantModel.findOne({ username: username })
   }
 
   async registerTenant(
