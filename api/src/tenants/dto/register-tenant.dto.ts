@@ -7,8 +7,14 @@ export class RegisterTenantDto {
   @IsNotEmpty()
   lastName: string
 
+  @IsNotEmpty()
+  username: string
+
+  @IsNotEmpty()
+  password: string
+
   @IsEmail()
-  email: string
+  email?: string
 
   favLists?: string[]
 }

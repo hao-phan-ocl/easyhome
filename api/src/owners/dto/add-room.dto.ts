@@ -4,6 +4,7 @@ import {
   IsInt,
   IsMongoId,
   IsNotEmpty,
+  IsPositive,
   ValidateNested,
 } from 'class-validator'
 
@@ -30,10 +31,12 @@ export class AddRoomDto {
   housingType: string
 
   @IsNotEmpty()
+  @IsPositive()
   surface: number
 
   @IsNotEmpty()
   @IsInt()
+  @IsPositive()
   rent: number
 
   @IsNotEmpty()

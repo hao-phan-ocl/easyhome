@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 
 import { FavoriteDto } from './dto/favorite.dto'
+import { LoginTenantDto } from './dto/login-tenant.dto'
 import { RegisterTenantDto } from './dto/register-tenant.dto'
 import { TenantsService } from './tenants.service'
 
@@ -11,6 +12,11 @@ export class TenantsController {
   @Get('all')
   getAll() {
     return this.tenantsService.getAll()
+  }
+
+  @Post('login')
+  loginTenant(@Body() loginTenantDto: LoginTenantDto) {
+    return this.tenantsService.findOne(loginTenantDto)
   }
 
   @Post('register')

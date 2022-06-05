@@ -1,12 +1,15 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
+import * as bcrypt from 'bcrypt'
 
 import { RoomDocument } from 'src/rooms/room.schema'
+import { LoginTenantDto } from './dto/login-tenant.dto'
 import { RegisterTenantDto } from './dto/register-tenant.dto'
 import { TenantDocument } from './tenant.schema'
 
@@ -21,9 +24,30 @@ export class TenantsService {
     return await this.tenantModel.find()
   }
 
+  async findOne(loginTenantDto: LoginTenantDto) {
+    const { username } = loginTenantDto
+
+    return await this.tenantModel.find({ username: username })
+  }
+
   async registerTenant(
     registerTenantDto: RegisterTenantDto,
   ): Promise<TenantDocument> {
+    const existedTenant = await this.tenantModel.findOne({
+      username: registerTenantDto.username,
+    })
+
+    if (existedTenant) {
+      throw new ConflictException('Username existed')
+    }
+
+    // Hasing password with bcrypt
+    const salt = await bcrypt.genSalt(10)
+    registerTenantDto.password = await bcrypt.hash(
+      registerTenantDto.password,
+      salt,
+    )
+
     return await this.tenantModel.create(registerTenantDto)
   }
 
