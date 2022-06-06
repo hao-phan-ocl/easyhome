@@ -6,14 +6,13 @@ import { TenantsModule } from 'src/tenants/tenants.module'
 import { AuthService } from './auth.service'
 import { LocalStrategy } from './local.strategy'
 import { JwtStrategy } from './jwt.strategy'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
-    forwardRef(() => TenantsModule),
+    forwardRef(() => TenantsModule), // to avoid circular dependency
     PassportModule,
     JwtModule.registerAsync({
-      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
       }),
