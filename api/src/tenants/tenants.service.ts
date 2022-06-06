@@ -27,6 +27,10 @@ export class TenantsService {
     return await this.tenantModel.findOne({ username: username })
   }
 
+  async findById(id: string): Promise<TenantDocument | undefined> {
+    return await this.tenantModel.findById(id)
+  }
+
   async registerTenant(
     registerTenantDto: RegisterTenantDto,
   ): Promise<TenantDocument> {

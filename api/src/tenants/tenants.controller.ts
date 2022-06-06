@@ -9,6 +9,8 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common'
+import { AuthService } from 'src/auth/auth.service'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 
 import { LocalAuthGuard } from 'src/auth/local-auth.guard'
 import { FavoriteDto } from './dto/favorite.dto'
@@ -17,8 +19,12 @@ import { TenantsService } from './tenants.service'
 
 @Controller('tenants')
 export class TenantsController {
-  constructor(private readonly tenantsService: TenantsService) {}
+  constructor(
+    private tenantsService: TenantsService,
+    private authService: AuthService,
+  ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('all')
   getAll() {
     return this.tenantsService.getAll()
@@ -27,7 +33,7 @@ export class TenantsController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   loginTenant(@Request() req: any) {
-    return req.user
+    return this.authService.login(req.user)
   }
 
   @Post('register')
@@ -35,6 +41,7 @@ export class TenantsController {
     return this.tenantsService.registerTenant(registerTenantDto)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('add-favorite')
   addFav(@Body() favDto: FavoriteDto) {
     const { tenantId, roomId } = favDto
@@ -42,6 +49,7 @@ export class TenantsController {
     return this.tenantsService.addFav(tenantId, roomId)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('remove-favorite')
   removeFav(@Body() favDto: FavoriteDto) {
     const { tenantId, roomId } = favDto
@@ -49,6 +57,7 @@ export class TenantsController {
     return this.tenantsService.removeFav(tenantId, roomId)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('delete/:tenantId')
   deleteTenant(@Param('tenantId') tenantId: string) {
     return this.tenantsService.deleteTenant(tenantId)
