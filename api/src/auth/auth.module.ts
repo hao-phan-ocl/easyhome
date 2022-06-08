@@ -1,12 +1,12 @@
 import { forwardRef, Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
+import { ConfigService } from '@nestjs/config'
 
 import { TenantsModule } from 'src/tenants/tenants.module'
 import { AuthService } from './auth.service'
-import { LocalStrategy } from './local.strategy'
-import { JwtStrategy } from './jwt.strategy'
-import { ConfigService } from '@nestjs/config'
+import { LocalStrategy } from './local-strategy/local.strategy'
+import { JwtStrategy } from './jwt-strategy/jwt.strategy'
 
 @Module({
   imports: [

@@ -10,9 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthService } from 'src/auth/auth.service'
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { JwtAuthGuard } from 'src/auth/jwt-strategy/jwt-auth.guard'
 
-import { LocalAuthGuard } from 'src/auth/local-auth.guard'
+import { LocalAuthGuard } from 'src/auth/local-strategy/local-auth.guard'
 import { FavoriteDto } from './dto/favorite.dto'
 import { RegisterTenantDto } from './dto/register-tenant.dto'
 import { TenantsService } from './tenants.service'
