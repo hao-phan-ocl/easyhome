@@ -1,12 +1,11 @@
 import type { NextPage } from 'next'
-import { signIn } from 'next-auth/react'
-import GoogleLoginBtn from '../components/GoogleLoginBtn'
+
+import GoogleButton from '../components/GoogleButton'
 
 const Home: NextPage = () => {
   return (
     <>
-      <div onClick={() => signIn()}>Sign in</div>
-      <GoogleLoginBtn />
+      <GoogleButton />
     </>
   )
 }
