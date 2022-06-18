@@ -3,8 +3,8 @@ import { PassportModule } from '@nestjs/passport'
 import { JwtModule } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 
-import { TenantsModule } from 'src/tenants/tenants.module'
 import { AuthService } from './auth.service'
+import { TenantsModule } from 'src/tenants/tenants.module'
 import { LocalStrategy } from './local-strategy/local.strategy'
 import { JwtStrategy } from './jwt-strategy/jwt.strategy'
 
