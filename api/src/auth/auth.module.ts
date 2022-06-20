@@ -4,9 +4,9 @@ import { JwtModule } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 
 import { AuthService } from './auth.service'
+import { JwtStrategy } from './jwt-strategy/jwt.strategy'
 import { TenantsModule } from 'src/tenants/tenants.module'
 import { LocalStrategy } from './local-strategy/local.strategy'
-import { JwtStrategy } from './jwt-strategy/jwt.strategy'
 
 @Module({
   imports: [
