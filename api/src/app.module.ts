@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module'
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/easyhome'),
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, cache: true }),
     TenantsModule,
     RoomsModule,
     OwnersModule,
