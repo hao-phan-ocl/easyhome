@@ -11,11 +11,13 @@ import * as bcrypt from 'bcrypt'
 import { RoomDocument } from 'src/rooms/room.schema'
 import { RegisterTenantDto } from './dto/register-tenant.dto'
 import { TenantDocument } from './tenant.schema'
+import { OwnerDocument } from 'src/owners/owner.schema'
 
 @Injectable()
 export class TenantsService {
   constructor(
     @InjectModel('Tenant') private tenantModel: Model<TenantDocument>,
+    @InjectModel('Owner') private ownerModel: Model<OwnerDocument>,
     @InjectModel('Room') private roomModel: Model<RoomDocument>,
   ) {}
 
@@ -23,8 +25,8 @@ export class TenantsService {
     return await this.tenantModel.find()
   }
 
-  async findOne(username: string): Promise<TenantDocument | undefined> {
-    return await this.tenantModel.findOne({ username: username })
+  async findOne(email: string): Promise<TenantDocument | undefined> {
+    return await this.tenantModel.findOne({ email: email })
   }
 
   async findById(id: string): Promise<TenantDocument | undefined> {
@@ -34,12 +36,19 @@ export class TenantsService {
   async registerTenant(
     registerTenantDto: RegisterTenantDto,
   ): Promise<TenantDocument> {
-    const existedTenant = await this.tenantModel.findOne({
-      username: registerTenantDto.username,
+    // Check if email is already registered as tenant or owner before
+    const checkEmailFromOwner = await this.ownerModel.findOne({
+      email: registerTenantDto.email,
     })
 
-    if (existedTenant) {
-      throw new ConflictException('Username existed')
+    const checkEmailFromTenant = await this.tenantModel.findOne({
+      email: registerTenantDto.email,
+    })
+
+    if (checkEmailFromOwner || checkEmailFromTenant) {
+      throw new ConflictException(
+        'An account already exists with that email address',
+      )
     }
 
     // Hasing password with bcrypt

@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
+import * as bcrypt from 'bcrypt'
 
 import { RegisterOwnerDto } from './dto/register-owner.dto'
 import { RoomDocument } from 'src/rooms/room.schema'
@@ -20,9 +25,35 @@ export class OwnersService {
     return await this.ownerModel.find()
   }
 
+  async findOne(email: string): Promise<TenantDocument | undefined> {
+    return await this.ownerModel.findOne({ email: email })
+  }
+
   async registerOwner(
     registerOwnerDto: RegisterOwnerDto,
   ): Promise<OwnerDocument> {
+    // Check if email is already registered as tenant or owner before
+    const checkEmailFromOwner = await this.ownerModel.findOne({
+      email: registerOwnerDto.email,
+    })
+
+    const checkEmailFromTenant = await this.tenantModel.findOne({
+      email: registerOwnerDto.email,
+    })
+
+    if (checkEmailFromOwner || checkEmailFromTenant) {
+      throw new ConflictException(
+        'An account already exists with that email address',
+      )
+    }
+
+    // Hasing password with bcrypt
+    const salt = await bcrypt.genSalt(10)
+    registerOwnerDto.password = await bcrypt.hash(
+      registerOwnerDto.password,
+      salt,
+    )
+
     return await this.ownerModel.create(registerOwnerDto)
   }
 

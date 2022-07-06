@@ -24,7 +24,7 @@ export class TenantsController {
     private authService: AuthService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('all')
   getAll() {
     return this.tenantsService.getAll()
@@ -57,7 +57,7 @@ export class TenantsController {
     return this.tenantsService.removeFav(tenantId, roomId)
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete('delete/:tenantId')
   deleteTenant(@Param('tenantId') tenantId: string) {
     return this.tenantsService.deleteTenant(tenantId)

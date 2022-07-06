@@ -6,11 +6,13 @@ import { TenantsController } from './tenants.controller'
 import { TenantSchema } from './tenant.schema'
 import { RoomSchema } from 'src/rooms/room.schema'
 import { AuthModule } from 'src/auth/auth.module'
+import { OwnerSchema } from 'src/owners/owner.schema'
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
     MongooseModule.forFeature([{ name: 'Tenant', schema: TenantSchema }]),
+    MongooseModule.forFeature([{ name: 'Owner', schema: OwnerSchema }]),
     MongooseModule.forFeature([{ name: 'Room', schema: RoomSchema }]),
   ],
   controllers: [TenantsController],
