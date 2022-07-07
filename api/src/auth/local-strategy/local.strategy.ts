@@ -11,13 +11,12 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(email: string, password: string): Promise<any> {
-    const tenant = await this.authService.validateUser(email, password)
-    const owner = await this.authService.validateUser(email, password)
+    const user = await this.authService.validateUser(email, password)
 
-    if (tenant) {
-      return tenant // this will be returned as req.user by passportjs
-    } else if (owner) {
-      return owner // this will be returned as req.user by passportjs
-    } else throw new UnauthorizedException('Invalid email or password')
+    if (!user) {
+      throw new UnauthorizedException('Invalid email or password')
+    }
+
+    return user // this will be returned as req.user by passportjs
   }
 }

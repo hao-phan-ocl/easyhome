@@ -66,7 +66,7 @@ export class OwnersService {
 
     foundOwner.properties.map(
       async (roomId) => await this.roomModel.findByIdAndDelete(roomId),
-      async (roomId) => await this.tenantModel.findById(roomId),
+      async (roomId) => await this.tenantModel.findByIdAndDelete(roomId),
     )
 
     return 'Owner deleted successfully'

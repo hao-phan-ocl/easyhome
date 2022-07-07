@@ -3,12 +3,12 @@ import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import { TenantsService } from 'src/tenants/tenants.service'
+import { UsersService } from 'src/users/users.service'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private tenantsService: TenantsService,
+    private usersService: UsersService,
     protected configService: ConfigService,
   ) {
     super({
@@ -18,7 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const tenant = await this.tenantsService.findById(payload.sub)
-    return tenant // this will be returned as req.user by passportjs
+    const user = await this.usersService.findByEmail(payload.email)
+
+    return user // this will be returned as req.user by passportjs
   }
 }

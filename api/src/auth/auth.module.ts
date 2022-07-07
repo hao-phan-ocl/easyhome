@@ -5,14 +5,12 @@ import { ConfigService } from '@nestjs/config'
 
 import { AuthService } from './auth.service'
 import { JwtStrategy } from './jwt-strategy/jwt.strategy'
-import { TenantsModule } from 'src/tenants/tenants.module'
 import { LocalStrategy } from './local-strategy/local.strategy'
-import { OwnersModule } from 'src/owners/owners.module'
+import { UsersModule } from 'src/users/users.module'
 
 @Module({
   imports: [
-    forwardRef(() => TenantsModule), // to avoid circular dependency
-    forwardRef(() => OwnersModule), // to avoid circular dependency
+    forwardRef(() => UsersModule), // to avoid circular dependency
     PassportModule,
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
