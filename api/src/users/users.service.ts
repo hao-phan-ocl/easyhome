@@ -26,6 +26,17 @@ export class UsersService {
     return await this.userModel.find()
   }
 
+  // GET profile
+  async getProfile(userId: string) {
+    const foundUser = await this.userModel.findById(userId)
+
+    if (!foundUser) {
+      throw new NotFoundException('User not found')
+    }
+
+    return foundUser
+  }
+
   // GET one user
   async findOne(email: string): Promise<UserDocument | undefined> {
     return await this.userModel.findOne({ email: email })
@@ -52,6 +63,11 @@ export class UsersService {
     const salt = await bcrypt.genSalt(10)
     registerUserDto.password = await bcrypt.hash(registerUserDto.password, salt)
 
+    // Check if it is admin account
+    if (registerUserDto.email === 'admin@gmail.com') {
+      registerUserDto.role = Role.ADMIN
+    }
+
     return await this.userModel.create(registerUserDto)
   }
 
@@ -63,12 +79,29 @@ export class UsersService {
       throw new NotFoundException('User not found')
     }
 
-    // if user has OWNER Role
-    if (foundUser.role[0] === Role.OWNER) {
-      foundUser.properties.forEach(
-        async (roomId) => await this.roomModel.findByIdAndDelete(roomId),
-      )
-    }
+    // Also delete rooms of deleted user
+    foundUser.properties.forEach(
+      async (roomId) => await this.roomModel.findByIdAndDelete(roomId),
+    )
+
+    // const foundUser = await this.userModel.findById(userId)
+
+    // if (!foundUser) {
+    //   throw new NotFoundException('User not found')
+    // }
+
+    // foundUser.isDeleted = true
+    // foundUser.save()
+
+    // // Also delete rooms of deleted user
+    // foundUser.properties.forEach(
+    //   async (roomId) =>
+    //     await this.roomModel.findByIdAndUpdate(
+    //       roomId,
+    //       { isDeleted: true },
+    //       { new: true },
+    //     ),
+    // )
 
     return 'User deleted successfully'
   }
@@ -115,9 +148,9 @@ export class UsersService {
       throw new NotFoundException('User not found')
     }
 
-    if (!foundRoom) {
-      throw new NotFoundException('Room not found')
-    }
+    // if (!foundRoom) {
+    //   throw new NotFoundException('Room not found')
+    // }
 
     const updatedFavLists = await this.userModel.findByIdAndUpdate(
       userId,
@@ -164,5 +197,18 @@ export class UsersService {
     })
 
     return 'Room removed successfully'
+  }
+
+  // PROMOTE user
+  async promoteUser(userId: string, role: string) {
+    const foundUser = await this.userModel.findById(userId)
+
+    if (!foundUser) {
+      throw new NotFoundException('User not found')
+    }
+
+    foundUser.role = role
+
+    return foundUser.save()
   }
 }
