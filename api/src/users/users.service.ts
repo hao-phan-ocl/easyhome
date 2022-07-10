@@ -142,7 +142,7 @@ export class UsersService {
   // REMOVE favorite
   async removeFav(userId: string, roomId: string) {
     const foundUser = await this.userModel.findById(userId)
-    const foundRoom = await this.roomModel.findById(roomId)
+    // const foundRoom = await this.roomModel.findById(roomId)
 
     if (!foundUser) {
       throw new NotFoundException('User not found')
