@@ -6,13 +6,10 @@ import {
   Param,
   Post,
   Put,
-  Request,
   UseGuards,
 } from '@nestjs/common'
 
-import { AuthService } from 'src/auth/auth.service'
 import { JwtAuthGuard } from 'src/auth/jwt-strategy/jwt-auth.guard'
-import { LocalAuthGuard } from 'src/auth/local-strategy/local-auth.guard'
 import { AddRoomDto } from './dto/add-room.dto'
 import { FavoriteDto } from './dto/favorite.dto'
 import { PromoteUserDto } from './dto/promote-user.dto'
@@ -24,10 +21,7 @@ import { UsersService } from './users.service'
 
 @Controller('users')
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('all')
@@ -36,16 +30,24 @@ export class UsersController {
     return this.usersService.getAll()
   }
 
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  loginUser(@Request() req: any) {
-    return this.authService.login(req.user)
-  }
+  // @UseGuards(LocalAuthGuard)
+  // @Post('login/local')
+  // loginUser(@Request() req: any) {
+  //   return this.authService.login(req.user)
+  // }
 
   @Post('register')
   registerUser(@Body() registerUserDto: RegisterUserDto) {
     return this.usersService.registerUser(registerUserDto)
   }
+
+  // @UseGuards(GoogleAuthGuard)
+  // @Get('login/google')
+  // @UseGuards(GoogleAuthGuard)
+  // @Get('oauth2/redirect/google')
+  // async googleAuthRedirect(@Req() req: any) {
+  //   return this.authService.googleLogin(req)
+  // }
 
   // @UseGuards(JwtAuthGuard)
   @Delete('delete/:userId')

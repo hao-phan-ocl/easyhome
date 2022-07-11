@@ -9,10 +9,10 @@ import { Model } from 'mongoose'
 import * as bcrypt from 'bcrypt'
 
 import { RoomDocument } from 'src/rooms/room.schema'
-import { RegisterUserDto } from './dto/register-user.dto'
 import { UserDocument } from './user.schema'
 import { AddRoomDto } from './dto/add-room.dto'
 import { Role } from './enum/role.enum'
+import { RegisterUserDto } from 'src/users/dto/register-user.dto'
 
 @Injectable()
 export class UsersService {
@@ -45,6 +45,25 @@ export class UsersService {
   // GET user by email
   async findByEmail(email: string): Promise<UserDocument | undefined> {
     return await this.userModel.findOne({ email: email })
+  }
+
+  // Find or create
+  async findOrCreate(user: any) {
+    const { email, firstName, lastName } = user
+
+    const foundUser = await this.userModel.findOne({ email: email })
+
+    if (!foundUser) {
+      const newUser = await this.userModel.create({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      })
+
+      return newUser
+    }
+
+    return foundUser
   }
 
   // Register user
