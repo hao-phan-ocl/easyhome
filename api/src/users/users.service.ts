@@ -59,7 +59,6 @@ export class UsersService {
         lastName: lastName,
         email: email,
       })
-
       return newUser
     }
 

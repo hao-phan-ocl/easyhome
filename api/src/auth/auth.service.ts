@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
 import { UsersService } from 'src/users/users.service'
-import { Response } from 'express'
 
 @Injectable()
 export class AuthService {
@@ -33,7 +32,7 @@ export class AuthService {
 
   async googleLogin(user: any) {
     const googleUser = await this.usersService.findOrCreate(user)
-    console.log(googleUser)
+
     return await this.login(googleUser)
   }
 }

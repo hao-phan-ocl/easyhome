@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Param,
   Post,
   Req,
   Request,
@@ -25,19 +26,19 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('login/google')
-  googleAuth(@Req() req: any) {
+  googleAuth() {
     // Guard redirects
   }
 
   @UseGuards(GoogleAuthGuard)
   @Get('oauth2/redirect/google')
-  googleAuthRedirect(@Req() req: any, @Res() res: Response) {
-    res.redirect('http://localhost:3000')
-    return this.authService.googleLogin(req.user)
-  }
+  async googleAuthRedirect(@Req() req: any, @Res() res: any) {
+    const jwt = await this.authService.googleLogin(req.user)
 
-  @Get('profile')
-  getProfile(@Req() req: any) {
-    return req
+    // if (jwt) {
+    //   res.redirect('http://localhost:3000/login/success/')
+    // }
+
+    return jwt
   }
 }
