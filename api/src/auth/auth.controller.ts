@@ -32,12 +32,12 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('oauth2/redirect/google')
-  async googleAuthRedirect(@Req() req: any, @Res() res: any) {
+  async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
     const jwt = await this.authService.googleLogin(req.user)
 
-    // if (jwt) {
-    //   res.redirect('http://localhost:3000/login/success/')
-    // }
+    if (jwt)
+      res.redirect('http://localhost:3000/login/success/' + jwt.access_token)
+    else res.redirect('http://localhost:3000/login/failed')
 
     return jwt
   }

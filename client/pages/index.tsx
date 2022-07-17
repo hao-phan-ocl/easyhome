@@ -17,11 +17,21 @@ const Home: NextPage = () => {
   }, [dispatch, isAuthenticated])
 
   async function googleLogin() {
-    window.open(
+    const newWindow = window.open(
       'http://localhost:5000/login/google',
       '_blank',
       'width=400, height=500',
     )
+
+    if (newWindow) {
+      // setInterval for every 0.5s until newWindow is closed
+      let timer: NodeJS.Timer = setInterval(() => {
+        if (newWindow.closed) {
+          dispatch(getProfile())
+          if (timer) clearInterval(timer)
+        }
+      }, 500)
+    }
   }
 
   return (

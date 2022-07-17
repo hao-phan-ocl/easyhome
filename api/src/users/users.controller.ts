@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common'
 
@@ -30,24 +31,10 @@ export class UsersController {
     return this.usersService.getAll()
   }
 
-  // @UseGuards(LocalAuthGuard)
-  // @Post('login/local')
-  // loginUser(@Request() req: any) {
-  //   return this.authService.login(req.user)
-  // }
-
   @Post('register')
   registerUser(@Body() registerUserDto: RegisterUserDto) {
     return this.usersService.registerUser(registerUserDto)
   }
-
-  // @UseGuards(GoogleAuthGuard)
-  // @Get('login/google')
-  // @UseGuards(GoogleAuthGuard)
-  // @Get('oauth2/redirect/google')
-  // async googleAuthRedirect(@Req() req: any) {
-  //   return this.authService.googleLogin(req)
-  // }
 
   // @UseGuards(JwtAuthGuard)
   @Delete('delete/:userId')
@@ -95,5 +82,11 @@ export class UsersController {
     @Param('userId') userId: string,
   ) {
     return this.usersService.promoteUser(userId, promoteUserDto.role)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Req() req: any) {
+    return this.usersService.getProfile(req.user.id)
   }
 }
