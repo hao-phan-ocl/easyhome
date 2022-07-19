@@ -1,24 +1,19 @@
+import { Button } from '@mui/material'
 import type { NextPage } from 'next'
-import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
-import Logout from '../components/button/Logout'
-import { useAppDispatch, useAppSelector } from '../hooks/hooks'
-import { getProfile } from '../redux/features/authSlice'
+import RoomGrid from '../components/RoomGrid'
+import { useAppSelector } from '../hooks/hooks'
 
 const Home: NextPage = () => {
-  const dispatch = useAppDispatch()
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth)
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(getProfile())
-    }
-  }, [dispatch, isAuthenticated])
+  const router = useRouter()
+  const { user } = useAppSelector((state) => state.auth)
 
   return (
     <>
+      <Button onClick={() => router.push('/search')}>Search</Button>
       {user && <h1>Welcome {user.email}</h1>}
-      <Logout />
+      <RoomGrid />
     </>
   )
 }

@@ -10,18 +10,22 @@ import { request } from '../../axios/requests'
 import { getProfile, loginSuccess } from '../../redux/features/authSlice'
 
 type LoginFormData = {
+  firstName: string
+  lastName: string
   email: string
   password: string
 }
 
 const schema = yup
   .object({
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     email: yup.string().email().required(),
     password: yup.string().required(),
   })
   .required()
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const dispatch = useAppDispatch()
   const {
     control,
@@ -31,6 +35,8 @@ export default function LoginForm() {
   } = useForm<LoginFormData>({
     mode: 'onBlur',
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
     },
@@ -39,7 +45,9 @@ export default function LoginForm() {
 
   async function onSubmit(data: LoginFormData) {
     try {
-      const res = await instance.post(request('login', 'local'), {
+      const res = await instance.post(request('users', 'register'), {
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: data.password,
       })
@@ -61,13 +69,43 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2} p="15px">
         <Typography color="primary" fontWeight={700}>
-          Log in with Google:
+          Register with Google:
         </Typography>
         <GoogleLoginBtn />
         <Divider>OR</Divider>
         <Typography color="primary" fontWeight={700}>
-          Log in with your email address:
+          Register with your email address:
         </Typography>
+        <Controller
+          name="firstName"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              error={Boolean(errors.firstName)}
+              label="First name"
+              helperText={errors.firstName?.message}
+              // fullWidth
+              size="small"
+            />
+          )}
+        />
+
+        <Controller
+          name="lastName"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              error={Boolean(errors.lastName)}
+              label="Last name"
+              helperText={errors.lastName?.message}
+              // fullWidth
+              size="small"
+            />
+          )}
+        />
+
         <Controller
           name="email"
           control={control}
@@ -99,7 +137,7 @@ export default function LoginForm() {
           )}
         />
         <Button type="submit" variant="contained" color="primary">
-          Login
+          Register
         </Button>
       </Stack>
     </form>
