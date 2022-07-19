@@ -1,12 +1,21 @@
 import { Type } from 'class-transformer'
 import {
+  IsBoolean,
   IsDateString,
+  IsEnum,
   IsInt,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsPositive,
   ValidateNested,
 } from 'class-validator'
+import {
+  BathroomEnum,
+  FurnishedEnum,
+  HousingTypeEnum,
+  KitchenEnum,
+} from 'src/rooms/enum/room.enum'
 
 class Address {
   @IsNotEmpty()
@@ -28,9 +37,11 @@ export class AddRoomDto {
   owner: string
 
   @IsNotEmpty()
+  @IsEnum(HousingTypeEnum)
   housingType: string
 
   @IsNotEmpty()
+  @IsNumber()
   @IsPositive()
   surface: number
 
@@ -44,18 +55,23 @@ export class AddRoomDto {
   availableFrom: Date
 
   @IsNotEmpty()
+  @IsEnum(BathroomEnum)
   bathroomType: string
 
   @IsNotEmpty()
+  @IsEnum(KitchenEnum)
   kitchenType: string
 
   @IsNotEmpty()
-  smoking: string
+  @IsBoolean()
+  smoking: boolean
 
   @IsNotEmpty()
-  pets: string
+  @IsBoolean()
+  pets: boolean
 
   @IsNotEmpty()
+  @IsEnum(FurnishedEnum)
   furnished: string
 
   @ValidateNested()

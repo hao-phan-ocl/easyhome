@@ -1,4 +1,10 @@
 import mongoose, { Document } from 'mongoose'
+import {
+  BathroomEnum,
+  FurnishedEnum,
+  HousingTypeEnum,
+  KitchenEnum,
+} from './enum/room.enum'
 
 export type RoomDocument = Document & {
   owner: mongoose.Types.ObjectId
@@ -8,8 +14,8 @@ export type RoomDocument = Document & {
   availableFrom: Date
   bathroomType: string
   kitchenType: string
-  smoking: string
-  pets: string
+  smoking: boolean
+  pets: boolean
   furnished: string
   address: {
     street: string
@@ -21,15 +27,15 @@ export type RoomDocument = Document & {
 
 export const RoomSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner', required: true },
-  housingType: { type: String, required: true },
+  housingType: { type: String, enum: HousingTypeEnum, required: true },
   surface: { type: Number, required: true },
   rent: { type: Number, required: true },
   availableFrom: { type: Date, required: true },
-  bathroomType: { type: String, required: true },
-  kitchenType: { type: String, required: true },
-  smoking: { type: String, required: true },
-  pets: { type: String, required: true },
-  furnished: { type: String, required: true },
+  bathroomType: { type: String, enum: BathroomEnum, required: true },
+  kitchenType: { type: String, enum: KitchenEnum, required: true },
+  smoking: { type: Boolean, required: true },
+  pets: { type: Boolean, required: true },
+  furnished: { type: String, enum: FurnishedEnum, required: true },
   address: {
     street: { type: String, required: true },
     streetNumber: { type: Number, required: true },

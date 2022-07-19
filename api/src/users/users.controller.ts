@@ -9,6 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common'
+import { AuthService } from 'src/auth/auth.service'
 
 import { JwtAuthGuard } from 'src/auth/jwt-strategy/jwt-auth.guard'
 import { AddRoomDto } from './dto/add-room.dto'
@@ -22,7 +23,10 @@ import { UsersService } from './users.service'
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('all')
@@ -32,8 +36,9 @@ export class UsersController {
   }
 
   @Post('register')
-  registerUser(@Body() registerUserDto: RegisterUserDto) {
-    return this.usersService.registerUser(registerUserDto)
+  async registerUser(@Body() registerUserDto: RegisterUserDto) {
+    const registeredUser = await this.usersService.registerUser(registerUserDto)
+    return this.authService.login(registeredUser)
   }
 
   // @UseGuards(JwtAuthGuard)

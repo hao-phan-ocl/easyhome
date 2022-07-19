@@ -23,5 +23,6 @@ import { AuthController } from './auth.controller'
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}
