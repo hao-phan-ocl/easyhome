@@ -181,6 +181,16 @@ export class UsersService {
     return updatedFavLists
   }
 
+  // UPLOAD images
+  async upload(roomId: string, images: Express.Multer.File[]) {
+    const foundRoom = await this.roomModel.findByIdAndUpdate(roomId, {
+      images: images,
+    })
+    if (!foundRoom) throw new NotFoundException('Room not found')
+
+    return foundRoom
+  }
+
   // ADD new room
   async addRoom(addRoomDto: AddRoomDto): Promise<RoomDocument> {
     const { owner } = addRoomDto

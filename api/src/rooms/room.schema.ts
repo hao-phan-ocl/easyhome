@@ -17,6 +17,7 @@ export type RoomDocument = Document & {
   smoking: boolean
   pets: boolean
   furnished: string
+  images?: string[]
   address: {
     street: string
     streetNumber: number
@@ -36,6 +37,7 @@ export const RoomSchema = new mongoose.Schema({
   smoking: { type: Boolean, required: true },
   pets: { type: Boolean, required: true },
   furnished: { type: String, enum: FurnishedEnum, required: true },
+  images: [{ type: String }],
   address: {
     street: { type: String, required: true },
     streetNumber: { type: Number, required: true },
