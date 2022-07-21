@@ -7,12 +7,14 @@ import {
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import * as bcrypt from 'bcrypt'
+import * as fs from 'fs'
 
 import { RoomDocument } from 'src/rooms/room.schema'
 import { UserDocument } from './user.schema'
 import { AddRoomDto } from './dto/add-room.dto'
 import { Role } from './enum/role.enum'
 import { RegisterUserDto } from 'src/users/dto/register-user.dto'
+import { join } from 'path'
 
 @Injectable()
 export class UsersService {
@@ -183,10 +185,41 @@ export class UsersService {
 
   // UPLOAD images
   async upload(roomId: string, images: Express.Multer.File[]) {
-    const foundRoom = await this.roomModel.findByIdAndUpdate(roomId, {
-      images: images,
-    })
+    const imagePaths: string[] = []
+
+    images.forEach((img) => imagePaths.push(img.filename))
+
+    const foundRoom = await this.roomModel.findByIdAndUpdate(
+      roomId,
+      {
+        $push: { images: imagePaths },
+      },
+      { new: true },
+    )
+
     if (!foundRoom) throw new NotFoundException('Room not found')
+
+    return foundRoom
+  }
+
+  // DELETE images
+  async deleteImage(imagePath: string, roomId: string) {
+    const foundRoom = await this.roomModel.findByIdAndUpdate(
+      roomId,
+      {
+        $pull: { images: imagePath },
+      },
+      { new: true },
+    )
+
+    if (!foundRoom) throw new NotFoundException('Room not found')
+
+    // remove image from server's folder as well
+    const fileDir = `./upload/${imagePath}`
+    fs.unlink(fileDir, (err) => {
+      if (err)
+        throw new InternalServerErrorException("Couldn't delete this file")
+    })
 
     return foundRoom
   }
@@ -204,9 +237,13 @@ export class UsersService {
     const addedRoom = await this.roomModel.create(addRoomDto)
 
     // Add addedRoom id to the referenced owner
-    await this.userModel.findByIdAndUpdate(addedRoom.owner, {
-      $push: { properties: addedRoom._id },
-    })
+    await this.userModel.findByIdAndUpdate(
+      addedRoom.owner,
+      {
+        $push: { properties: addedRoom._id },
+      },
+      { new: true },
+    )
 
     return addedRoom
   }
@@ -220,9 +257,13 @@ export class UsersService {
     }
 
     // Remove addedRoom id to the referenced owner
-    await this.userModel.findByIdAndUpdate(foundRoom.owner, {
-      $pull: { properties: roomId },
-    })
+    await this.userModel.findByIdAndUpdate(
+      foundRoom.owner,
+      {
+        $pull: { properties: roomId },
+      },
+      { new: true },
+    )
 
     return 'Room removed successfully'
   }

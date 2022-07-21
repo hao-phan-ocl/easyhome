@@ -79,7 +79,7 @@ export class UsersController {
   }
 
   // @Post('upload/:roomId')
-  @Post('upload')
+  @Post('upload/:roomId')
   @Roles(Role.USER)
   @UseInterceptors(
     FilesInterceptor('images', 5, {
@@ -102,25 +102,33 @@ export class UsersController {
           cb(null, filename)
         },
       }),
-      fileFilter: (req, file, callback) => {
+      fileFilter: (req, file, cb) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-          return callback(
+          return cb(
             new BadRequestException(
               'Only jpg/jpeg/png image files are allowed!',
             ),
             false,
           )
         }
-        callback(null, true)
+        cb(null, true)
       },
     }),
   )
   uploadImages(
     @UploadedFiles() images: Express.Multer.File[],
-    // @Param('roomId') roomId: string,
+    @Param('roomId') roomId: string,
   ) {
-    console.log(images)
-    return images
+    return this.usersService.upload(roomId, images)
+  }
+
+  @Put('remove-image/:roomId/:imagePath')
+  @Roles(Role.USER)
+  deleteImage(
+    @Param('imagePath') imagePath: string,
+    @Param('roomId') roomId: string,
+  ) {
+    return this.usersService.deleteImage(imagePath, roomId)
   }
 
   // @UseGuards(JwtAuthGuard)
