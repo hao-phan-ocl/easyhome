@@ -2,6 +2,7 @@ import { experimentalStyled as styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
+
 import RoomCard from './RoomCard'
 
 export default function RoomGrid() {
@@ -22,9 +23,9 @@ export default function RoomGrid() {
       >
         {Array.from(Array(13)).map((_, index) => (
           <Grid item xs={1} sm={1} md={1} lg={1} key={index}>
-            <Item>
-              <RoomCard />
-            </Item>
+            {/* <Item> */}
+            <RoomCard />
+            {/* </Item> */}
           </Grid>
         ))}
       </Grid>

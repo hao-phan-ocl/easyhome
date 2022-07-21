@@ -1,7 +1,6 @@
 import { Button, Stack } from '@mui/material'
 import Image from 'next/image'
 
-import google_dark from '../../public/google_dark.png'
 import google from '../../public/google.svg'
 import { useAppDispatch } from '../../hooks/hooks'
 import { getProfile, loginSuccess } from '../../redux/features/authSlice'

@@ -5,9 +5,9 @@ const theme = createTheme({
     primary: {
       main: '#b28b64',
     },
-    // secondary: {
-    //   main: grey[700],
-    // },
+    secondary: {
+      main: 'rgb(233, 30, 99)',
+    },
   },
   typography: {
     fontFamily: 'Quicksand',
