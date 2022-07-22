@@ -13,6 +13,7 @@ type ApiTypes =
   | 'search'
   | 'local'
   | 'google'
+  | 'set-role'
 
 type IdType = string
 

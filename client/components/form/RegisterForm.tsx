@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 import { useAppDispatch } from '../../hooks/hooks'
-import GoogleLoginBtn from '../button/GoogleLoginBtn'
+import GoogleLoginBtn from '../Button/GoogleLoginBtn'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 import { getProfile, loginSuccess } from '../../redux/features/authSlice'

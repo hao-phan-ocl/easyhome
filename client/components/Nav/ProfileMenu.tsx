@@ -55,7 +55,14 @@ export default function ProfileMenu({ user }: MenuProps) {
         }}
       >
         <MenuItem onClick={handleClose}>Account</MenuItem>
-        <MenuItem onClick={handleClose}>Admin Panel</MenuItem>
+        <MenuItem
+          onClick={() => {
+            router.push('/admin')
+            setAnchorEl(null)
+          }}
+        >
+          Admin
+        </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon sx={{ minWidth: 0 }}>
