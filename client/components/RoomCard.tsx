@@ -3,12 +3,12 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
-import { CardActionArea, IconButton, Stack } from '@mui/material'
 import PlaceIcon from '@mui/icons-material/Place'
 import EuroIcon from '@mui/icons-material/Euro'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import LoopIcon from '@mui/icons-material/Loop'
+import { CardActionArea, IconButton, Stack } from '@mui/material'
 
 import logo from '../public/logo.png'
 

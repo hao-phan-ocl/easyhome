@@ -12,8 +12,8 @@ import EditIcon from '@mui/icons-material/Edit'
 
 import { User } from '../../types/schemas'
 import SetRoleDialog from '../Dialog/SetRoleDialog'
-import { useAppDispatch } from '../../hooks/hooks'
-import { setDialog } from '../../redux/features/popUpSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { setDialog, setSnackBarError } from '../../redux/features/popUpSlice'
 
 type Props = {
   users: User[]
@@ -21,6 +21,7 @@ type Props = {
 
 export default function TableBody({ users }: Props) {
   const dispatch = useAppDispatch()
+  const { user } = useAppSelector((state) => state.auth)
   const [editingUser, setEditingUser] = useState<User | null>(null)
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -33,19 +34,26 @@ export default function TableBody({ users }: Props) {
     },
   }))
 
+  function handleClick(elem: User) {
+    // if (user?.role === 'ADMIN') {
+    dispatch(setDialog(true))
+    setEditingUser(elem)
+    // } else dispatch(setSnackBarError(true))
+  }
+
   return (
     <>
       <MuiTableBody>
-        {users.map((user) => (
-          <StyledTableRow key={user.email}>
+        {users.map((elem) => (
+          <StyledTableRow key={elem.email}>
             <TableCell>
-              <Typography>{user.firstName}</Typography>
+              <Typography>{elem.firstName}</Typography>
             </TableCell>
             <TableCell>
-              <Typography>{user.lastName}</Typography>
+              <Typography>{elem.lastName}</Typography>
             </TableCell>
             <TableCell>
-              <Typography>{user.email}</Typography>
+              <Typography>{elem.email}</Typography>
             </TableCell>
             {/* <TableCell>
             <Typography>{user.properties}</Typography>
@@ -56,14 +64,11 @@ export default function TableBody({ users }: Props) {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Typography>{user.role}</Typography>
-                {user.role !== 'ADMIN' && (
+                <Typography>{elem.role}</Typography>
+                {elem.role !== 'ADMIN' && (
                   <Button
                     startIcon={<EditIcon />}
-                    onClick={() => {
-                      dispatch(setDialog(true))
-                      setEditingUser(user)
-                    }}
+                    onClick={() => handleClick(elem)}
                   >
                     Edit role
                   </Button>

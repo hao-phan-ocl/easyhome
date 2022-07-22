@@ -15,9 +15,14 @@ import { useEffect, useState } from 'react'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setDialog, setSnackBar } from '../../redux/features/popUpSlice'
+import {
+  setDialog,
+  setSnackBarError,
+  setSnackBarSuccess,
+} from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
 import { User } from '../../types/schemas'
+import SnackBarError from '../SnackBar/SnackBarError'
 
 type Props = {
   user: User | null
@@ -38,17 +43,20 @@ export default function SetRoleDialog({ user }: Props) {
   }
 
   async function handleSubmit() {
-    const res = await instance.put<string>(
-      request('users', 'set-role', user?._id),
-      {
-        role: currentRole,
-      },
-    )
-
-    if (res.status === 200) {
-      dispatch(setSnackBar(true))
-      dispatch(getAllUsers())
-      dispatch(setDialog(false))
+    try {
+      const res = await instance.put<string>(
+        request('users', 'set-role', user?._id),
+        {
+          role: currentRole,
+        },
+      )
+      if (res.status === 200) {
+        dispatch(setSnackBarSuccess(true))
+        dispatch(getAllUsers())
+        dispatch(setDialog(false))
+      }
+    } catch (error) {
+      dispatch(setSnackBarError(true))
     }
   }
 

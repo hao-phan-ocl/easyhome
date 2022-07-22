@@ -8,6 +8,7 @@ import { useAppSelector } from '../hooks/hooks'
 const Home: NextPage = () => {
   const router = useRouter()
   const { user } = useAppSelector((state) => state.auth)
+  console.log(user)
 
   return (
     <>
