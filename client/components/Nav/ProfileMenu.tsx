@@ -40,13 +40,6 @@ export default function ProfileMenu({ user }: MenuProps) {
     router.push('/')
   }
 
-  function handleAdminClick() {
-    if (user.role === 'USER') {
-      dispatch(setSnackBarError(true))
-    } else router.push('/dashboard/admin')
-    handleClose()
-  }
-
   return (
     <>
       <Button onClick={handleClick}>
@@ -63,8 +56,41 @@ export default function ProfileMenu({ user }: MenuProps) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Account</MenuItem>
-        <MenuItem onClick={handleAdminClick}>Admin</MenuItem>
+        <MenuItem
+          onClick={() => {
+            router.push('/dashboard/account')
+            handleClose()
+          }}
+        >
+          Account
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            router.push('/dashboard/favorites')
+            handleClose()
+          }}
+        >
+          Favorites
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            router.push('/dashboard/listings')
+            handleClose()
+          }}
+        >
+          My adverts
+        </MenuItem>
+        {user.role !== 'USER' && (
+          <MenuItem
+            onClick={() => {
+              router.push('/dashboard/admin')
+              handleClose()
+            }}
+          >
+            Admin
+          </MenuItem>
+        )}
+
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon sx={{ minWidth: 0 }}>

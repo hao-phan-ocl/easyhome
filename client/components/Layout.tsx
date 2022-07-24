@@ -9,6 +9,7 @@ import {
   setSnackBarSuccess,
 } from '../redux/features/popUpSlice'
 import NavBar from './Nav/NavBar'
+import SubNav from './Nav/SubNav'
 
 type Props = {
   children?: ReactNode
@@ -18,6 +19,12 @@ export default function Layout({ children }: Props) {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const { isAuthenticated } = useAppSelector((state) => state.auth)
+  const pathNames = [
+    '/dashboard/account',
+    '/dashboard/favorites',
+    '/dashboard/listings',
+    '/dashboard/admin',
+  ]
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -31,11 +38,10 @@ export default function Layout({ children }: Props) {
   }, [dispatch, isAuthenticated, router.asPath])
 
   return (
-    <>
-      <Container maxWidth="lg">
-        <NavBar />
-        <main>{children}</main>
-      </Container>
-    </>
+    <Container maxWidth="lg">
+      <NavBar />
+      {pathNames.includes(router.pathname) && <SubNav />}
+      <main>{children}</main>
+    </Container>
   )
 }

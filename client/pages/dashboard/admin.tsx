@@ -5,7 +5,6 @@ import { useAppSelector } from '../../hooks/hooks'
 import AdminTable from '../../components/Table/AdminTable'
 import SnackBarSuccess from '../../components/SnackBar/SnackBarSuccess'
 import SnackBarError from '../../components/SnackBar/SnackBarError'
-import AccountNav from '../../components/Nav/AccountNav'
 
 export default function Admin() {
   const router = useRouter()
@@ -19,7 +18,6 @@ export default function Admin() {
     <></>
   ) : (
     <>
-      <AccountNav />
       <AdminTable />
       <SnackBarSuccess text="Role updated successfully!" />
       <SnackBarError text="Unauthorized! (Only ADMIN)" />
