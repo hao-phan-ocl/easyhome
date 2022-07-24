@@ -19,7 +19,7 @@ export default function Admin() {
   ) : (
     <>
       <AdminTable />
-      <SnackBarSuccess text="Role updated successfully!" />
+      <SnackBarSuccess text="Successful!" />
       <SnackBarError text="Unauthorized! (Only ADMIN)" />
     </>
   )

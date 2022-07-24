@@ -1,5 +1,6 @@
 import { Button, Stack } from '@mui/material'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 import google from '../../public/google.svg'
 import { useAppDispatch } from '../../hooks/hooks'
@@ -7,6 +8,7 @@ import { getProfile, loginSuccess } from '../../redux/features/authSlice'
 
 export default function GoogleLogin() {
   const dispatch = useAppDispatch()
+  const router = useRouter()
 
   function googleLogin() {
     const newWindow = window.open(
@@ -21,6 +23,7 @@ export default function GoogleLogin() {
         if (newWindow.closed) {
           dispatch(loginSuccess())
           dispatch(getProfile())
+          router.push('/dashboard/account')
           if (timer) clearInterval(timer)
         }
       }, 500)

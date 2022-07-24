@@ -9,11 +9,13 @@ import {
   Typography,
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 import { User } from '../../types/schemas'
 import SetRoleDialog from '../Dialog/SetRoleDialog'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { useAppDispatch } from '../../hooks/hooks'
 import { setDialog } from '../../redux/features/popUpSlice'
+import DeleteUserDialog from '../Dialog/DeleteUserDialog'
 
 type Props = {
   users: User[]
@@ -21,8 +23,8 @@ type Props = {
 
 export default function TableBody({ users }: Props) {
   const dispatch = useAppDispatch()
-  const { user } = useAppSelector((state) => state.auth)
   const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [openDelUserDialog, setDelUserDialog] = useState(false)
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -35,10 +37,8 @@ export default function TableBody({ users }: Props) {
   }))
 
   function handleClick(elem: User) {
-    // if (user?.role === 'ADMIN') {
     dispatch(setDialog(true))
     setEditingUser(elem)
-    // } else dispatch(setSnackBarError(true))
   }
 
   return (
@@ -75,10 +75,29 @@ export default function TableBody({ users }: Props) {
                 )}
               </Stack>
             </TableCell>
+            <TableCell>
+              {elem.role !== 'ADMIN' && (
+                <Button
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => {
+                    setDelUserDialog(true)
+                    setEditingUser(elem)
+                  }}
+                >
+                  Delete user
+                </Button>
+              )}
+            </TableCell>
           </StyledTableRow>
         ))}
       </MuiTableBody>
       <SetRoleDialog user={editingUser} />
+      <DeleteUserDialog
+        user={editingUser}
+        openDelUserDialog={openDelUserDialog}
+        setDelUserDialog={setDelUserDialog}
+      />
     </>
   )
 }

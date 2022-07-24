@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -22,7 +21,6 @@ import {
 } from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
 import { User } from '../../types/schemas'
-import SnackBarError from '../SnackBar/SnackBarError'
 
 type Props = {
   user: User | null

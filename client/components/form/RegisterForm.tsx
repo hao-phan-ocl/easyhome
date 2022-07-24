@@ -8,6 +8,7 @@ import GoogleLoginBtn from '../Button/GoogleLoginBtn'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 import { getProfile, loginSuccess } from '../../redux/features/authSlice'
+import { useRouter } from 'next/router'
 
 type LoginFormData = {
   firstName: string
@@ -27,6 +28,7 @@ const schema = yup
 
 export default function RegisterForm() {
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const {
     control,
     handleSubmit,
@@ -56,6 +58,7 @@ export default function RegisterForm() {
         localStorage.setItem('accessToken', access_token)
         dispatch(loginSuccess())
         dispatch(getProfile())
+        router.push('/dashboard/account')
       }
     } catch (error: any) {
       const message = error.response?.data.message

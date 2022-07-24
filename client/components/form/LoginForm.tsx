@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { Button, Divider, Stack, TextField, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -22,6 +23,7 @@ const schema = yup
   .required()
 
 export default function LoginForm() {
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const {
     control,
@@ -48,6 +50,7 @@ export default function LoginForm() {
         localStorage.setItem('accessToken', access_token)
         dispatch(loginSuccess())
         dispatch(getProfile())
+        router.push('/dashboard/account')
       }
     } catch (error: any) {
       const message = error.response?.data.message
