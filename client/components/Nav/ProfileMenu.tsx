@@ -14,6 +14,8 @@ import LockIcon from '@mui/icons-material/Lock'
 import { User } from '../../types/schemas'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout } from '../../redux/features/authSlice'
+import SnackBarError from '../SnackBar/SnackBarError'
+import { setSnackBarError } from '../../redux/features/popUpSlice'
 
 type MenuProps = {
   user: User
@@ -38,6 +40,13 @@ export default function ProfileMenu({ user }: MenuProps) {
     router.push('/')
   }
 
+  function handleAdminClick() {
+    if (user.role === 'USER') {
+      dispatch(setSnackBarError(true))
+    } else router.push('/dashboard/admin')
+    handleClose()
+  }
+
   return (
     <>
       <Button onClick={handleClick}>
@@ -55,14 +64,7 @@ export default function ProfileMenu({ user }: MenuProps) {
         }}
       >
         <MenuItem onClick={handleClose}>Account</MenuItem>
-        <MenuItem
-          onClick={() => {
-            router.push('/admin')
-            setAnchorEl(null)
-          }}
-        >
-          Admin
-        </MenuItem>
+        <MenuItem onClick={handleAdminClick}>Admin</MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon sx={{ minWidth: 0 }}>
@@ -71,6 +73,7 @@ export default function ProfileMenu({ user }: MenuProps) {
           <ListItemText onClick={handleLogout}>Log out</ListItemText>
         </MenuItem>
       </Menu>
+      <SnackBarError text="Unauthorized! (Only ADMIN/MODERATOR)" />
     </>
   )
 }

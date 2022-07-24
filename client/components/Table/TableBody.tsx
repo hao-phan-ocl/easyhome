@@ -13,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { User } from '../../types/schemas'
 import SetRoleDialog from '../Dialog/SetRoleDialog'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setDialog, setSnackBarError } from '../../redux/features/popUpSlice'
+import { setDialog } from '../../redux/features/popUpSlice'
 
 type Props = {
   users: User[]

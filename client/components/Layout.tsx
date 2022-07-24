@@ -1,8 +1,13 @@
 import { Container } from '@mui/system'
+import { useRouter } from 'next/router'
 import { ReactNode, useEffect } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import { getProfile } from '../redux/features/authSlice'
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
+import {
+  setSnackBarError,
+  setSnackBarSuccess,
+} from '../redux/features/popUpSlice'
 import NavBar from './Nav/NavBar'
 
 type Props = {
@@ -10,6 +15,7 @@ type Props = {
 }
 
 export default function Layout({ children }: Props) {
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const { isAuthenticated } = useAppSelector((state) => state.auth)
 
@@ -17,7 +23,12 @@ export default function Layout({ children }: Props) {
     if (isAuthenticated) {
       dispatch(getProfile())
     }
-  }, [dispatch, isAuthenticated])
+
+    // router.asPath => SnackBar will turn off
+    // whenever route changes
+    dispatch(setSnackBarSuccess(false))
+    dispatch(setSnackBarError(false))
+  }, [dispatch, isAuthenticated, router.asPath])
 
   return (
     <>
