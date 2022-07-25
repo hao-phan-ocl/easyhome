@@ -8,8 +8,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 
 import { User } from '../../types/schemas'
 import SetRoleDialog from '../Dialog/SetRoleDialog'
@@ -67,7 +67,7 @@ export default function TableBody({ users }: Props) {
                 <Typography>{elem.role}</Typography>
                 {elem.role !== 'ADMIN' && (
                   <Button
-                    startIcon={<EditIcon />}
+                    startIcon={<EditOutlinedIcon />}
                     onClick={() => handleClick(elem)}
                   >
                     Edit role
@@ -79,7 +79,7 @@ export default function TableBody({ users }: Props) {
               {elem.role !== 'ADMIN' && (
                 <Button
                   color="error"
-                  startIcon={<DeleteIcon />}
+                  startIcon={<DeleteOutlineIcon />}
                   onClick={() => {
                     setDelUserDialog(true)
                     setEditingUser(elem)

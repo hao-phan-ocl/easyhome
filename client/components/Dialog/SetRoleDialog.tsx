@@ -8,8 +8,11 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Slide,
+  Stack,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { TransitionProps } from '@mui/material/transitions'
+import { forwardRef, useEffect, useState } from 'react'
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
@@ -25,6 +28,15 @@ import { User } from '../../types/schemas'
 type Props = {
   user: User | null
 }
+
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />
+})
 
 export default function SetRoleDialog({ user }: Props) {
   const dispatch = useAppDispatch()
@@ -59,8 +71,12 @@ export default function SetRoleDialog({ user }: Props) {
   }
 
   return (
-    <>
-      <Dialog open={openDialog} onClose={handleClose}>
+    <Dialog
+      open={openDialog}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+    >
+      <Stack p="10px 0">
         <DialogTitle color="primary">Manage Role</DialogTitle>
         <DialogContent>
           <FormControl>
@@ -83,12 +99,14 @@ export default function SetRoleDialog({ user }: Props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button size="small" variant="contained" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button type="submit" size="small" onClick={handleSubmit}>
             Save
           </Button>
         </DialogActions>
-      </Dialog>
-    </>
+      </Stack>
+    </Dialog>
   )
 }

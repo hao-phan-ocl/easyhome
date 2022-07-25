@@ -19,12 +19,6 @@ export default function Layout({ children }: Props) {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const { isAuthenticated } = useAppSelector((state) => state.auth)
-  const pathNames = [
-    '/dashboard/account',
-    '/dashboard/favorites',
-    '/dashboard/listings',
-    '/dashboard/admin',
-  ]
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -40,7 +34,7 @@ export default function Layout({ children }: Props) {
   return (
     <Container maxWidth="lg">
       <NavBar />
-      {pathNames.includes(router.pathname) && <SubNav />}
+      {/* {pathNames.includes(router.pathname) && <SubNav />} */}
       <main>{children}</main>
     </Container>
   )

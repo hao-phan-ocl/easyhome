@@ -5,10 +5,18 @@ import { useRouter } from 'next/router'
 import { useAppSelector } from '../../hooks/hooks'
 import logo from '../../public/logo.png'
 import ProfileMenu from './ProfileMenu'
+import SubNav from './SubNav'
 
 export default function NavBar() {
   const router = useRouter()
   const { user } = useAppSelector((state) => state.auth)
+
+  const pathNames = [
+    '/dashboard/account',
+    '/dashboard/favorites',
+    '/dashboard/listings',
+    '/dashboard/admin',
+  ]
 
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -28,7 +36,10 @@ export default function NavBar() {
             <Button onClick={() => router.push('/login')}>Log in</Button>
           </>
         ) : (
-          <ProfileMenu user={user} />
+          <>
+            {pathNames.includes(router.pathname) && <SubNav />}
+            <ProfileMenu user={user} />
+          </>
         )}
       </Stack>
     </Stack>

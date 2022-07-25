@@ -5,9 +5,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Slide,
   Stack,
 } from '@mui/material'
-import { Dispatch, SetStateAction } from 'react'
+import { TransitionProps } from '@mui/material/transitions'
+import { Dispatch, forwardRef, SetStateAction } from 'react'
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
@@ -24,6 +26,15 @@ type Props = {
   openDelUserDialog: boolean
   setDelUserDialog: Dispatch<SetStateAction<boolean>>
 }
+
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />
+})
 
 export default function DeleteUserDialog({
   user,
@@ -50,17 +61,14 @@ export default function DeleteUserDialog({
 
   return (
     <Dialog
+      TransitionComponent={Transition}
       open={openDelUserDialog}
       onClose={() => setDelUserDialog(false)}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
     >
       <Stack p="10px 0">
-        <DialogTitle fontWeight={800} id="alert-dialog-title">
-          Are you sure?
-        </DialogTitle>
+        <DialogTitle fontWeight={800}>Are you sure?</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             This user will be deleted permanently
           </DialogContentText>
         </DialogContent>
