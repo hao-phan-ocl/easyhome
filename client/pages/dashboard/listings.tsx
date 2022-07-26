@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { ReactNode, SyntheticEvent, useState } from 'react'
 import { Paper } from '@mui/material'
-import CreateRoomForm from '../../components/Form/CreateRoomForm'
+import CreateRoomForm from '../../components/Form/CreateRoom/CreateRoomForm'
 
 interface TabPanelProps {
   children?: ReactNode
