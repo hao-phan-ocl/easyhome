@@ -11,12 +11,21 @@ import LoopIcon from '@mui/icons-material/Loop'
 import { CardActionArea, IconButton, Stack } from '@mui/material'
 
 import logo from '../public/logo.png'
+import { Room } from '../types/schemas'
 
-export default function RoomCard() {
+type RoomProps = {
+  room: Room
+}
+
+export default function RoomCard({ room }: RoomProps) {
+  if (room.images) console.log(room.images[0])
   return (
     <Card>
       <CardActionArea>
         <CardMedia>
+          {/* {room.images && (
+            <Image src={room.images[1]} alt="logo" layout="fill" />
+          )} */}
           <Image src={logo} alt="logo" />
         </CardMedia>
       </CardActionArea>
@@ -37,11 +46,11 @@ export default function RoomCard() {
               color="primary"
               onClick={() => alert('room name')}
             >
-              Studio
+              {room.housingType}
             </Typography>
 
             <Stack direction="row">
-              <Typography fontSize={19}>32 m</Typography>
+              <Typography fontSize={19}>{room.surface} m</Typography>
               <sup>2</sup>
             </Stack>
           </Stack>
@@ -49,11 +58,11 @@ export default function RoomCard() {
           <Stack direction="row" justifyContent="center" gap={2}>
             <Stack direction="row" gap={1}>
               <PlaceIcon color="primary" />
-              <Typography>Espoo</Typography>
+              <Typography>{room.address.municipality}</Typography>
             </Stack>
             <Stack direction="row" gap={0.5} alignItems="center">
               <Typography fontWeight={800} color="secondary">
-                500
+                {room.rent}
               </Typography>
               <EuroIcon fontSize="small" color="secondary" />
             </Stack>

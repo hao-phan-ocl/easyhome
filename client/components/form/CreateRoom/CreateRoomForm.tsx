@@ -16,17 +16,25 @@ import {
   Typography,
 } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 
 import InputRow from './InputRow'
+import { useAppSelector } from '../../../hooks/hooks'
+import instance from '../../../axios/instance'
+import { request } from '../../../axios/requests'
 
 type CreateFormType = {
   housingType: 'studio' | 'apartment' | 'shared' | ''
+  availableFrom: Date
+  images: FileList
+  description: string
   surface: string
   bathRoomType: 'private' | 'shared' | ''
   kitchenType: 'in-room' | 'shared' | 'private' | ''
   furnished: 'furnished' | 'unfurnished' | 'partially-furnished' | ''
   smoking: boolean | ''
-  pet: boolean | ''
+  pets: boolean | ''
   address: {
     street: string
     streetNumber: string
@@ -37,15 +45,19 @@ type CreateFormType = {
 }
 
 export default function CreateRoomForm() {
-  const { control, handleSubmit } = useForm<CreateFormType>({
+  const { user } = useAppSelector((state) => state.auth)
+  const { control, register, handleSubmit } = useForm<CreateFormType>({
     defaultValues: {
       housingType: '',
+      availableFrom: new Date(),
+      // images: '',
+      description: '',
       surface: '',
       bathRoomType: '',
       kitchenType: '',
       furnished: '',
       smoking: '',
-      pet: '',
+      pets: '',
       address: {
         street: '',
         streetNumber: '',
@@ -56,8 +68,41 @@ export default function CreateRoomForm() {
     },
   })
 
-  function onSubmit(data: CreateFormType) {
-    console.log(data)
+  async function onSubmit(data: CreateFormType) {
+    let img = []
+    for (let i = 0; i < data.images.length; i++) {
+      img.push(data.images[i].name)
+    }
+    console.log(img)
+    const submit = {
+      owner: user?._id,
+      housingType: data.housingType,
+      surface: Number(data.surface),
+      rent: Number(data.rent),
+      availableFrom: data.availableFrom.toISOString().slice(0, 10),
+      bathroomType: data.bathRoomType,
+      kitchenType: data.kitchenType,
+      furnished: data.furnished,
+      smoking: data.smoking.valueOf() === 'true' ? true : false,
+      pets: data.pets.valueOf() === 'true' ? true : false,
+      address: {
+        street: data.address.street,
+        streetNumber: Number(data.address.streetNumber),
+        postalCode: data.address.postalCode,
+        municipality: data.address.municipality,
+      },
+    }
+
+    try {
+      const res = await instance.post(request('users', 'add-room'), submit)
+      const imgRes = await instance.post(
+        request('users', 'upload', res.data._id),
+        img,
+      )
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -81,14 +126,52 @@ export default function CreateRoomForm() {
           />
         </InputRow>
         <InputRow label={'Available from'}>
-          <TextField size="small" fullWidth />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Controller
+              name="availableFrom"
+              render={({ field }) => (
+                <DatePicker
+                  {...field}
+                  inputFormat="yyyy/MM/dd"
+                  renderInput={(params) => (
+                    <TextField {...params} fullWidth size="small" />
+                  )}
+                />
+              )}
+              control={control}
+            />
+          </LocalizationProvider>
         </InputRow>
-        <InputRow label={'Images (optional)'}>
-          <Button variant="contained" component="label" fullWidth>
-            Upload
-            <input hidden accept="image/*" multiple type="file" />
-          </Button>
-        </InputRow>
+        <Stack
+          direction={{ md: 'row', sm: 'column', xs: 'column' }}
+          mb={3}
+          gap={2}
+        >
+          <Stack
+            width="220px"
+            direction="row"
+            justifyContent={{ md: 'flex-end' }}
+          >
+            <Typography paragraph mb="0">
+              <span style={{ fontWeight: '700' }}>Images {''}</span>
+              <span>(optional)</span>
+            </Typography>
+          </Stack>
+          <input
+            {...register('images')}
+            accept="image/*"
+            multiple
+            type="file"
+            title="Upload file"
+            name="images"
+          />
+        </Stack>
+        <TextField
+          placeholder="Describe your property (optional)"
+          multiline
+          rows={5}
+          sx={{ width: '40%', marginBottom: '20px' }}
+        />
       </Stack>
 
       <Stack gap={1}>
@@ -198,7 +281,7 @@ export default function CreateRoomForm() {
         </InputRow>
         <InputRow label={'Pet'}>
           <Controller
-            name="pet"
+            name="pets"
             render={({ field }) => (
               <RadioGroup
                 {...field}

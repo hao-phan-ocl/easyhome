@@ -14,6 +14,7 @@ type ApiTypes =
   | 'local'
   | 'google'
   | 'set-role'
+  | 'upload'
 
 type IdType = string
 
