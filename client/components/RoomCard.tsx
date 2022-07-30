@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
@@ -10,7 +9,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import LoopIcon from '@mui/icons-material/Loop'
 import { CardActionArea, IconButton, Stack } from '@mui/material'
 
-import logo from '../public/logo.png'
 import { Room } from '../types/schemas'
 
 type RoomProps = {
@@ -18,18 +16,18 @@ type RoomProps = {
 }
 
 export default function RoomCard({ room }: RoomProps) {
-  if (room.images) console.log(room.images[0])
   return (
     <Card>
       <CardActionArea>
-        <CardMedia>
-          {/* {room.images && (
-            <Image src={room.images[1]} alt="logo" layout="fill" />
-          )} */}
-          <Image src={logo} alt="logo" />
-        </CardMedia>
+        {room.images && (
+          <CardMedia
+            component="img"
+            height={200}
+            src={`http://${room.images[0]}`}
+            alt={`Room ${room._id}`}
+          ></CardMedia>
+        )}
       </CardActionArea>
-
       <CardContent>
         <Stack gap={2}>
           <Stack

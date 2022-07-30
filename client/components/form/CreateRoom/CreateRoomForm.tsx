@@ -69,11 +69,6 @@ export default function CreateRoomForm() {
   })
 
   async function onSubmit(data: CreateFormType) {
-    let img = []
-    for (let i = 0; i < data.images.length; i++) {
-      img.push(data.images[i].name)
-    }
-    console.log(img)
     const submit = {
       owner: user?._id,
       housingType: data.housingType,
@@ -95,11 +90,25 @@ export default function CreateRoomForm() {
 
     try {
       const res = await instance.post(request('users', 'add-room'), submit)
-      const imgRes = await instance.post(
-        request('users', 'upload', res.data._id),
-        img,
-      )
-      console.log(res)
+      // console.log(data.images)
+      if (data.images.length && res.status === 201) {
+        // Create form data to send file
+        const formData = new FormData()
+        // Append each img to form data
+        for (let i = 0; i < data.images.length; i++) {
+          formData.append('images', data.images[i])
+        }
+
+        await instance.post(
+          request('users', 'upload', res.data._id),
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        )
+      }
     } catch (error) {
       console.log(error)
     }
