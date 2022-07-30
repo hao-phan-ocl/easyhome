@@ -14,6 +14,7 @@ import LockIcon from '@mui/icons-material/Lock'
 import { User } from '../../types/schemas'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout } from '../../redux/features/authSlice'
+import Link from 'next/link'
 
 type MenuProps = {
   user: User
@@ -54,39 +55,51 @@ export default function ProfileMenu({ user }: MenuProps) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem
-          onClick={() => {
-            router.push('/dashboard/account')
-            handleClose()
-          }}
-        >
-          Account
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            router.push('/dashboard/favorites')
-            handleClose()
-          }}
-        >
-          Favorites
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            router.push('/dashboard/listings')
-            handleClose()
-          }}
-        >
-          My adverts
-        </MenuItem>
+        <Link href="/dashboard/account">
+          <a>
+            <MenuItem
+              onClick={() => {
+                handleClose()
+              }}
+            >
+              Account
+            </MenuItem>
+          </a>
+        </Link>
+        <Link href="/dashboard/favorites">
+          <a>
+            <MenuItem
+              onClick={() => {
+                handleClose()
+              }}
+            >
+              Favorites
+            </MenuItem>
+          </a>
+        </Link>
+        <Link href="/dashboard/listings">
+          <a>
+            <MenuItem
+              onClick={() => {
+                handleClose()
+              }}
+            >
+              My adverts
+            </MenuItem>
+          </a>
+        </Link>
         {user.role !== 'USER' && (
-          <MenuItem
-            onClick={() => {
-              router.push('/dashboard/admin')
-              handleClose()
-            }}
-          >
-            Admin
-          </MenuItem>
+          <Link href="/dashboard/admin">
+            <a>
+              <MenuItem
+                onClick={() => {
+                  handleClose()
+                }}
+              >
+                Admin
+              </MenuItem>
+            </a>
+          </Link>
         )}
 
         <Divider />

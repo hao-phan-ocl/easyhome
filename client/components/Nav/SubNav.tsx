@@ -6,6 +6,7 @@ import PersonIcon from '@mui/icons-material/Person'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import InventoryIcon from '@mui/icons-material/Inventory'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
+import Link from 'next/link'
 
 import { useAppSelector } from '../../hooks/hooks'
 
@@ -26,47 +27,59 @@ export default function SubNav() {
 
   return (
     <Stack direction="row" gap={3}>
-      <CustomizedButton
-        startIcon={<PersonIcon />}
-        onClick={() => {
-          router.push('/dashboard/account')
-          setPath('account')
-        }}
-        sx={{ color: path === 'account' ? 'primary' : '#888' }}
-      >
-        Account
-      </CustomizedButton>
-      <CustomizedButton
-        startIcon={<FavoriteIcon />}
-        onClick={() => {
-          router.push('/dashboard/favorites')
-          setPath('favorites')
-        }}
-        sx={{ color: path === 'favorites' ? 'primary' : '#888' }}
-      >
-        Favorites
-      </CustomizedButton>
-      <CustomizedButton
-        startIcon={<InventoryIcon />}
-        onClick={() => {
-          router.push('/dashboard/listings')
-          setPath('listings')
-        }}
-        sx={{ color: path === 'listings' ? 'primary' : '#888' }}
-      >
-        My adverts
-      </CustomizedButton>
+      <Link href="/dashboard/account">
+        <a>
+          <CustomizedButton
+            startIcon={<PersonIcon />}
+            onClick={() => {
+              setPath('account')
+            }}
+            sx={{ color: path === 'account' ? 'primary' : '#888' }}
+          >
+            Account
+          </CustomizedButton>
+        </a>
+      </Link>
+      <Link href="/dashboard/favorites">
+        <a>
+          <CustomizedButton
+            startIcon={<FavoriteIcon />}
+            onClick={() => {
+              setPath('favorites')
+            }}
+            sx={{ color: path === 'favorites' ? 'primary' : '#888' }}
+          >
+            Favorites
+          </CustomizedButton>
+        </a>
+      </Link>
+      <Link href="/dashboard/listings">
+        <a>
+          <CustomizedButton
+            startIcon={<InventoryIcon />}
+            onClick={() => {
+              setPath('listings')
+            }}
+            sx={{ color: path === 'listings' ? 'primary' : '#888' }}
+          >
+            My adverts
+          </CustomizedButton>
+        </a>
+      </Link>
       {user?.role !== 'USER' && (
-        <CustomizedButton
-          startIcon={<AdminPanelSettingsIcon />}
-          onClick={() => {
-            router.push('/dashboard/admin')
-            setPath('admin')
-          }}
-          sx={{ color: path === 'admin' ? 'primary' : '#888' }}
-        >
-          Admin
-        </CustomizedButton>
+        <Link href="/dashboard/admin">
+          <a>
+            <CustomizedButton
+              startIcon={<AdminPanelSettingsIcon />}
+              onClick={() => {
+                setPath('admin')
+              }}
+              sx={{ color: path === 'admin' ? 'primary' : '#888' }}
+            >
+              Admin
+            </CustomizedButton>
+          </a>
+        </Link>
       )}
     </Stack>
   )

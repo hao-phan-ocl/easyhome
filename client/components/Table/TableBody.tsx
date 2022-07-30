@@ -25,6 +25,7 @@ export default function TableBody({ users }: Props) {
   const dispatch = useAppDispatch()
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [openDelUserDialog, setDelUserDialog] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {

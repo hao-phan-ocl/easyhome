@@ -90,7 +90,7 @@ export default function CreateRoomForm() {
 
     try {
       const res = await instance.post(request('users', 'add-room'), submit)
-      // console.log(data.images)
+
       if (data.images.length && res.status === 201) {
         // Create form data to send file
         const formData = new FormData()
@@ -163,7 +163,9 @@ export default function CreateRoomForm() {
           >
             <Typography paragraph mb="0">
               <span style={{ fontWeight: '700' }}>Images {''}</span>
-              <span>(optional)</span>
+              <span>
+                <i>(optional)</i>
+              </span>
             </Typography>
           </Stack>
           <input

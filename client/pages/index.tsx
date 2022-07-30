@@ -26,7 +26,6 @@ const Home: NextPage = () => {
   return (
     <>
       <Button onClick={() => router.push('/search')}>Search</Button>
-      <Button onClick={() => router.push('/add-room')}>Create room</Button>
       {user && <h1>Welcome {user.email}</h1>}
       <RoomGrid rooms={rooms} />
     </>
