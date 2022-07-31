@@ -11,13 +11,6 @@ export default function NavBar() {
   const router = useRouter()
   const { user } = useAppSelector((state) => state.auth)
 
-  const pathNames = [
-    '/dashboard/account',
-    '/dashboard/favorites',
-    '/dashboard/listings',
-    '/dashboard/admin',
-  ]
-
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <Image
@@ -37,7 +30,7 @@ export default function NavBar() {
           </>
         ) : (
           <>
-            {pathNames.includes(router.pathname) && <SubNav />}
+            <SubNav />
             <ProfileMenu user={user} />
           </>
         )}

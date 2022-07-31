@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import instance from '../axios/instance'
 import { request } from '../axios/requests'
 
-import RoomGrid from '../components/RoomGrid'
+import RoomGrid from '../components/RoomLayout/RoomGrid'
 import { useAppSelector } from '../hooks/hooks'
 import { Room } from '../types/schemas'
 

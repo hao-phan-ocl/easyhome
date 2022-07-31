@@ -11,7 +11,6 @@ export default function Logout() {
   function handleLogout() {
     dispatch(logout())
     localStorage.clear()
-    // router.push('/')
   }
 
   return <Button onClick={handleLogout}>Logout</Button>

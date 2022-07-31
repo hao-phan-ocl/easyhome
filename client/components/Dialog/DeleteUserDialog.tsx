@@ -9,20 +9,22 @@ import {
   Stack,
 } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
-import { Dispatch, forwardRef, SetStateAction } from 'react'
+import { useRouter } from 'next/router'
+import { Dispatch, forwardRef, SetStateAction, useState } from 'react'
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 import { useAppDispatch } from '../../hooks/hooks'
+import { logout } from '../../redux/features/authSlice'
 import {
   setSnackBarError,
   setSnackBarSuccess,
 } from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
-import { User } from '../../types/schemas'
+import SnackBarError from '../SnackBar/SnackBarError'
 
 type Props = {
-  user: User | null
+  userId: string | undefined
   openDelUserDialog: boolean
   setDelUserDialog: Dispatch<SetStateAction<boolean>>
 }
@@ -37,55 +39,68 @@ const Transition = forwardRef(function Transition(
 })
 
 export default function DeleteUserDialog({
-  user,
+  userId,
   openDelUserDialog,
   setDelUserDialog,
 }: Props) {
   const dispatch = useAppDispatch()
+  const router = useRouter()
+  const [errText, setErrText] = useState('')
 
   async function handleSubmit() {
     try {
       const res = await instance.delete<string>(
-        request('users', 'delete', user?._id),
+        request('users', 'delete', userId),
       )
-      console.log(res)
       if (res.status === 200) {
         dispatch(setSnackBarSuccess(true))
-        dispatch(getAllUsers())
         setDelUserDialog(false)
+
+        if (router.pathname === '/admin') {
+          dispatch(getAllUsers())
+        }
+
+        if (router.pathname !== '/admin') {
+          localStorage.clear()
+          dispatch(logout()) // set isAuthenticated = false
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(setSnackBarError(true))
+      setErrText(error.response.data.message)
     }
   }
 
   return (
-    <Dialog
-      TransitionComponent={Transition}
-      open={openDelUserDialog}
-      onClose={() => setDelUserDialog(false)}
-    >
-      <Stack p="10px 0">
-        <DialogTitle fontWeight={800}>Are you sure?</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This user will be deleted permanently
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            onClick={() => setDelUserDialog(false)}
-            sx={{ marginRight: '7px' }}
-            size="small"
-          >
-            Cancel
-          </Button>
-          <Button size="small" onClick={handleSubmit} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Stack>
-    </Dialog>
+    <>
+      <Dialog
+        TransitionComponent={Transition}
+        open={openDelUserDialog}
+        onClose={() => setDelUserDialog(false)}
+      >
+        <Stack p="10px 0">
+          <DialogTitle fontWeight={800}>Are you sure?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              This user will be deleted permanently
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              onClick={() => setDelUserDialog(false)}
+              sx={{ marginRight: '7px' }}
+              size="small"
+            >
+              Cancel
+            </Button>
+            <Button size="small" onClick={handleSubmit} autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Stack>
+      </Dialog>
+      <SnackBarError text={errText} />
+    </>
   )
 }

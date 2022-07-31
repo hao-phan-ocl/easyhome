@@ -21,13 +21,13 @@ export default function SubNav() {
   `)
 
   useEffect(() => {
-    const path = router.pathname.substring(11)
+    const path = router.pathname.substring(1)
     setPath(path)
   }, [router])
 
   return (
     <Stack direction="row" gap={3}>
-      <Link href="/dashboard/account">
+      <Link href="/account">
         <a>
           <CustomizedButton
             startIcon={<PersonIcon />}
@@ -40,7 +40,7 @@ export default function SubNav() {
           </CustomizedButton>
         </a>
       </Link>
-      <Link href="/dashboard/favorites">
+      <Link href="/favorites">
         <a>
           <CustomizedButton
             startIcon={<FavoriteIcon />}
@@ -53,7 +53,7 @@ export default function SubNav() {
           </CustomizedButton>
         </a>
       </Link>
-      <Link href="/dashboard/listings">
+      <Link href="/listings">
         <a>
           <CustomizedButton
             startIcon={<InventoryIcon />}
@@ -67,7 +67,7 @@ export default function SubNav() {
         </a>
       </Link>
       {user?.role !== 'USER' && (
-        <Link href="/dashboard/admin">
+        <Link href="/admin">
           <a>
             <CustomizedButton
               startIcon={<AdminPanelSettingsIcon />}

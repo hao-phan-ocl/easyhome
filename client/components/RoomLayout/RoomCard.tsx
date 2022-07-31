@@ -8,8 +8,9 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import LoopIcon from '@mui/icons-material/Loop'
 import { CardActionArea, IconButton, Stack } from '@mui/material'
+import Link from 'next/link'
 
-import { Room } from '../types/schemas'
+import { Room } from '../../types/schemas'
 
 type RoomProps = {
   room: Room
@@ -36,17 +37,19 @@ export default function RoomCard({ room }: RoomProps) {
             gap={2}
             justifyContent="center"
           >
-            <Typography
-              sx={{ cursor: 'pointer' }}
-              variant="h5"
-              fontWeight={700}
-              component="div"
-              color="primary"
-              onClick={() => alert('room name')}
-            >
-              {room.housingType}
-            </Typography>
-
+            <Link href="">
+              <a>
+                <Typography
+                  sx={{ cursor: 'pointer' }}
+                  variant="h5"
+                  fontWeight={700}
+                  // component="div"
+                  color="primary"
+                >
+                  {room.housingType}
+                </Typography>
+              </a>
+            </Link>
             <Stack direction="row">
               <Typography fontSize={19}>{room.surface} m</Typography>
               <sup>2</sup>

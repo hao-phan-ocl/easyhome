@@ -23,7 +23,7 @@ export default function GoogleLogin() {
         if (newWindow.closed) {
           dispatch(loginSuccess())
           dispatch(getProfile())
-          router.push('/dashboard/account')
+          router.push('/account')
           if (timer) clearInterval(timer)
         }
       }, 500)

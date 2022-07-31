@@ -50,7 +50,6 @@ export default function CreateRoomForm() {
     defaultValues: {
       housingType: '',
       availableFrom: new Date(),
-      // images: '',
       description: '',
       surface: '',
       bathRoomType: '',
@@ -73,6 +72,7 @@ export default function CreateRoomForm() {
       owner: user?._id,
       housingType: data.housingType,
       surface: Number(data.surface),
+      description: data.description,
       rent: Number(data.rent),
       availableFrom: data.availableFrom.toISOString().slice(0, 10),
       bathroomType: data.bathRoomType,
@@ -99,7 +99,7 @@ export default function CreateRoomForm() {
           formData.append('images', data.images[i])
         }
 
-        await instance.post(
+        const newRoom = await instance.post(
           request('users', 'upload', res.data._id),
           formData,
           {
@@ -108,6 +108,8 @@ export default function CreateRoomForm() {
             },
           },
         )
+
+        console.log(newRoom)
       }
     } catch (error) {
       console.log(error)
@@ -177,12 +179,19 @@ export default function CreateRoomForm() {
             name="images"
           />
         </Stack>
-        <TextField
-          placeholder="Describe your property (optional)"
-          multiline
-          rows={5}
-          sx={{ width: '40%', marginBottom: '20px' }}
-        />
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              placeholder="Describe your property:"
+              multiline
+              rows={5}
+              sx={{ width: '40%', marginBottom: '20px' }}
+            />
+          )}
+        ></Controller>
       </Stack>
 
       <Stack gap={1}>

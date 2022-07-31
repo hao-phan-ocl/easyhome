@@ -50,7 +50,7 @@ export default function LoginForm() {
         localStorage.setItem('accessToken', access_token)
         dispatch(loginSuccess())
         dispatch(getProfile())
-        router.push('/dashboard/account')
+        router.push('/account')
       }
     } catch (error: any) {
       const message = error.response?.data.message

@@ -3,6 +3,7 @@ import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { ReactNode, SyntheticEvent, useState } from 'react'
+import AuthCheck from '../components/AuthCheck'
 
 interface TabPanelProps {
   children?: ReactNode
@@ -45,19 +46,21 @@ export default function Favorites() {
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Favorites" {...a11yProps(0)} />
-        </Tabs>
+    <AuthCheck>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Favorites" {...a11yProps(0)} />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          Item One
+        </TabPanel>
       </Box>
-      <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-    </Box>
+    </AuthCheck>
   )
 }

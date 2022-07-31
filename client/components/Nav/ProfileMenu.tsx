@@ -55,7 +55,7 @@ export default function ProfileMenu({ user }: MenuProps) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <Link href="/dashboard/account">
+        <Link href="/account">
           <a>
             <MenuItem
               onClick={() => {
@@ -66,7 +66,7 @@ export default function ProfileMenu({ user }: MenuProps) {
             </MenuItem>
           </a>
         </Link>
-        <Link href="/dashboard/favorites">
+        <Link href="/favorites">
           <a>
             <MenuItem
               onClick={() => {
@@ -77,7 +77,7 @@ export default function ProfileMenu({ user }: MenuProps) {
             </MenuItem>
           </a>
         </Link>
-        <Link href="/dashboard/listings">
+        <Link href="/listings">
           <a>
             <MenuItem
               onClick={() => {
@@ -89,7 +89,7 @@ export default function ProfileMenu({ user }: MenuProps) {
           </a>
         </Link>
         {user.role !== 'USER' && (
-          <Link href="/dashboard/admin">
+          <Link href="/admin">
             <a>
               <MenuItem
                 onClick={() => {

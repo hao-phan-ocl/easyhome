@@ -16,6 +16,7 @@ import SetRoleDialog from '../Dialog/SetRoleDialog'
 import { useAppDispatch } from '../../hooks/hooks'
 import { setDialog } from '../../redux/features/popUpSlice'
 import DeleteUserDialog from '../Dialog/DeleteUserDialog'
+import RemoveAccountBtn from '../Button/RemoveAccountBtn'
 
 type Props = {
   users: User[]
@@ -25,7 +26,6 @@ export default function TableBody({ users }: Props) {
   const dispatch = useAppDispatch()
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [openDelUserDialog, setDelUserDialog] = useState(false)
-  const [open, setOpen] = useState(false)
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -78,27 +78,28 @@ export default function TableBody({ users }: Props) {
             </TableCell>
             <TableCell>
               {elem.role !== 'ADMIN' && (
-                <Button
-                  color="error"
-                  startIcon={<DeleteOutlineIcon />}
-                  onClick={() => {
-                    setDelUserDialog(true)
-                    setEditingUser(elem)
-                  }}
-                >
-                  Delete user
-                </Button>
+                // <Button
+                //   color="error"
+                //   startIcon={<DeleteOutlineIcon />}
+                //   onClick={() => {
+                //     setDelUserDialog(true)
+                //     setEditingUser(elem)
+                //   }}
+                // >
+                //   Delete user
+                // </Button>
+                <RemoveAccountBtn userId={elem._id} />
               )}
             </TableCell>
           </StyledTableRow>
         ))}
       </MuiTableBody>
       <SetRoleDialog user={editingUser} />
-      <DeleteUserDialog
-        user={editingUser}
+      {/* <DeleteUserDialog
+        userId={editingUser?._id}
         openDelUserDialog={openDelUserDialog}
         setDelUserDialog={setDelUserDialog}
-      />
+      /> */}
     </>
   )
 }
