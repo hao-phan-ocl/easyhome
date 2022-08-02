@@ -12,16 +12,13 @@ import {
 } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import Image from 'next/image'
 import axios from 'axios'
 import * as yup from 'yup'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { useAppSelector } from '../../hooks/hooks'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
-import { getProfile, loginSuccess } from '../../redux/features/authSlice'
 import AuthCheck from '../../components/AuthCheck'
 import { Country } from '../../types/schemas'
 
@@ -187,26 +184,6 @@ export default function AccountInfo() {
               )}
             />
           </Stack>
-          {/* <Stack gap={1}>
-            <Typography color="primary" fontWeight={700}>
-              Birthdate:
-            </Typography>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Controller
-                name="dob"
-                render={({ field }) => (
-                  <DatePicker
-                    {...field}
-                    inputFormat="yyyy/MM/dd"
-                    renderInput={(params) => (
-                      <TextField {...params} size="small" />
-                    )}
-                  />
-                )}
-                control={control}
-              />
-            </LocalizationProvider>
-          </Stack> */}
           <Stack gap={1}>
             <Typography color="primary" fontWeight={700}>
               Country:

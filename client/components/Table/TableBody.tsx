@@ -11,13 +11,11 @@ import {
   Typography,
 } from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 
 import { User } from '../../types/schemas'
 import SetRoleDialog from '../Dialog/SetRoleDialog'
 import { useAppDispatch } from '../../hooks/hooks'
 import { setDialog } from '../../redux/features/popUpSlice'
-import DeleteUserDialog from '../Dialog/DeleteUserDialog'
 import RemoveAccountBtn from '../Button/RemoveAccountBtn'
 import emptyAvatar from '../../public/gray-avatar.jpg'
 
@@ -28,7 +26,6 @@ type Props = {
 export default function TableBody({ users }: Props) {
   const dispatch = useAppDispatch()
   const [editingUser, setEditingUser] = useState<User | null>(null)
-  const [openDelUserDialog, setDelUserDialog] = useState(false)
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -55,10 +52,10 @@ export default function TableBody({ users }: Props) {
                 <Avatar
                   alt="Avatar"
                   src={`http://${elem?.avatar}`}
-                  sx={{ width: 40, height: 40, m: 'auto' }}
+                  sx={{ width: 40, height: 40, mr: 'auto' }}
                 />
               ) : (
-                <Avatar sx={{ width: 40, height: 40, m: 'auto' }}>
+                <Avatar sx={{ width: 40, height: 40, mr: 'auto' }}>
                   <Image src={emptyAvatar} alt="Avatar" />
                 </Avatar>
               )}
@@ -72,9 +69,6 @@ export default function TableBody({ users }: Props) {
             <TableCell>
               <Typography>{elem.email}</Typography>
             </TableCell>
-            {/* <TableCell>
-            <Typography>{user.properties}</Typography>
-          </TableCell> */}
             <TableCell>
               <Stack
                 direction="row"
@@ -93,29 +87,12 @@ export default function TableBody({ users }: Props) {
               </Stack>
             </TableCell>
             <TableCell>
-              {elem.role !== 'ADMIN' && (
-                // <Button
-                //   color="error"
-                //   startIcon={<DeleteOutlineIcon />}
-                //   onClick={() => {
-                //     setDelUserDialog(true)
-                //     setEditingUser(elem)
-                //   }}
-                // >
-                //   Delete user
-                // </Button>
-                <RemoveAccountBtn userId={elem._id} />
-              )}
+              {elem.role !== 'ADMIN' && <RemoveAccountBtn userId={elem._id} />}
             </TableCell>
           </StyledTableRow>
         ))}
       </MuiTableBody>
       <SetRoleDialog user={editingUser} />
-      {/* <DeleteUserDialog
-        userId={editingUser?._id}
-        openDelUserDialog={openDelUserDialog}
-        setDelUserDialog={setDelUserDialog}
-      /> */}
     </>
   )
 }
