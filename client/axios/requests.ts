@@ -15,6 +15,8 @@ type ApiTypes =
   | 'google'
   | 'set-role'
   | 'upload'
+  | 'update-profile'
+  | 'upload-avatar'
 
 type IdType = string
 

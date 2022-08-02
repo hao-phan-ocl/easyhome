@@ -9,7 +9,6 @@ import {
   setSnackBarSuccess,
 } from '../redux/features/popUpSlice'
 import NavBar from './Nav/NavBar'
-import SubNav from './Nav/SubNav'
 
 type Props = {
   children?: ReactNode

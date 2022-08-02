@@ -7,6 +7,9 @@ export type User = {
   password?: string
   favLists?: string
   properties?: string
+  avatar?: string
+  gender?: string
+  country?: string
 }
 
 export type Room = {
@@ -29,4 +32,14 @@ export type Room = {
     postalCode: string
     municipality: string
   }
+}
+
+export type Country = {
+  name: {
+    common: string
+  }
+  flags: {
+    svg: string
+  }
+  altSpellings: string[]
 }

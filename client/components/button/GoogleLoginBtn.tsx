@@ -20,7 +20,7 @@ export default function GoogleLogin() {
     if (newWindow) {
       // setInterval for every 0.5s until newWindow is closed
       let timer: NodeJS.Timer = setInterval(() => {
-        if (newWindow.closed) {
+        if (newWindow.closed && localStorage.getItem('accessToken')) {
           dispatch(loginSuccess())
           dispatch(getProfile())
           router.push('/account')

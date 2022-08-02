@@ -8,7 +8,7 @@ import {
 import MuiTableHead from '@mui/material/TableHead'
 
 export default function TableHead() {
-  const headers = ['First name', 'Last name', 'Email', 'Role', '']
+  const headers = ['Photo', 'First name', 'Last name', 'Email', 'Role', '']
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {

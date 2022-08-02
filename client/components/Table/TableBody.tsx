@@ -1,6 +1,8 @@
 import MuiTableBody from '@mui/material/TableBody'
 import { useState } from 'react'
+import Image from 'next/image'
 import {
+  Avatar,
   Button,
   Stack,
   styled,
@@ -17,6 +19,7 @@ import { useAppDispatch } from '../../hooks/hooks'
 import { setDialog } from '../../redux/features/popUpSlice'
 import DeleteUserDialog from '../Dialog/DeleteUserDialog'
 import RemoveAccountBtn from '../Button/RemoveAccountBtn'
+import emptyAvatar from '../../public/gray-avatar.jpg'
 
 type Props = {
   users: User[]
@@ -47,6 +50,19 @@ export default function TableBody({ users }: Props) {
       <MuiTableBody>
         {users.map((elem) => (
           <StyledTableRow key={elem.email}>
+            <TableCell>
+              {elem?.avatar ? (
+                <Avatar
+                  alt="Avatar"
+                  src={`http://${elem?.avatar}`}
+                  sx={{ width: 40, height: 40, m: 'auto' }}
+                />
+              ) : (
+                <Avatar sx={{ width: 40, height: 40, m: 'auto' }}>
+                  <Image src={emptyAvatar} alt="Avatar" />
+                </Avatar>
+              )}
+            </TableCell>
             <TableCell>
               <Typography>{elem.firstName}</Typography>
             </TableCell>

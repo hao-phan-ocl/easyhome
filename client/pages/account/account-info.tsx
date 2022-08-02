@@ -1,72 +1,130 @@
 import { useRouter } from 'next/router'
-import { Button, Divider, Stack, TextField, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import {
+  Autocomplete,
+  Button,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import Image from 'next/image'
+import axios from 'axios'
 import * as yup from 'yup'
 
-import { useAppDispatch } from '../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 import { getProfile, loginSuccess } from '../../redux/features/authSlice'
 import AuthCheck from '../../components/AuthCheck'
+import { Country } from '../../types/schemas'
 
-type LoginFormData = {
+type ProfileForm = {
   firstName: string
   lastName: string
-  email: string
+  gender: string
+  country: string
+  avatar: FileList | string
 }
 
 const schema = yup
   .object({
-    email: yup.string().email().required(),
-    password: yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
   })
   .required()
 
 export default function AccountInfo() {
+  const { user } = useAppSelector((state) => state.auth)
   const router = useRouter()
-  const dispatch = useAppDispatch()
+  const [countries, setCountries] = useState<Country[]>([])
+
   const {
     control,
     handleSubmit,
+    register,
     setError,
+    reset,
     formState: { errors },
-  } = useForm<LoginFormData>({
+  } = useForm<ProfileForm>({
     mode: 'onBlur',
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
+      firstName: user?.firstName ?? '',
+      lastName: user?.lastName ?? '',
+      gender: user?.gender ?? '',
+      country: user?.country ?? '',
     },
     resolver: yupResolver(schema),
   })
 
-  async function onSubmit(data: LoginFormData) {
-    // try {
-    //   const res = await instance.post(request('login', 'local'), {
-    //     email: data.email,
-    //     firstName: data.firstName,
-    //     lastName: data.lastName,
-    //   })
-    //   if (res.status === 201) {
-    //     const { user, access_token } = res.data
-    //     localStorage.setItem('accessToken', access_token)
-    //     dispatch(loginSuccess())
-    //     dispatch(getProfile())
-    //     router.push('/account')
-    //   }
-    // } catch (error: any) {
-    //   const message = error.response?.data.message
-    //   if (message.includes('email')) setError('email', { message: message })
-    //   if (message.includes('password'))
-    //     setError('password', { message: message })
-    // }
+  useEffect(() => {
+    if (user) reset(user) // reset form defaulValues when refreshing page
+
+    async function getCountries() {
+      const res = await axios.get('https://restcountries.com/v3.1/all')
+      setCountries(res.data)
+    }
+
+    getCountries()
+  }, [reset, user])
+
+  async function onSubmit(data: ProfileForm) {
+    try {
+      const res = await instance.put(
+        request('users', 'update-profile', user?._id),
+        {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          country: data.country,
+          gender: data.gender,
+        },
+      )
+
+      let uploadAvatar
+      if (typeof data.avatar !== 'string') {
+        const formData = new FormData()
+        formData.append('image', data.avatar[0])
+
+        uploadAvatar = await instance.put(
+          request('users', 'upload-avatar', user?._id),
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        )
+      }
+      if (res.status === 200 || uploadAvatar?.status === 200) {
+        router.push('/account')
+      }
+    } catch (error: any) {
+      console.log(error)
+    }
   }
 
   return (
     <AuthCheck>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack gap={4} maxWidth="500px" m="auto">
+          <Stack gap={1}>
+            <Typography color="primary" fontWeight={700}>
+              Avatar:
+            </Typography>
+            <input
+              {...register('avatar')}
+              accept="image/*"
+              type="file"
+              title="Upload file"
+              name="avatar"
+            />
+          </Stack>
           <Stack gap={1}>
             <Typography color="primary" fontWeight={700}>
               First name:
@@ -78,7 +136,6 @@ export default function AccountInfo() {
                 <TextField
                   {...field}
                   error={Boolean(errors.firstName)}
-                  label="Email"
                   helperText={errors.firstName?.message}
                   size="small"
                 />
@@ -96,9 +153,7 @@ export default function AccountInfo() {
                 <TextField
                   {...field}
                   error={Boolean(errors.lastName)}
-                  label="Password"
                   helperText={errors.lastName?.message}
-                  type="password"
                   size="small"
                 />
               )}
@@ -106,21 +161,89 @@ export default function AccountInfo() {
           </Stack>
           <Stack gap={1}>
             <Typography color="primary" fontWeight={700}>
-              Email:
+              Gender:
             </Typography>
             <Controller
-              name="email"
+              name="gender"
               control={control}
               render={({ field }) => (
-                <TextField
+                <RadioGroup
                   {...field}
-                  error={Boolean(errors.email)}
-                  label="Password"
-                  helperText={errors.email?.message}
-                  type="password"
-                  size="small"
+                  sx={{
+                    width: '100%',
+                  }}
+                >
+                  <FormControlLabel
+                    value={'male'}
+                    control={<Radio size="small" />}
+                    label="male"
+                  />
+                  <FormControlLabel
+                    value={'female'}
+                    control={<Radio size="small" />}
+                    label="female"
+                  />
+                </RadioGroup>
+              )}
+            />
+          </Stack>
+          {/* <Stack gap={1}>
+            <Typography color="primary" fontWeight={700}>
+              Birthdate:
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Controller
+                name="dob"
+                render={({ field }) => (
+                  <DatePicker
+                    {...field}
+                    inputFormat="yyyy/MM/dd"
+                    renderInput={(params) => (
+                      <TextField {...params} size="small" />
+                    )}
+                  />
+                )}
+                control={control}
+              />
+            </LocalizationProvider>
+          </Stack> */}
+          <Stack gap={1}>
+            <Typography color="primary" fontWeight={700}>
+              Country:
+            </Typography>
+            <Controller
+              name="country"
+              render={({ field: { onChange, value } }) => (
+                <Autocomplete
+                  onChange={(_, data) => {
+                    onChange(data?.name.common)
+                    console.log(value)
+                  }}
+                  options={countries}
+                  autoHighlight
+                  getOptionLabel={(option) => option.name.common}
+                  renderOption={(props, option) => (
+                    <Stack direction="row" component="li" gap={2} {...props}>
+                      <Image
+                        loading="lazy"
+                        width={25}
+                        height={20}
+                        src={option.flags.svg}
+                        alt="flag"
+                      />
+                      {option.name.common} ({option.altSpellings[0]})
+                    </Stack>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Choose a country"
+                      size="small"
+                    />
+                  )}
                 />
               )}
+              control={control}
             />
           </Stack>
           <Stack gap={1}>

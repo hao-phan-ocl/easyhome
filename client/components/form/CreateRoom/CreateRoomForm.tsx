@@ -108,8 +108,6 @@ export default function CreateRoomForm() {
             },
           },
         )
-
-        console.log(newRoom)
       }
     } catch (error) {
       console.log(error)
