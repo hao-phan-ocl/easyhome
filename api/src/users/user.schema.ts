@@ -1,4 +1,5 @@
 import mongoose, { Document } from 'mongoose'
+
 import { Role } from './enum/role.enum'
 
 export type UserDocument = Document & {
@@ -9,6 +10,9 @@ export type UserDocument = Document & {
   password?: string
   favLists?: mongoose.Types.ObjectId[]
   properties?: mongoose.Types.ObjectId[]
+  avatar?: string
+  gender?: string
+  country?: string
 }
 
 export const UsersSchema = new mongoose.Schema({
@@ -19,4 +23,7 @@ export const UsersSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   favLists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
   properties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
+  avatar: { type: String },
+  gender: { type: String },
+  country: { type: String },
 })

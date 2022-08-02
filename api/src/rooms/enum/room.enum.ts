@@ -10,7 +10,7 @@ export enum BathroomEnum {
 }
 
 export enum KitchenEnum {
-  INROOM = 'in room',
+  INROOM = 'in-room',
   SHARED = 'shared',
   PRIVATE = 'private',
 }
@@ -18,5 +18,5 @@ export enum KitchenEnum {
 export enum FurnishedEnum {
   FURNISHED = 'furnished',
   UNFURNISHED = 'unfurnished',
-  PARTIALLY = 'partially furnished',
+  PARTIALLY = 'partially-furnished',
 }

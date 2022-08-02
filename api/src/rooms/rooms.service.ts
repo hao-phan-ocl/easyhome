@@ -10,7 +10,8 @@ export class RoomsService {
   constructor(@InjectModel('Room') private roomModel: Model<RoomDocument>) {}
 
   async getAll(): Promise<RoomDocument[]> {
-    return await this.roomModel.find()
+    const allRoom = await this.roomModel.find()
+    return allRoom
   }
 
   async search(searchDto: Partial<SearchDto>) {

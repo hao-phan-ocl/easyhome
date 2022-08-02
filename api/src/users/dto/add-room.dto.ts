@@ -7,7 +7,9 @@ import {
   IsMongoId,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
+  IsString,
   ValidateNested,
 } from 'class-validator'
 import {
@@ -73,6 +75,10 @@ export class AddRoomDto {
   @IsNotEmpty()
   @IsEnum(FurnishedEnum)
   furnished: string
+
+  @IsNotEmpty()
+  @IsString()
+  description: string
 
   @ValidateNested()
   @Type(() => Address)

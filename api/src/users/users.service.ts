@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -14,7 +15,7 @@ import { UserDocument } from './user.schema'
 import { AddRoomDto } from './dto/add-room.dto'
 import { Role } from './enum/role.enum'
 import { RegisterUserDto } from 'src/users/dto/register-user.dto'
-import { join } from 'path'
+import { UpdateProfileDto } from './dto/update-profile.dto'
 
 @Injectable()
 export class UsersService {
@@ -93,36 +94,47 @@ export class UsersService {
 
   // DELETE user
   async deleteUser(userId: string) {
-    const foundUser = await this.userModel.findByIdAndDelete(userId)
+    const foundUser = await this.userModel.findById(userId)
 
     if (!foundUser) {
       throw new NotFoundException('User not found')
     }
 
-    // Also delete rooms of deleted user
-    foundUser.properties.forEach(
-      async (roomId) => await this.roomModel.findByIdAndDelete(roomId),
-    )
+    if (foundUser.role === 'ADMIN') {
+      throw new BadRequestException('Admin cannot be removed')
+    }
 
-    // const foundUser = await this.userModel.findById(userId)
+    // Also delete rooms & its photo (if any) of deleted user
+    foundUser.properties.forEach(async (roomId) => {
+      const foundRoom = await this.roomModel.findByIdAndDelete(roomId)
 
-    // if (!foundUser) {
-    //   throw new NotFoundException('User not found')
-    // }
+      if (foundRoom.images.length) {
+        foundRoom.images.forEach((img) => {
+          const existedImageName = img.split('/users/image/')[1]
 
-    // foundUser.isDeleted = true
-    // foundUser.save()
+          const fileDir = `./upload/${existedImageName}`
+          fs.unlink(fileDir, (err) => {
+            if (err)
+              throw new InternalServerErrorException(
+                "Couldn't delete this file",
+              )
+          })
+        })
+      }
+    })
 
-    // // Also delete rooms of deleted user
-    // foundUser.properties.forEach(
-    //   async (roomId) =>
-    //     await this.roomModel.findByIdAndUpdate(
-    //       roomId,
-    //       { isDeleted: true },
-    //       { new: true },
-    //     ),
-    // )
+    // Delete avatar from server
+    if (foundUser.avatar) {
+      const existedImageName = foundUser.avatar.split('/users/image/')[1]
 
+      const fileDir = `./upload/${existedImageName}`
+      fs.unlink(fileDir, (err) => {
+        if (err)
+          throw new InternalServerErrorException("Couldn't delete this file")
+      })
+    }
+
+    await foundUser.deleteOne()
     return 'User deleted successfully'
   }
 
@@ -162,15 +174,10 @@ export class UsersService {
   // REMOVE favorite
   async removeFav(userId: string, roomId: string) {
     const foundUser = await this.userModel.findById(userId)
-    // const foundRoom = await this.roomModel.findById(roomId)
 
     if (!foundUser) {
       throw new NotFoundException('User not found')
     }
-
-    // if (!foundRoom) {
-    //   throw new NotFoundException('Room not found')
-    // }
 
     const updatedFavLists = await this.userModel.findByIdAndUpdate(
       userId,
@@ -183,11 +190,46 @@ export class UsersService {
     return updatedFavLists
   }
 
-  // UPLOAD images
-  async upload(roomId: string, images: Express.Multer.File[]) {
+  // UPDATE user
+  async updateUser(userId: string, update: UpdateProfileDto) {
+    const foundUser = await this.userModel.findByIdAndUpdate(userId, update, {
+      new: true,
+    })
+
+    if (!foundUser) throw new NotFoundException('User not found')
+
+    return foundUser
+  }
+
+  // UPLOAD avatar
+  async uploadAvatar(userId: string, avatar: Express.Multer.File) {
+    const foundUser = await this.userModel.findById(userId)
+    const imgPath = `localhost:5000/users/image/${avatar.filename}`
+
+    // Delete existed avatar from server
+    if (foundUser.avatar) {
+      const existedImageName = foundUser.avatar.split('/users/image/')[1]
+
+      const fileDir = `./upload/${existedImageName}`
+      fs.unlink(fileDir, (err) => {
+        if (err)
+          throw new InternalServerErrorException("Couldn't delete this file")
+      })
+    }
+
+    // Save new avatar
+    foundUser.avatar = imgPath
+    foundUser.save()
+    return foundUser
+  }
+
+  // UPLOAD room images
+  async uploadRoomImages(roomId: string, images: Express.Multer.File[]) {
     const imagePaths: string[] = []
 
-    images.forEach((img) => imagePaths.push(img.filename))
+    images.forEach((img) =>
+      imagePaths.push(`localhost:5000/users/image/${img.filename}`),
+    )
 
     const foundRoom = await this.roomModel.findByIdAndUpdate(
       roomId,
@@ -203,7 +245,7 @@ export class UsersService {
   }
 
   // DELETE images
-  async deleteImage(imagePath: string, roomId: string) {
+  async deleteRoomImage(imagePath: string, roomId: string) {
     const foundRoom = await this.roomModel.findByIdAndUpdate(
       roomId,
       {
@@ -256,6 +298,17 @@ export class UsersService {
       throw new NotFoundException('Room not found')
     }
 
+    // Remove stored images from server
+    if (foundRoom.images.length) {
+      foundRoom.images.forEach((img) => {
+        const fileDir = `./upload/${img}`
+        fs.unlink(fileDir, (err) => {
+          if (err)
+            throw new InternalServerErrorException("Couldn't delete this file")
+        })
+      })
+    }
+
     // Remove addedRoom id to the referenced owner
     await this.userModel.findByIdAndUpdate(
       foundRoom.owner,
@@ -268,8 +321,8 @@ export class UsersService {
     return 'Room removed successfully'
   }
 
-  // PROMOTE user
-  async promoteUser(userId: string, role: string) {
+  // SET ROLE user
+  async setRole(userId: string, role: string) {
     const foundUser = await this.userModel.findById(userId)
 
     if (!foundUser) {
