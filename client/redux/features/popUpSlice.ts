@@ -1,14 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 type InitialState = {
-  openSnackBarSuccess: boolean
-  openSnackBarError: boolean
+  snackBarSuccess: boolean
+  snackBarError: boolean
+  snackBarMsg?: string
   openDialog: boolean
 }
 
 const initialState: InitialState = {
-  openSnackBarSuccess: false,
-  openSnackBarError: false,
+  snackBarSuccess: false,
+  snackBarError: false,
   openDialog: false,
 }
 
@@ -17,11 +18,14 @@ export const popUpSlice = createSlice({
   initialState,
 
   reducers: {
-    setSnackBarSuccess: (state, action) => {
-      state.openSnackBarSuccess = action.payload
+    openSnackBarSuccess: (state, action) => {
+      state.snackBarSuccess = action.payload
     },
-    setSnackBarError: (state, action) => {
-      state.openSnackBarError = action.payload
+    setSnackBarMsg: (state, action) => {
+      state.snackBarMsg = action.payload
+    },
+    openSnackBarError: (state, action) => {
+      state.snackBarError = action.payload
     },
     setDialog: (state, action) => {
       state.openDialog = action.payload
@@ -29,6 +33,10 @@ export const popUpSlice = createSlice({
   },
 })
 
-export const { setSnackBarSuccess, setSnackBarError, setDialog } =
-  popUpSlice.actions
+export const {
+  openSnackBarSuccess,
+  openSnackBarError,
+  setSnackBarMsg,
+  setDialog,
+} = popUpSlice.actions
 export default popUpSlice.reducer

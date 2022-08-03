@@ -12,21 +12,31 @@ import {
   Stack,
 } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
-import { forwardRef, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  forwardRef,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import {
-  setDialog,
-  setSnackBarError,
-  setSnackBarSuccess,
+  openSnackBarError,
+  openSnackBarSuccess,
+  setSnackBarMsg,
 } from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
 import { User } from '../../types/schemas'
+import SnackBarError from '../SnackBar/SnackBarError'
+import SnackBarSuccess from '../SnackBar/SnackBarSuccess'
 
 type Props = {
   user: User | null
+  openDialog: boolean
+  setOpenDialog: Dispatch<SetStateAction<boolean>>
 }
 
 const Transition = forwardRef(function Transition(
@@ -38,18 +48,22 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-export default function SetRoleDialog({ user }: Props) {
+export default function SetRoleDialog({
+  user,
+  openDialog,
+  setOpenDialog,
+}: Props) {
   const dispatch = useAppDispatch()
-  const { openDialog } = useAppSelector((state) => state.popUp)
+  const { snackBarMsg } = useAppSelector((state) => state.popUp)
   const options = ['USER', 'MODERATOR']
-  const [currentRole, setCurrentRole] = useState<string>('')
+  const [currentRole, setCurrentRole] = useState<string | null>()
 
   useEffect(() => {
     if (user) setCurrentRole(user.role)
   }, [user])
 
   function handleClose() {
-    dispatch(setDialog(false))
+    setOpenDialog(false)
   }
 
   async function handleSubmit() {
@@ -60,53 +74,60 @@ export default function SetRoleDialog({ user }: Props) {
           role: currentRole,
         },
       )
+
       if (res.status === 200) {
-        dispatch(setSnackBarSuccess(true))
         dispatch(getAllUsers())
-        dispatch(setDialog(false))
+        dispatch(openSnackBarSuccess(true))
+        dispatch(setSnackBarMsg('Role updated!'))
       }
-    } catch (error) {
-      dispatch(setSnackBarError(true))
+    } catch (error: any) {
+      dispatch(openSnackBarError(true))
+      if (error.response.status === 403)
+        dispatch(setSnackBarMsg('Unauthorized! (Only ADMIN)'))
     }
   }
 
   return (
-    <Dialog
-      open={openDialog}
-      onClose={handleClose}
-      TransitionComponent={Transition}
-    >
-      <Stack p="10px 0">
-        <DialogTitle color="primary">Manage Role</DialogTitle>
-        <DialogContent>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="row-radio-buttons-group"
-              onChange={(e) => setCurrentRole(e.target.value)}
-            >
-              {options.map((elem) => (
-                <FormControlLabel
-                  key={elem}
-                  value={elem}
-                  control={<Radio size="small" />}
-                  label={elem}
-                  checked={currentRole === elem ? true : false}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button size="small" variant="contained" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button type="submit" size="small" onClick={handleSubmit}>
-            Save
-          </Button>
-        </DialogActions>
-      </Stack>
-    </Dialog>
+    <>
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <Stack p="10px 0">
+          <DialogTitle color="primary">Manage Role</DialogTitle>
+          <DialogContent>
+            <FormControl>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                onChange={(e) => setCurrentRole(e.target.value)}
+              >
+                {options.map((elem) => (
+                  <FormControlLabel
+                    key={elem}
+                    value={elem}
+                    control={<Radio size="small" />}
+                    label={elem}
+                    checked={currentRole === elem ? true : false}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button size="small" variant="contained" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button type="submit" size="small" onClick={handleSubmit}>
+              Save
+            </Button>
+          </DialogActions>
+        </Stack>
+      </Dialog>
+      {snackBarMsg && <SnackBarSuccess text={snackBarMsg} />}
+      {snackBarMsg && <SnackBarError text={snackBarMsg} />}
+    </>
   )
 }

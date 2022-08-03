@@ -5,8 +5,8 @@ import { ReactNode, useEffect } from 'react'
 import { getProfile } from '../redux/features/authSlice'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import {
-  setSnackBarError,
-  setSnackBarSuccess,
+  openSnackBarError,
+  openSnackBarSuccess,
 } from '../redux/features/popUpSlice'
 import NavBar from './Nav/NavBar'
 
@@ -26,8 +26,8 @@ export default function Layout({ children }: Props) {
 
     // router.asPath => SnackBar will turn off
     // whenever route changes
-    dispatch(setSnackBarSuccess(false))
-    dispatch(setSnackBarError(false))
+    dispatch(openSnackBarSuccess(false))
+    dispatch(openSnackBarError(false))
   }, [dispatch, isAuthenticated, router.asPath])
 
   return (

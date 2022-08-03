@@ -3,8 +3,6 @@ import { useEffect } from 'react'
 
 import { useAppSelector } from '../hooks/hooks'
 import AdminTable from '../components/Table/AdminTable'
-import SnackBarSuccess from '../components/SnackBar/SnackBarSuccess'
-import SnackBarError from '../components/SnackBar/SnackBarError'
 
 export default function Admin() {
   const router = useRouter()
@@ -14,11 +12,5 @@ export default function Admin() {
     if (user?.role === 'USER' || !isAuthenticated) router.push('/')
   }, [user, router, isAuthenticated])
 
-  return (
-    <>
-      <AdminTable />
-      <SnackBarSuccess text="Successful!" />
-      <SnackBarError text="Unauthorized! (Only ADMIN)" />
-    </>
-  )
+  return <AdminTable />
 }

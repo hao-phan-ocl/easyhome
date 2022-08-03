@@ -1,32 +1,26 @@
 import MuiTableBody from '@mui/material/TableBody'
-import { useState } from 'react'
 import Image from 'next/image'
 import {
   Avatar,
-  Button,
   Stack,
   styled,
   TableCell,
   TableRow,
   Typography,
 } from '@mui/material'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 
 import { User } from '../../types/schemas'
-import SetRoleDialog from '../Dialog/SetRoleDialog'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setDialog } from '../../redux/features/popUpSlice'
+import { useAppSelector } from '../../hooks/hooks'
 import RemoveAccountBtn from '../Button/RemoveAccountBtn'
 import emptyAvatar from '../../public/gray-avatar.jpg'
+import SetRoleBtn from '../Button/SetRoleBtn'
 
 type Props = {
   users: User[]
 }
 
 export default function TableBody({ users }: Props) {
-  const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.auth)
-  const [editingUser, setEditingUser] = useState<User | null>(null)
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -38,16 +32,11 @@ export default function TableBody({ users }: Props) {
     },
   }))
 
-  function handleClick(elem: User) {
-    dispatch(setDialog(true))
-    setEditingUser(elem)
-  }
-
   return (
     <>
       <MuiTableBody>
         {users.map((elem) => (
-          <StyledTableRow key={elem.email}>
+          <StyledTableRow key={elem._id}>
             <TableCell>
               {elem?.avatar ? (
                 <Avatar
@@ -93,14 +82,7 @@ export default function TableBody({ users }: Props) {
                 >
                   {elem.role}
                 </Typography>
-                {elem.role !== 'ADMIN' && (
-                  <Button
-                    startIcon={<EditOutlinedIcon />}
-                    onClick={() => handleClick(elem)}
-                  >
-                    Edit role
-                  </Button>
-                )}
+                {elem.role !== 'ADMIN' && <SetRoleBtn user={elem} />}
               </Stack>
             </TableCell>
             <TableCell>
@@ -109,7 +91,6 @@ export default function TableBody({ users }: Props) {
           </StyledTableRow>
         ))}
       </MuiTableBody>
-      <SetRoleDialog user={editingUser} />
     </>
   )
 }

@@ -19,16 +19,20 @@ type RoomProps = {
 export default function RoomCard({ room }: RoomProps) {
   return (
     <Card>
-      <CardActionArea>
-        {room.images && (
-          <CardMedia
-            component="img"
-            height={200}
-            src={`http://${room.images[0]}`}
-            alt={`Room ${room._id}`}
-          ></CardMedia>
-        )}
-      </CardActionArea>
+      <Link href={`/room/${room._id}`}>
+        <a>
+          <CardActionArea>
+            {room.images && (
+              <CardMedia
+                component="img"
+                height={200}
+                src={`http://${room.images[0]}`}
+                alt={`Room ${room._id}`}
+              ></CardMedia>
+            )}
+          </CardActionArea>
+        </a>
+      </Link>
       <CardContent>
         <Stack gap={2}>
           <Stack
@@ -37,7 +41,7 @@ export default function RoomCard({ room }: RoomProps) {
             gap={2}
             justifyContent="center"
           >
-            <Link href="">
+            <Link href={`/room/${room._id}`}>
               <a>
                 <Typography
                   sx={{ cursor: 'pointer' }}

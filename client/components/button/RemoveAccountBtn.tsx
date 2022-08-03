@@ -1,15 +1,15 @@
+import { useState } from 'react'
 import { Button } from '@mui/material'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import { useState } from 'react'
 
 import DeleteUserDialog from '../Dialog/DeleteUserDialog'
 
 type Props = {
-  userId?: string
+  userId: string
 }
 
 export default function RemoveAccountBtn({ userId }: Props) {
-  const [openDelUserDialog, setDelUserDialog] = useState(false)
+  const [openDialog, setOpenDialog] = useState(false)
 
   return (
     <>
@@ -17,15 +17,15 @@ export default function RemoveAccountBtn({ userId }: Props) {
         color="error"
         startIcon={<DeleteOutlineIcon />}
         onClick={() => {
-          setDelUserDialog(true)
+          setOpenDialog(true)
         }}
       >
         Remove account
       </Button>
       <DeleteUserDialog
         userId={userId}
-        openDelUserDialog={openDelUserDialog}
-        setDelUserDialog={setDelUserDialog}
+        openDialog={openDialog}
+        setOpenDialog={setOpenDialog}
       />
     </>
   )

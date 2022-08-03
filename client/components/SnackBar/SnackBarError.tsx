@@ -1,7 +1,7 @@
 import { Alert, Snackbar } from '@mui/material'
 
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setSnackBarError } from '../../redux/features/popUpSlice'
+import { openSnackBarError } from '../../redux/features/popUpSlice'
 
 type Props = {
   text: string
@@ -9,7 +9,7 @@ type Props = {
 
 export default function SnackBarError({ text }: Props) {
   const dispatch = useAppDispatch()
-  const { openSnackBarError } = useAppSelector((state) => state.popUp)
+  const { snackBarError } = useAppSelector((state) => state.popUp)
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -19,14 +19,12 @@ export default function SnackBarError({ text }: Props) {
       return
     }
 
-    if (openSnackBarError) {
-      dispatch(setSnackBarError(false))
-    }
+    dispatch(openSnackBarError(false))
   }
 
   return (
     <Snackbar
-      open={openSnackBarError}
+      open={snackBarError}
       autoHideDuration={4000}
       onClose={handleClose}
     >

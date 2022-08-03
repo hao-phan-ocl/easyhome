@@ -1,15 +1,15 @@
 import { Alert, Snackbar } from '@mui/material'
 
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setSnackBarSuccess } from '../../redux/features/popUpSlice'
+import { openSnackBarSuccess } from '../../redux/features/popUpSlice'
 
-type Props = {
+type SuccessProps = {
   text: string
 }
 
-export default function SnackBarSuccess({ text }: Props) {
+export default function SnackBarSuccess({ text }: SuccessProps) {
+  const { snackBarSuccess } = useAppSelector((state) => state.popUp)
   const dispatch = useAppDispatch()
-  const { openSnackBarSuccess } = useAppSelector((state) => state.popUp)
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -19,14 +19,12 @@ export default function SnackBarSuccess({ text }: Props) {
       return
     }
 
-    if (openSnackBarSuccess) {
-      dispatch(setSnackBarSuccess(false))
-    }
+    dispatch(openSnackBarSuccess(false))
   }
 
   return (
     <Snackbar
-      open={openSnackBarSuccess}
+      open={snackBarSuccess}
       autoHideDuration={4000}
       onClose={handleClose}
     >

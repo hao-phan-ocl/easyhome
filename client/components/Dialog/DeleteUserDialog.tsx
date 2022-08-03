@@ -10,23 +10,25 @@ import {
 } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
 import { useRouter } from 'next/router'
-import { Dispatch, forwardRef, SetStateAction, useState } from 'react'
+import { Dispatch, forwardRef, SetStateAction } from 'react'
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
-import { useAppDispatch } from '../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { logout } from '../../redux/features/authSlice'
 import {
-  setSnackBarError,
-  setSnackBarSuccess,
+  openSnackBarError,
+  openSnackBarSuccess,
+  setSnackBarMsg,
 } from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
 import SnackBarError from '../SnackBar/SnackBarError'
+import SnackBarSuccess from '../SnackBar/SnackBarSuccess'
 
 type Props = {
   userId: string | undefined
-  openDelUserDialog: boolean
-  setDelUserDialog: Dispatch<SetStateAction<boolean>>
+  openDialog: boolean
+  setOpenDialog: Dispatch<SetStateAction<boolean>>
 }
 
 const Transition = forwardRef(function Transition(
@@ -40,12 +42,12 @@ const Transition = forwardRef(function Transition(
 
 export default function DeleteUserDialog({
   userId,
-  openDelUserDialog,
-  setDelUserDialog,
+  openDialog,
+  setOpenDialog,
 }: Props) {
   const dispatch = useAppDispatch()
+  const { snackBarMsg } = useAppSelector((state) => state.popUp)
   const router = useRouter()
-  const [errText, setErrText] = useState('')
 
   async function handleSubmit() {
     try {
@@ -53,8 +55,9 @@ export default function DeleteUserDialog({
         request('users', 'delete', userId),
       )
       if (res.status === 200) {
-        dispatch(setSnackBarSuccess(true))
-        setDelUserDialog(false)
+        dispatch(openSnackBarSuccess(true))
+        setOpenDialog(false)
+        dispatch(setSnackBarMsg('User deleted!'))
 
         if (router.pathname === '/admin') {
           dispatch(getAllUsers())
@@ -66,8 +69,8 @@ export default function DeleteUserDialog({
         }
       }
     } catch (error: any) {
-      dispatch(setSnackBarError(true))
-      setErrText(error.response.data.message)
+      dispatch(openSnackBarError(true))
+      dispatch(setSnackBarMsg(error.response.data.message))
     }
   }
 
@@ -75,8 +78,8 @@ export default function DeleteUserDialog({
     <>
       <Dialog
         TransitionComponent={Transition}
-        open={openDelUserDialog}
-        onClose={() => setDelUserDialog(false)}
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
       >
         <Stack p="10px 0">
           <DialogTitle fontWeight={800}>Are you sure?</DialogTitle>
@@ -88,7 +91,9 @@ export default function DeleteUserDialog({
           <DialogActions>
             <Button
               variant="contained"
-              onClick={() => setDelUserDialog(false)}
+              onClick={() => {
+                setOpenDialog(false)
+              }}
               sx={{ marginRight: '7px' }}
               size="small"
             >
@@ -100,7 +105,8 @@ export default function DeleteUserDialog({
           </DialogActions>
         </Stack>
       </Dialog>
-      <SnackBarError text={errText} />
+      {snackBarMsg && <SnackBarError text={snackBarMsg} />}
+      {snackBarMsg && <SnackBarSuccess text={snackBarMsg} />}
     </>
   )
 }
