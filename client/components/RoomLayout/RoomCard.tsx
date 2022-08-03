@@ -5,12 +5,12 @@ import Typography from '@mui/material/Typography'
 import PlaceIcon from '@mui/icons-material/Place'
 import EuroIcon from '@mui/icons-material/Euro'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import LoopIcon from '@mui/icons-material/Loop'
 import { CardActionArea, IconButton, Stack } from '@mui/material'
 import Link from 'next/link'
 
 import { Room } from '../../types/schemas'
+import AddFavBtn from '../Button/AddFavBtn'
 
 type RoomProps = {
   room: Room
@@ -43,7 +43,6 @@ export default function RoomCard({ room }: RoomProps) {
                   sx={{ cursor: 'pointer' }}
                   variant="h5"
                   fontWeight={700}
-                  // component="div"
                   color="primary"
                 >
                   {room.housingType}
@@ -90,10 +89,7 @@ export default function RoomCard({ room }: RoomProps) {
               <IconButton onClick={() => alert('clicked')} color="primary">
                 <LoopIcon />
               </IconButton>
-              <IconButton onClick={() => alert('clicked')} color="primary">
-                {/* <FavoriteIcon /> */}
-                <FavoriteBorderIcon />
-              </IconButton>
+              <AddFavBtn roomId={room._id} />
             </Stack>
           </Stack>
           {/* <Typography variant="body2" color="text.secondary">

@@ -14,7 +14,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 
 import { User } from '../../types/schemas'
 import SetRoleDialog from '../Dialog/SetRoleDialog'
-import { useAppDispatch } from '../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { setDialog } from '../../redux/features/popUpSlice'
 import RemoveAccountBtn from '../Button/RemoveAccountBtn'
 import emptyAvatar from '../../public/gray-avatar.jpg'
@@ -25,6 +25,7 @@ type Props = {
 
 export default function TableBody({ users }: Props) {
   const dispatch = useAppDispatch()
+  const { user } = useAppSelector((state) => state.auth)
   const [editingUser, setEditingUser] = useState<User | null>(null)
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -61,13 +62,25 @@ export default function TableBody({ users }: Props) {
               )}
             </TableCell>
             <TableCell>
-              <Typography>{elem.firstName}</Typography>
+              <Typography
+                color={user?.email === elem.email ? 'secondary' : 'inherit'}
+              >
+                {elem.firstName}
+              </Typography>
             </TableCell>
             <TableCell>
-              <Typography>{elem.lastName}</Typography>
+              <Typography
+                color={user?.email === elem.email ? 'secondary' : 'inherit'}
+              >
+                {elem.lastName}
+              </Typography>
             </TableCell>
             <TableCell>
-              <Typography>{elem.email}</Typography>
+              <Typography
+                color={user?.email === elem.email ? 'secondary' : 'inherit'}
+              >
+                {elem.email}
+              </Typography>
             </TableCell>
             <TableCell>
               <Stack
@@ -75,7 +88,11 @@ export default function TableBody({ users }: Props) {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Typography>{elem.role}</Typography>
+                <Typography
+                  color={user?.email === elem.email ? 'secondary' : 'inherit'}
+                >
+                  {elem.role}
+                </Typography>
                 {elem.role !== 'ADMIN' && (
                   <Button
                     startIcon={<EditOutlinedIcon />}

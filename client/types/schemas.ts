@@ -5,8 +5,8 @@ export type User = {
   role: 'ADMIN' | 'MODERATOR' | 'USER'
   email: string
   password?: string
-  favLists?: string
-  properties?: string
+  favLists: Room[]
+  properties: string[]
   avatar?: string
   gender?: string
   country?: string
