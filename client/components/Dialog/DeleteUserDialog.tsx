@@ -47,6 +47,7 @@ export default function DeleteUserDialog({
 }: Props) {
   const dispatch = useAppDispatch()
   const { snackBarMsg } = useAppSelector((state) => state.popUp)
+  const { user } = useAppSelector((state) => state.auth)
   const router = useRouter()
 
   async function handleSubmit() {
@@ -61,6 +62,10 @@ export default function DeleteUserDialog({
 
         if (router.pathname === '/admin') {
           dispatch(getAllUsers())
+          if (userId === user?._id) {
+            localStorage.clear()
+            dispatch(logout()) // set isAuthenticated = false
+          }
         }
 
         if (router.pathname !== '/admin') {

@@ -2,6 +2,7 @@ type RouteTypes = 'users' | 'rooms' | 'login'
 
 type ApiTypes =
   | 'all'
+  | 'single'
   | 'register'
   | 'delete'
   | 'add-favorite'

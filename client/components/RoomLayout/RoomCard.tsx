@@ -6,29 +6,43 @@ import PlaceIcon from '@mui/icons-material/Place'
 import EuroIcon from '@mui/icons-material/Euro'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import LoopIcon from '@mui/icons-material/Loop'
-import { CardActionArea, IconButton, Stack } from '@mui/material'
 import Link from 'next/link'
+import Image from 'next/image'
+import { CardActionArea, IconButton, Stack } from '@mui/material'
 
 import { Room } from '../../types/schemas'
 import AddFavBtn from '../Button/AddFavBtn'
+import logo from '../../public/logo.png'
 
 type RoomProps = {
   room: Room
 }
 
 export default function RoomCard({ room }: RoomProps) {
+  const date = new Date(room.availableFrom)
+  const dateArray = date.toDateString().split(' ')
+
   return (
-    <Card>
+    <Card sx={{ minHeight: '370px' }}>
       <Link href={`/room/${room._id}`}>
         <a>
           <CardActionArea>
-            {room.images && (
+            {room.images?.length ? (
               <CardMedia
                 component="img"
                 height={200}
                 src={`http://${room.images[0]}`}
                 alt={`Room ${room._id}`}
-              ></CardMedia>
+              />
+            ) : (
+              <Stack>
+                <Image
+                  src={logo}
+                  alt={`Room ${room._id}`}
+                  height={200}
+                  width="100%"
+                />
+              </Stack>
             )}
           </CardActionArea>
         </a>
@@ -83,23 +97,18 @@ export default function RoomCard({ room }: RoomProps) {
               alignItems="center"
               bgcolor="#e1dfdf"
               borderRadius="5px"
-              p="7px"
+              p="7px 12px"
               width="fit-content"
             >
               <CalendarMonthIcon fontSize="small" />
-              <Typography>20 Aug</Typography>
+              <Typography>
+                {dateArray[2]} {dateArray[1]}
+              </Typography>
             </Stack>
             <Stack direction="row">
-              <IconButton onClick={() => alert('clicked')} color="primary">
-                <LoopIcon />
-              </IconButton>
               <AddFavBtn roomId={room._id} />
             </Stack>
           </Stack>
-          {/* <Typography variant="body2" color="text.secondary">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
-            </Typography> */}
         </Stack>
       </CardContent>
     </Card>

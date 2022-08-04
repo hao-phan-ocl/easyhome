@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
@@ -21,8 +21,10 @@ export default function AddFavBtn({ roomId }: Props) {
   }
 
   return (
-    <IconButton onClick={() => handleOnClick(roomId)} color="primary">
-      {added ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-    </IconButton>
+    <Tooltip title="Add" arrow>
+      <IconButton onClick={() => handleOnClick(roomId)} color="primary">
+        {added ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+      </IconButton>
+    </Tooltip>
   )
 }
