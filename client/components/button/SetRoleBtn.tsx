@@ -4,8 +4,6 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 
 import SetRoleDialog from '../Dialog/SetRoleDialog'
 import { User } from '../../types/schemas'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { setDialog } from '../../redux/features/popUpSlice'
 
 type Props = {
   user: User
@@ -17,6 +15,7 @@ export default function SetRoleBtn({ user }: Props) {
   return (
     <>
       <Button
+        size="small"
         startIcon={<EditOutlinedIcon />}
         onClick={() => {
           setOpenDialog(true)

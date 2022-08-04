@@ -10,11 +10,11 @@ import {
 import { useRouter } from 'next/router'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import LockIcon from '@mui/icons-material/Lock'
+import Link from 'next/link'
 
 import { User } from '../../types/schemas'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout } from '../../redux/features/authSlice'
-import Link from 'next/link'
 
 type MenuProps = {
   user: User

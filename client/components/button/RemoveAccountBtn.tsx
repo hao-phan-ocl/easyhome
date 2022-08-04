@@ -14,6 +14,7 @@ export default function RemoveAccountBtn({ userId }: Props) {
   return (
     <>
       <Button
+        size="small"
         color="error"
         startIcon={<DeleteOutlineIcon />}
         onClick={() => {

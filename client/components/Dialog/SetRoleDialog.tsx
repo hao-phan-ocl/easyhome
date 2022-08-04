@@ -22,7 +22,7 @@ import {
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { useAppDispatch } from '../../hooks/hooks'
 import {
   openSnackBarError,
   openSnackBarSuccess,
@@ -30,8 +30,6 @@ import {
 } from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
 import { User } from '../../types/schemas'
-import SnackBarError from '../SnackBar/SnackBarError'
-import SnackBarSuccess from '../SnackBar/SnackBarSuccess'
 
 type Props = {
   user: User | null
@@ -54,7 +52,6 @@ export default function SetRoleDialog({
   setOpenDialog,
 }: Props) {
   const dispatch = useAppDispatch()
-  const { snackBarMsg } = useAppSelector((state) => state.popUp)
   const options = ['USER', 'MODERATOR']
   const [currentRole, setCurrentRole] = useState<string | null>()
 
@@ -126,8 +123,6 @@ export default function SetRoleDialog({
           </DialogActions>
         </Stack>
       </Dialog>
-      {snackBarMsg && <SnackBarSuccess text={snackBarMsg} />}
-      {snackBarMsg && <SnackBarError text={snackBarMsg} />}
     </>
   )
 }

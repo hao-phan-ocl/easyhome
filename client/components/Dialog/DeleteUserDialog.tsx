@@ -22,8 +22,6 @@ import {
   setSnackBarMsg,
 } from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
-import SnackBarError from '../SnackBar/SnackBarError'
-import SnackBarSuccess from '../SnackBar/SnackBarSuccess'
 
 type Props = {
   userId: string | undefined
@@ -46,7 +44,6 @@ export default function DeleteUserDialog({
   setOpenDialog,
 }: Props) {
   const dispatch = useAppDispatch()
-  const { snackBarMsg } = useAppSelector((state) => state.popUp)
   const { user } = useAppSelector((state) => state.auth)
   const router = useRouter()
 
@@ -110,8 +107,6 @@ export default function DeleteUserDialog({
           </DialogActions>
         </Stack>
       </Dialog>
-      {snackBarMsg && <SnackBarError text={snackBarMsg} />}
-      {snackBarMsg && <SnackBarSuccess text={snackBarMsg} />}
     </>
   )
 }
