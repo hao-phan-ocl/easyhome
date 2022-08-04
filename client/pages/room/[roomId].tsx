@@ -1,36 +1,20 @@
 import { Stack } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-import instance from '../../axios/instance'
-import { request } from '../../axios/requests'
 import RoomCardLarge from '../../components/RoomLayout/RoomCardLarge'
-import { Room } from '../../types/schemas'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { fetchRoom } from '../../redux/features/roomSlice'
 
 export default function RoomId() {
   const router = useRouter()
+  const dispatch = useAppDispatch()
+  const { room } = useAppSelector((state) => state.room)
   const { roomId } = router.query
 
-  const [room, setRoom] = useState<Room>()
-
   useEffect(() => {
-    async function fetchRoom() {
-      try {
-        const res = await instance.get<Room>(
-          request('rooms', 'single', roomId as string),
-        )
-        if (res.status === 200) {
-          setRoom(res.data)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    if (roomId) {
-      fetchRoom()
-    }
-  }, [roomId])
+    if (roomId) dispatch(fetchRoom(roomId as string))
+  }, [roomId, dispatch])
 
   return (
     <Stack>

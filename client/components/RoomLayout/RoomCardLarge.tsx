@@ -1,10 +1,11 @@
-import { IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
-import LoopIcon from '@mui/icons-material/Loop'
+import { Paper, Stack, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 import { useState } from 'react'
 
 import { Room } from '../../types/schemas'
 import RoomCard from './RoomCard'
+import DeleteRoomBtn from '../Button/DeleteRoomBtn'
+import FlipBtn from '../Button/FlipBtn'
 
 type RoomProps = {
   room: Room
@@ -47,17 +48,10 @@ export default function RoomCardLarge({ room }: RoomProps) {
 
         {/* Card container */}
         <Stack position="relative" width="75%" minHeight="350px">
-          {/* The flip button */}
-          <Tooltip title="More" arrow>
-            <IconButton
-              color="primary"
-              sx={{ position: 'absolute', right: '0', zIndex: '10' }}
-              onClick={() => setFlip(!flip)}
-            >
-              <LoopIcon />
-            </IconButton>
-          </Tooltip>
-
+          <Stack position="absolute" right="0" zIndex="10" direction="row">
+            <DeleteRoomBtn roomId={room._id} />
+            <FlipBtn handleFlip={() => setFlip(!flip)} />
+          </Stack>
           {/* The card */}
           <Stack
             width="100%"
@@ -123,7 +117,7 @@ export default function RoomCardLarge({ room }: RoomProps) {
               }}
             >
               <Typography fontWeight={650}>Description</Typography>
-              <Typography>{room.description}</Typography>
+              <Typography paragraph>{room.description}</Typography>
             </Paper>
           </Stack>
         </Stack>
