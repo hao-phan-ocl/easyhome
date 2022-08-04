@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common'
+import { Body, Controller, Get, Param } from '@nestjs/common'
 
 import { RoomsService } from './rooms.service'
 import { SearchDto } from './dto/search.dto'
@@ -10,6 +10,11 @@ export class RoomsController {
   @Get('all')
   getAll() {
     return this.roomsService.getAll()
+  }
+
+  @Get('single/:roomId')
+  fetchRoom(@Param('roomId') roomId: string) {
+    return this.roomsService.fetchRoom(roomId)
   }
 
   @Get('search')

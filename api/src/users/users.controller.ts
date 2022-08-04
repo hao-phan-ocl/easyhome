@@ -21,13 +21,13 @@ import { extname } from 'path'
 import { AuthService } from 'src/auth/auth.service'
 import { JwtAuthGuard } from 'src/auth/jwt-strategy/jwt-auth.guard'
 import { AddRoomDto } from './dto/add-room.dto'
-import { FavoriteDto } from './dto/favorite.dto'
 import { PromoteUserDto } from './dto/promote-user.dto'
 import { RegisterUserDto } from './dto/register-user.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
 import { Role } from './enum/role.enum'
 import { Roles } from './roles.decorator'
 import { RolesGuard } from './roles.guard'
+import { UserDocument } from './user.schema'
 import { UsersService } from './users.service'
 
 @Controller('users')
@@ -52,30 +52,31 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Delete('delete/:userId')
-  deleteUser(@Param('userId') userId: string) {
-    return this.usersService.deleteUser(userId)
+  deleteUser(@Param('userId') toBeDeletedUserId: string, @Req() req: any) {
+    const currentUser = req.user as UserDocument
+    return this.usersService.deleteUser(toBeDeletedUserId, currentUser)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('add-favorite')
-  addFav(@Body() favDto: FavoriteDto) {
-    const { userId, roomId } = favDto
+  @Put('add-favorite/:roomId')
+  addFav(@Param('roomId') roomId: string, @Req() req: any) {
+    const user: UserDocument = req.user
 
-    return this.usersService.addFav(userId, roomId)
+    return this.usersService.addFav(user.id, roomId)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('remove-favorite')
-  removeFav(@Body() favDto: FavoriteDto) {
-    const { userId, roomId } = favDto
-
-    return this.usersService.removeFav(userId, roomId)
+  @Put('remove-favorite/:roomId')
+  removeFav(@Param('roomId') roomId: string, @Req() req: any) {
+    const user = req.user as UserDocument
+    return this.usersService.removeFav(user.id, roomId)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('update-profile/:userId')
-  update(@Body() updateDto: UpdateProfileDto, @Param('userId') userId: string) {
-    return this.usersService.updateUser(userId, updateDto)
+  @Put('update-profile')
+  update(@Body() updateDto: UpdateProfileDto, @Req() req: any) {
+    const user = req.user as UserDocument
+    return this.usersService.updateUser(user.id, updateDto)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -110,7 +111,6 @@ export class UsersController {
     @UploadedFile() avatar: Express.Multer.File,
     @Param('userId') userId: string,
   ) {
-    console.log(avatar)
     return this.usersService.uploadAvatar(userId, avatar)
   }
 
@@ -120,6 +120,7 @@ export class UsersController {
     return this.usersService.addRoom(addRoomDto)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('upload/:roomId')
   @UseInterceptors(
     FilesInterceptor('images', 5, {

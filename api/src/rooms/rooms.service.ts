@@ -14,6 +14,10 @@ export class RoomsService {
     return allRoom
   }
 
+  async fetchRoom(roomId: string): Promise<RoomDocument> {
+    return await this.roomModel.findById(roomId)
+  }
+
   async search(searchDto: Partial<SearchDto>) {
     const {
       housingType,

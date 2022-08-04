@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -31,7 +32,9 @@ export class UsersService {
 
   // GET profile
   async getProfile(userId: string) {
-    const foundUser = await this.userModel.findById(userId)
+    const foundUser = await (
+      await this.userModel.findById(userId)
+    ).populate('favLists')
 
     if (!foundUser) {
       throw new NotFoundException('User not found')
@@ -93,8 +96,8 @@ export class UsersService {
   }
 
   // DELETE user
-  async deleteUser(userId: string) {
-    const foundUser = await this.userModel.findById(userId)
+  async deleteUser(toBeDeletedUserId: string, currentUser: UserDocument) {
+    const foundUser = await this.userModel.findById(toBeDeletedUserId)
 
     if (!foundUser) {
       throw new NotFoundException('User not found')
@@ -102,6 +105,14 @@ export class UsersService {
 
     if (foundUser.role === 'ADMIN') {
       throw new BadRequestException('Admin cannot be removed')
+    }
+
+    if (
+      foundUser.role === 'MODERATOR' &&
+      currentUser.role === 'MODERATOR' &&
+      foundUser.id !== currentUser.id
+    ) {
+      throw new UnauthorizedException('MODERATOR can only remove USER')
     }
 
     // Also delete rooms & its photo (if any) of deleted user
@@ -160,13 +171,15 @@ export class UsersService {
       throw new InternalServerErrorException('Room already added')
     }
 
-    const updatedFavLists = await this.userModel.findByIdAndUpdate(
-      userId,
-      {
-        $push: { favLists: roomId },
-      },
-      { new: true },
-    )
+    const updatedFavLists = await this.userModel
+      .findByIdAndUpdate(
+        userId,
+        {
+          $push: { favLists: roomId },
+        },
+        { new: true },
+      )
+      .populate('favLists')
 
     return updatedFavLists
   }
@@ -179,13 +192,15 @@ export class UsersService {
       throw new NotFoundException('User not found')
     }
 
-    const updatedFavLists = await this.userModel.findByIdAndUpdate(
-      userId,
-      {
-        $pull: { favLists: roomId },
-      },
-      { new: true },
-    )
+    const updatedFavLists = await this.userModel
+      .findByIdAndUpdate(
+        userId,
+        {
+          $pull: { favLists: roomId },
+        },
+        { new: true },
+      )
+      .populate('favLists')
 
     return updatedFavLists
   }
