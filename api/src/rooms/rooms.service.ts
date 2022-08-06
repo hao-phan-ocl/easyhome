@@ -37,22 +37,22 @@ export class RoomsService {
 
     // Housing type
     if (housingType) {
-      query.housingType = housingType
+      query.housingType = { $in: housingType }
     }
 
     // Bathroom type
     if (bathroomType) {
-      query.bathroomType = bathroomType
+      query.bathroomType = { $in: bathroomType }
     }
 
     // Kitchen type
     if (kitchenType) {
-      query.kitchenType = kitchenType
+      query.kitchenType = { $in: kitchenType }
     }
 
     // Furnished
     if (furnished) {
-      query.furnished = furnished
+      query.furnished = { $in: furnished }
     }
 
     // Smoking

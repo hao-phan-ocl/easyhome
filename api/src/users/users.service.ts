@@ -32,15 +32,26 @@ export class UsersService {
 
   // GET profile
   async getProfile(userId: string) {
-    const foundUser = await (
-      await this.userModel.findById(userId)
-    ).populate('favLists')
+    const foundUser = await this.userModel.findById(userId)
 
     if (!foundUser) {
       throw new NotFoundException('User not found')
     }
 
-    return foundUser
+    // Clear favLists for rooms that have been deleted from other owners
+    foundUser.favLists.forEach(async (roomId) => {
+      const foundRoom = await this.roomModel.findById(roomId)
+      if (foundRoom === null) {
+        await foundUser.updateOne(
+          {
+            $pull: { favLists: roomId },
+          },
+          { new: true },
+        )
+      }
+    })
+
+    return foundUser.populate('favLists')
   }
 
   // GET one user
@@ -316,7 +327,8 @@ export class UsersService {
     // Remove stored images from server
     if (foundRoom.images.length) {
       foundRoom.images.forEach((img) => {
-        const fileDir = `./upload/${img}`
+        const imgName = img.split('/users/image/')[1]
+        const fileDir = `./upload/${imgName}`
         fs.unlink(fileDir, (err) => {
           if (err)
             throw new InternalServerErrorException("Couldn't delete this file")
