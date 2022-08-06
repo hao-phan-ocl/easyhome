@@ -1,14 +1,14 @@
-import { Button } from '@mui/material'
+import { Grid } from '@mui/material'
 import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { Box } from '@mui/system'
 
 import RoomGrid from '../components/RoomLayout/RoomGrid'
+import SearchBar from '../components/SearchBar/SearchBar'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import { fetchAllRooms } from '../redux/features/allRoomsSlice'
 
 const Home: NextPage = () => {
-  const router = useRouter()
   const dispatch = useAppDispatch()
   const { rooms } = useAppSelector((state) => state.allRooms)
   const { user } = useAppSelector((state) => state.auth)
@@ -18,11 +18,16 @@ const Home: NextPage = () => {
   }, [dispatch])
 
   return (
-    <>
-      <Button onClick={() => router.push('/search')}>Search</Button>
-      {user && <h1>Welcome {user.email}</h1>}
-      <RoomGrid rooms={rooms} />
-    </>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={4.3} lg={3}>
+          <SearchBar />
+        </Grid>
+        <Grid item xs={12} sm={6} md={7.7} lg={9}>
+          <RoomGrid rooms={rooms} />
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import { useAppSelector } from '../../hooks/hooks'
 import logo from '../../public/logo.png'
+import MenuBtn from '../Button/MenuBtn'
 import ProfileMenu from './ProfileMenu'
 import SubNav from './SubNav'
 
@@ -12,8 +13,19 @@ export default function NavBar() {
   const { user } = useAppSelector((state) => state.auth)
 
   return (
-    <Stack direction="row" justifyContent="space-between" alignItems="center">
+    <Stack
+      direction="row"
+      justifyContent={{
+        xs: 'center',
+        sm: 'center',
+        md: 'space-between',
+        lg: 'space-between',
+      }}
+      alignItems="center"
+    >
+      <MenuBtn />
       <Image
+        priority
         style={{ cursor: 'pointer' }}
         src={logo}
         alt="Logo of Easyhome"
@@ -22,7 +34,11 @@ export default function NavBar() {
         onClick={() => router.push('/')}
       />
 
-      <Stack direction="row" gap="20px">
+      <Stack
+        direction="row"
+        gap="20px"
+        display={{ xs: 'none', sm: 'none', md: 'flex' }}
+      >
         {!user ? (
           <>
             <Button onClick={() => router.push('/register')}>Register</Button>

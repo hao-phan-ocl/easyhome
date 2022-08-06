@@ -14,10 +14,19 @@ export default function RoomGrid({ rooms }: RoomsProps) {
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+        columns={{ xs: 1, sm: 1, md: 2, lg: 3 }}
       >
         {rooms.map((room) => (
-          <Grid item xs={1} sm={1} md={1} lg={1} key={room._id}>
+          <Grid
+            item
+            xs={1}
+            sm={1}
+            md={1}
+            lg={1}
+            key={room._id}
+            display="flex"
+            justifyContent="center"
+          >
             <RoomCard room={room} />
           </Grid>
         ))}

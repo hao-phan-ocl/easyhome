@@ -22,7 +22,13 @@ export default function RoomCard({ room }: RoomProps) {
   const dateArray = date.toDateString().split(' ')
 
   return (
-    <Card sx={{ minHeight: '370px' }}>
+    <Card
+      sx={{
+        minHeight: '370px',
+        maxWidth: '270px',
+        width: '100%',
+      }}
+    >
       <Link href={`/room/${room._id}`}>
         <a>
           <CardActionArea>
@@ -36,6 +42,7 @@ export default function RoomCard({ room }: RoomProps) {
             ) : (
               <Stack>
                 <Image
+                  priority
                   src={logo}
                   alt={`Room ${room._id}`}
                   height={200}

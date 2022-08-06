@@ -2,7 +2,7 @@ import Slider from '@mui/material/Slider'
 import { useEffect, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 
-import { Room } from '../../../types/schemas'
+import { Room } from '../../types/schemas'
 import { SearchForm } from './SearchBar'
 
 type Props = {
@@ -13,7 +13,6 @@ type Props = {
 export default function Rent({ control, rooms }: Props) {
   let min = rooms[0]?.rent
   let max = rooms[rooms.length - 1]?.rent
-  console.log(min, max)
 
   return (
     <Controller
@@ -26,6 +25,7 @@ export default function Rent({ control, rooms }: Props) {
           // when key value changes, React creates a new Slider
           // and initializes it with the new defaultValue as an uncontrolled component
           // key is component id for react
+          sx={{ maxWidth: '190px' }}
           key={`slider-${min}-${max}`}
           onChange={(_, value) => {
             onChange(value)

@@ -16,7 +16,7 @@ import {
 } from '../../redux/features/popUpSlice'
 
 type Props = {
-  userId: string
+  userId?: string
 }
 
 export default function RemoveAccountBtn({ userId }: Props) {
