@@ -1,3 +1,9 @@
+import SearchBar from '../components/Button/SearchBar/SearchBar'
+
 export default function Search() {
-  return <div>Welcome search</div>
+  return (
+    <>
+      <SearchBar />
+    </>
+  )
 }

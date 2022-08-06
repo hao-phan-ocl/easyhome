@@ -1,27 +1,21 @@
 import { Button } from '@mui/material'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import instance from '../axios/instance'
-import { request } from '../axios/requests'
+import { useEffect } from 'react'
 
 import RoomGrid from '../components/RoomLayout/RoomGrid'
-import { useAppSelector } from '../hooks/hooks'
-import { Room } from '../types/schemas'
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
+import { fetchAllRooms } from '../redux/features/allRoomsSlice'
 
 const Home: NextPage = () => {
   const router = useRouter()
+  const dispatch = useAppDispatch()
+  const { rooms } = useAppSelector((state) => state.allRooms)
   const { user } = useAppSelector((state) => state.auth)
-  const [rooms, setRooms] = useState<Room[]>([])
 
   useEffect(() => {
-    async function getRooms() {
-      const res = await instance.get<Room[]>(request('rooms', 'all'))
-      setRooms(res.data)
-    }
-
-    getRooms()
-  }, [])
+    dispatch(fetchAllRooms())
+  }, [dispatch])
 
   return (
     <>

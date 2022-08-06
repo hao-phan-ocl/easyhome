@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import allRoomsSlice from './features/allRoomsSlice'
 import authSlice from './features/authSlice'
 import popUpSlice from './features/popUpSlice'
 import roomSlice from './features/roomSlice'
@@ -17,6 +18,7 @@ export const store = configureStore({
     users: usersSlice,
     room: roomSlice,
     popUp: popUpSlice,
+    allRooms: allRoomsSlice,
   },
   preloadedState: {
     auth: {
