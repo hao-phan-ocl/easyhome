@@ -19,7 +19,7 @@ type StyledStackProps = {
 
 function StyledStack({ title, text, subtext }: StyledStackProps) {
   return (
-    <Stack direction="row" gap={{ md: 10, sm: 6, xs: 4 }}>
+    <Stack direction="row" gap={{ md: 7, sm: 4, xs: 2 }}>
       <Stack width={{ md: '20%', sm: '40%', xs: '40%' }} alignItems="flex-end">
         <Typography fontWeight={650}>{title}</Typography>
       </Stack>
@@ -86,8 +86,14 @@ export default function RoomCardLarge({ room }: RoomProps) {
                 subtext={room.address.streetNumber}
               />
               <StyledStack title="Postal" text={room.address.postalCode} />
-              <StyledStack title="Kitchen" text={room.kitchenType} />
-              <StyledStack title="Bathroom" text={room.bathroomType} />
+              <StyledStack
+                title="Kitchen"
+                text={room.kitchenType + ' kitchen'}
+              />
+              <StyledStack
+                title="Bathroom"
+                text={room.bathroomType + ' bathroom'}
+              />
               {room.smoking ? (
                 <StyledStack title="Smoking" text="allowed" />
               ) : (

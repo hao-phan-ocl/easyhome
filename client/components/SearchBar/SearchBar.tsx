@@ -33,7 +33,7 @@ import {
   KitchenEnum,
   Room,
 } from '../../types/types'
-import { fetchAllRooms } from '../../redux/features/allRoomsSlice'
+import { fetchAllRooms, setAllRooms } from '../../redux/features/allRoomsSlice'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 
@@ -117,7 +117,7 @@ export default function SearchBar() {
       pets,
       rent,
     } = data
-
+    console.log('data', data)
     // Housing type
     submit.housingType = []
     if (housingType.apartment.valueOf() === true) {
@@ -184,6 +184,10 @@ export default function SearchBar() {
 
     try {
       const res = await instance.post(request('rooms', 'search'), submit)
+
+      if (res.status === 201) {
+        dispatch(setAllRooms(res.data))
+      }
     } catch (error) {
       console.log(error)
     }

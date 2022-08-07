@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel } from '@mui/material'
 import { Control, Controller } from 'react-hook-form'
+
 import { SearchForm } from './SearchBar'
 
 type Props = {

@@ -24,7 +24,7 @@ export default function KitchenType({ control }: Props) {
       />
       <Controller
         control={control}
-        name="kitchenType.share"
+        name="kitchenType.shared"
         render={({ field }) => (
           <FormControlLabel
             {...field}
