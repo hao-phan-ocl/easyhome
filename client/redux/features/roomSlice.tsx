@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
-import { Room } from '../../types/schemas'
+import { Room } from '../../types/types'
 
 type InitialState = {
   room: Room | null

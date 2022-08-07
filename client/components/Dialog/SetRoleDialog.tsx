@@ -29,7 +29,7 @@ import {
   setSnackBarMsg,
 } from '../../redux/features/popUpSlice'
 import { getAllUsers } from '../../redux/features/usersSlice'
-import { User } from '../../types/schemas'
+import { User } from '../../types/types'
 
 type Props = {
   user: User | null

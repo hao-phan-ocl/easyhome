@@ -74,7 +74,7 @@ export default function CreateRoomForm() {
       surface: Number(data.surface),
       description: data.description,
       rent: Number(data.rent),
-      availableFrom: data.availableFrom.toISOString().slice(0, 10),
+      availableFrom: data.availableFrom.toISOString(),
       bathroomType: data.bathRoomType,
       kitchenType: data.kitchenType,
       furnished: data.furnished,

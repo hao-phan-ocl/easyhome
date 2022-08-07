@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material'
 
-import { User } from '../../types/schemas'
+import { User } from '../../types/types'
 import { useAppSelector } from '../../hooks/hooks'
 import RemoveAccountBtn from '../Button/RemoveAccountBtn'
 import emptyAvatar from '../../public/gray-avatar.jpg'
@@ -45,7 +45,7 @@ export default function TableBody({ users }: Props) {
                   sx={{ width: 40, height: 40, mr: 'auto' }}
                 />
               ) : (
-                <Avatar sx={{ width: 40, height: 40, mr: 'auto' }}>
+                <Avatar sx={{ width: 35, height: 35, mr: 'auto' }}>
                   <Image src={emptyAvatar} alt="Avatar" />
                 </Avatar>
               )}

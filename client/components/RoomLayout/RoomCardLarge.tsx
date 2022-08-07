@@ -2,7 +2,7 @@ import { Paper, Stack, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 import { useState } from 'react'
 
-import { Room } from '../../types/schemas'
+import { Room } from '../../types/types'
 import RoomCard from './RoomCard'
 import DeleteRoomBtn from '../Button/DeleteRoomBtn'
 import FlipBtn from '../Button/FlipBtn'

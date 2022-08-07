@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 
 import RoomCard from './RoomCard'
-import { Room } from '../../types/schemas'
+import { Room } from '../../types/types'
 
 type RoomsProps = {
   rooms: Room[]

@@ -9,7 +9,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { CardActionArea, Stack } from '@mui/material'
 
-import { Room } from '../../types/schemas'
+import { Room } from '../../types/types'
 import AddFavBtn from '../Button/AddFavBtn'
 import logo from '../../public/logo.png'
 

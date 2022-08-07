@@ -1,9 +1,8 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   Button,
   Checkbox,
   FormControlLabel,
-  FormGroup,
   Paper,
   Stack,
   TextField,
@@ -27,32 +26,40 @@ import BathroomType from './BathroomType'
 import FurnishedType from './FurnishedType'
 import KitchenType from './KitchenType'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { Room } from '../../types/schemas'
+import {
+  BathroomEnum,
+  FurnishedEnum,
+  HousingTypeEnum,
+  KitchenEnum,
+  Room,
+} from '../../types/types'
 import { fetchAllRooms } from '../../redux/features/allRoomsSlice'
+import instance from '../../axios/instance'
+import { request } from '../../axios/requests'
 
 export type SearchForm = {
   housingType: {
-    studio: string
-    apartment: string
-    shared: string
+    studio: boolean | ''
+    apartment: boolean | ''
+    shared: boolean | ''
   }
   availableFrom: Date
   bathRoomType: {
-    shared: string
-    private: string
+    shared: boolean | ''
+    private: boolean | ''
   }
   kitchenType: {
-    inRoom: string
-    share: string
-    private: string
+    inRoom: boolean | ''
+    shared: boolean | ''
+    private: boolean | ''
   }
   furnished: {
-    furnished: string
-    unfurnished: string
-    partiallyFunished: string
+    furnished: boolean | ''
+    unfurnished: boolean | ''
+    partiallyFunished: boolean | ''
   }
-  smoking: string
-  pets: string
+  smoking: boolean | ''
+  pets: boolean | ''
   rent: number[] | ''
 }
 
@@ -83,7 +90,7 @@ export default function SearchBar() {
       },
       kitchenType: {
         inRoom: '',
-        share: '',
+        shared: '',
         private: '',
       },
       furnished: {
@@ -97,8 +104,89 @@ export default function SearchBar() {
     },
   })
 
-  function onSubmit(data: SearchForm) {
-    console.log(data)
+  async function onSubmit(data: SearchForm) {
+    const submit: any = {}
+
+    const {
+      housingType,
+      kitchenType,
+      furnished,
+      bathRoomType,
+      availableFrom,
+      smoking,
+      pets,
+      rent,
+    } = data
+
+    // Housing type
+    submit.housingType = []
+    if (housingType.apartment.valueOf() === true) {
+      submit.housingType?.push(HousingTypeEnum.APARTMENT)
+    }
+    if (housingType.shared.valueOf() === true) {
+      submit.housingType?.push(HousingTypeEnum.SHARED)
+    }
+    if (housingType.studio.valueOf() === true) {
+      submit.housingType?.push(HousingTypeEnum.STUDIO)
+    }
+
+    // Kitchen type
+    submit.kitchenType = []
+    if (kitchenType.inRoom.valueOf() === true) {
+      submit.kitchenType.push(KitchenEnum.INROOM)
+    }
+    if (kitchenType.private.valueOf() === true) {
+      submit.kitchenType.push(KitchenEnum.PRIVATE)
+    }
+    if (kitchenType.shared.valueOf() === true) {
+      submit.kitchenType.push(KitchenEnum.SHARED)
+    }
+
+    // Furnished type
+    submit.furnished = []
+    if (furnished.furnished.valueOf() === true) {
+      submit.furnished.push(FurnishedEnum.FURNISHED)
+    }
+    if (furnished.partiallyFunished.valueOf() === true) {
+      submit.furnished.push(FurnishedEnum.PARTIALLY)
+    }
+    if (furnished.unfurnished.valueOf() === true) {
+      submit.furnished.push(FurnishedEnum.UNFURNISHED)
+    }
+
+    // Bathroom type
+    submit.bathroomType = []
+    if (bathRoomType.private.valueOf() === true) {
+      submit.bathroomType.push(BathroomEnum.PRIVATE)
+    }
+    if (bathRoomType.shared.valueOf() === true) {
+      submit.bathroomType.push(BathroomEnum.SHARED)
+    }
+
+    // Rent
+    if (rent !== '') {
+      submit.rentMin = rent[0]
+      submit.rentMax = rent[1]
+    }
+
+    // Smoking
+    if (smoking === '') {
+      submit.smoking === false
+    } else submit.smoking = smoking
+
+    // Pets
+    if (pets === '') {
+      submit.pets === false
+    } else submit.pets = pets
+
+    // Availability
+    submit.availableFrom = availableFrom.toISOString()
+
+    try {
+      const res = await instance.post(request('rooms', 'search'), submit)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

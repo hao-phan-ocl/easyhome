@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
-import { User } from '../../types/schemas'
+import { User } from '../../types/types'
 import { RootState } from '../store'
 
 type InitialState = {

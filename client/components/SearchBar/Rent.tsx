@@ -2,7 +2,7 @@ import Slider from '@mui/material/Slider'
 import { useEffect, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 
-import { Room } from '../../types/schemas'
+import { Room } from '../../types/types'
 import { SearchForm } from './SearchBar'
 
 type Props = {

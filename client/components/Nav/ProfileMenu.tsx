@@ -12,7 +12,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import LockIcon from '@mui/icons-material/Lock'
 import Link from 'next/link'
 
-import { User } from '../../types/schemas'
+import { User } from '../../types/types'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout } from '../../redux/features/authSlice'
 

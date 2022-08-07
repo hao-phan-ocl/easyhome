@@ -3,7 +3,7 @@ import { Button } from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 
 import SetRoleDialog from '../Dialog/SetRoleDialog'
-import { User } from '../../types/schemas'
+import { User } from '../../types/types'
 
 type Props = {
   user: User

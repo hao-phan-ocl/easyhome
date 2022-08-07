@@ -19,7 +19,7 @@ import * as yup from 'yup'
 import { useAppSelector } from '../../hooks/hooks'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
-import { Country } from '../../types/schemas'
+import { Country } from '../../types/types'
 
 type ProfileForm = {
   firstName: string
