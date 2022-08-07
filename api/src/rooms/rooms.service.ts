@@ -36,22 +36,22 @@ export class RoomsService {
     const query: any = {}
 
     // Housing type
-    if (housingType) {
+    if (housingType?.length) {
       query.housingType = { $in: housingType }
     }
 
     // Bathroom type
-    if (bathroomType) {
+    if (bathroomType?.length) {
       query.bathroomType = { $in: bathroomType }
     }
 
     // Kitchen type
-    if (kitchenType) {
+    if (kitchenType?.length) {
       query.kitchenType = { $in: kitchenType }
     }
 
     // Furnished
-    if (furnished) {
+    if (furnished?.length) {
       query.furnished = { $in: furnished }
     }
 
@@ -73,7 +73,7 @@ export class RoomsService {
       query.rent = { $lte: rentMax }
     }
     if (rentMin && rentMax) {
-      query.rent = { $gte: rentMin, $lt: rentMax }
+      query.rent = { $gte: rentMin, $lte: rentMax }
     }
 
     // Surface

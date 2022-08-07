@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 
 import { RoomsService } from './rooms.service'
 import { SearchDto } from './dto/search.dto'
@@ -17,7 +17,8 @@ export class RoomsController {
     return this.roomsService.fetchRoom(roomId)
   }
 
-  @Get('search')
+  // Use POST request whenever api requires sending body
+  @Post('search')
   search(@Body() searchDto: Partial<SearchDto>) {
     return this.roomsService.search(searchDto)
   }
