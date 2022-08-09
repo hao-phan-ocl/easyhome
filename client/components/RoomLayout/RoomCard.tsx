@@ -180,6 +180,7 @@ export default function RoomCard({ room }: RoomProps) {
           position="absolute"
           width="100%"
           height="100%"
+          justifyContent="center"
           gap={2}
           sx={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >

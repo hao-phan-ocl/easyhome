@@ -43,7 +43,7 @@ export type SearchForm = {
     apartment: boolean | ''
     shared: boolean | ''
   }
-  availableFrom: Date
+  availableFrom: Date | ''
   bathRoomType: {
     shared: boolean | ''
     private: boolean | ''
@@ -83,7 +83,7 @@ export default function SearchBar() {
         apartment: '',
         shared: '',
       },
-      availableFrom: new Date(),
+      availableFrom: '',
       bathRoomType: {
         shared: '',
         private: '',
@@ -180,8 +180,11 @@ export default function SearchBar() {
     } else submit.pets = pets
 
     // Availability
-    submit.availableFrom = availableFrom.toISOString()
+    if (availableFrom !== '') {
+      submit.availableFrom = availableFrom.toISOString()
+    }
 
+    console.log('submit', submit)
     try {
       const res = await instance.post(request('rooms', 'search'), submit)
 
