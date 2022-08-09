@@ -51,7 +51,7 @@ export class UsersService {
       }
     })
 
-    return foundUser.populate('favLists')
+    return foundUser.populate(['favLists', 'properties'])
   }
 
   // GET one user
