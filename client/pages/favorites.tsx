@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material'
 
 import AuthCheck from '../components/AuthCheck'
-import RoomGrid from '../components/RoomLayout/RoomGrid'
+import RoomGridLarge from '../components/RoomLayout/RoomGridLarge'
 import { useAppSelector } from '../hooks/hooks'
 
 export default function Favorites() {
@@ -10,7 +10,7 @@ export default function Favorites() {
   return (
     <AuthCheck>
       {user?.favLists.length ? (
-        <RoomGrid rooms={user.favLists} />
+        <RoomGridLarge rooms={user.favLists} />
       ) : (
         <Typography>Your favorite list is empty</Typography>
       )}

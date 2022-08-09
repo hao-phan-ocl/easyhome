@@ -6,7 +6,7 @@ export type User = {
   email: string
   password?: string
   favLists: Room[]
-  properties: string[]
+  properties: Room[]
   avatar?: string
   gender?: string
   country?: string

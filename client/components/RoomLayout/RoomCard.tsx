@@ -9,11 +9,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { CardActionArea, Stack } from '@mui/material'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 import { Room } from '../../types/types'
 import AddFavBtn from '../Button/AddFavBtn'
 import logo from '../../public/logo.png'
 import FlipBtn from '../Button/FlipBtn'
+import DeleteRoomBtn from '../Button/DeleteRoomBtn'
 
 type RoomProps = {
   room: Room
@@ -38,6 +40,8 @@ function MyRow({ title, text }: MyRowProps) {
 }
 
 export default function RoomCard({ room }: RoomProps) {
+  const router = useRouter()
+  console.log(router.pathname)
   const date = new Date(room.availableFrom)
   const dateArray = date.toDateString().split(' ')
   const [flip, setFlip] = useState(false)
@@ -168,7 +172,12 @@ export default function RoomCard({ room }: RoomProps) {
                   </Typography>
                 </Stack>
                 <Stack direction="row">
-                  <AddFavBtn roomId={room._id} />
+                  <Stack direction="row">
+                    <AddFavBtn roomId={room._id} />
+                  </Stack>
+                  {router.pathname === '/listings' && (
+                    <DeleteRoomBtn roomId={room._id} />
+                  )}
                 </Stack>
               </Stack>
             </Stack>

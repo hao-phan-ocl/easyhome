@@ -2,10 +2,12 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import { ReactNode, SyntheticEvent, useState } from 'react'
-import { Paper } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 
 import CreateRoomForm from '../components/Form/CreateRoom/CreateRoomForm'
 import AuthCheck from '../components/AuthCheck'
+import { useAppSelector } from '../hooks/hooks'
+import RoomGridLarge from '../components/RoomLayout/RoomGridLarge'
 
 interface TabPanelProps {
   children?: ReactNode
@@ -42,6 +44,7 @@ function a11yProps(index: number) {
 
 export default function Listings() {
   const [value, setValue] = useState(0)
+  const { user } = useAppSelector((state) => state.auth)
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -49,7 +52,7 @@ export default function Listings() {
 
   return (
     <AuthCheck>
-      <Paper>
+      <Paper sx={{ bgcolor: 'rgb(225 225 225)' }}>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs
@@ -62,7 +65,11 @@ export default function Listings() {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            Item One
+            {!user?.properties.length ? (
+              <Typography>Your listing is empty</Typography>
+            ) : (
+              <RoomGridLarge rooms={user.properties} />
+            )}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <CreateRoomForm />

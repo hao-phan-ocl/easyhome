@@ -11,6 +11,7 @@ import {
 import DeleteDialog from '../Dialog/DeleteDialog'
 import { useState } from 'react'
 import { fetchRoom } from '../../redux/features/roomSlice'
+import { getProfile } from '../../redux/features/authSlice'
 
 type Props = {
   roomId: string
@@ -28,6 +29,7 @@ export default function DeleteRoomBtn({ roomId }: Props) {
         dispatch(openSnackBarSuccess(true))
         dispatch(setSnackBarMsg('Room deleted!'))
         dispatch(fetchRoom(roomId))
+        dispatch(getProfile())
         setOpenDialog(false)
       }
     } catch (error) {
