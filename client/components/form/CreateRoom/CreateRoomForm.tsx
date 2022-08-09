@@ -5,7 +5,9 @@ import Looks4Icon from '@mui/icons-material/Looks4'
 import EuroIcon from '@mui/icons-material/Euro'
 import {
   Button,
+  FormControl,
   FormControlLabel,
+  FormHelperText,
   InputAdornment,
   MenuItem,
   Radio,
@@ -18,6 +20,8 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 import InputRow from './InputRow'
 import { useAppSelector } from '../../../hooks/hooks'
@@ -44,9 +48,35 @@ type CreateFormType = {
   rent: string
 }
 
+const schema = yup
+  .object({
+    housingType: yup.string().required(),
+    availableFrom: yup.date().required(),
+    description: yup.string().max(50).required(),
+    surface: yup.number().positive().required(),
+    bathRoomType: yup.string().required(),
+    kitchenType: yup.string().required(),
+    furnished: yup.string().required(),
+    smoking: yup.boolean().required(),
+    pets: yup.boolean().required(),
+    address: yup.object({
+      street: yup.string().required(),
+      streetNumber: yup.number().required(),
+      postalCode: yup.string().required(),
+      municipality: yup.string().required(),
+    }),
+    rent: yup.number().required(),
+  })
+  .required()
+
 export default function CreateRoomForm() {
   const { user } = useAppSelector((state) => state.auth)
-  const { control, register, handleSubmit } = useForm<CreateFormType>({
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateFormType>({
     defaultValues: {
       housingType: '',
       availableFrom: new Date(),
@@ -65,6 +95,7 @@ export default function CreateRoomForm() {
       },
       rent: '',
     },
+    resolver: yupResolver(schema),
   })
 
   async function onSubmit(data: CreateFormType) {
@@ -115,9 +146,9 @@ export default function CreateRoomForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={1}>
-        <Stack direction="row">
+    <form onSubmit={handleSubmit(onSubmit)} style={{ margin: 'auto' }}>
+      <Stack gap={1} justifyContent="center">
+        <Stack direction="row" gap={1}>
           <LooksOneIcon color="primary" />
           <Typography>Description</Typography>
         </Stack>
@@ -125,11 +156,21 @@ export default function CreateRoomForm() {
           <Controller
             name="housingType"
             render={({ field }) => (
-              <Select {...field} size="small" fullWidth>
-                <MenuItem value={'studio'}>studio</MenuItem>
-                <MenuItem value={'apartment'}>apartment</MenuItem>
-                <MenuItem value={'shared'}>shared apartment</MenuItem>
-              </Select>
+              <Stack width="100%">
+                <Select
+                  {...field}
+                  size="small"
+                  fullWidth
+                  error={Boolean(errors.housingType)}
+                >
+                  <MenuItem value={'studio'}>studio</MenuItem>
+                  <MenuItem value={'apartment'}>apartment</MenuItem>
+                  <MenuItem value={'shared'}>shared apartment</MenuItem>
+                </Select>
+                <FormHelperText error>
+                  {errors.housingType?.message}
+                </FormHelperText>
+              </Stack>
             )}
             control={control}
           />
@@ -143,7 +184,13 @@ export default function CreateRoomForm() {
                   {...field}
                   inputFormat="yyyy/MM/dd"
                   renderInput={(params) => (
-                    <TextField {...params} fullWidth size="small" />
+                    <TextField
+                      {...params}
+                      fullWidth
+                      size="small"
+                      error={Boolean(errors.availableFrom)}
+                      helperText={errors.availableFrom?.message}
+                    />
                   )}
                 />
               )}
@@ -151,24 +198,18 @@ export default function CreateRoomForm() {
             />
           </LocalizationProvider>
         </InputRow>
-        <Stack
-          direction={{ md: 'row', sm: 'column', xs: 'column' }}
-          mb={3}
-          gap={2}
-        >
-          <Stack
-            width="220px"
-            direction="row"
-            justifyContent={{ md: 'flex-end' }}
-          >
-            <Typography paragraph mb="0">
-              <span style={{ fontWeight: '700' }}>Images {''}</span>
+        <InputRow
+          label={
+            <>
+              <span>Images </span>
               <span>
-                <i>(optional)</i>
+                <i style={{ fontWeight: 400 }}>(optional)</i>
               </span>
-            </Typography>
-          </Stack>
+            </>
+          }
+        >
           <input
+            style={{ marginTop: '7px' }}
             {...register('images')}
             accept="image/*"
             multiple
@@ -176,7 +217,7 @@ export default function CreateRoomForm() {
             title="Upload file"
             name="images"
           />
-        </Stack>
+        </InputRow>
         <Controller
           name="description"
           control={control}
@@ -186,14 +227,19 @@ export default function CreateRoomForm() {
               placeholder="Describe your property:"
               multiline
               rows={5}
-              sx={{ width: '40%', marginBottom: '20px' }}
+              error={Boolean(errors.description)}
+              helperText={errors.description?.message}
+              sx={{
+                width: { md: '51%', sm: '72%', xs: '80%' },
+                marginBottom: '20px',
+              }}
             />
           )}
         ></Controller>
       </Stack>
 
       <Stack gap={1}>
-        <Stack direction="row">
+        <Stack direction="row" gap={1}>
           <LooksTwoIcon color="primary" />
           <Typography>Details</Typography>
         </Stack>
@@ -205,6 +251,8 @@ export default function CreateRoomForm() {
                 {...field}
                 size="small"
                 fullWidth
+                error={Boolean(errors.surface)}
+                helperText={errors.surface?.message}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -221,10 +269,20 @@ export default function CreateRoomForm() {
           <Controller
             name="bathRoomType"
             render={({ field }) => (
-              <Select {...field} size="small" fullWidth>
-                <MenuItem value={'private'}>private</MenuItem>
-                <MenuItem value={'shared'}>shared</MenuItem>
-              </Select>
+              <Stack width="100%">
+                <Select
+                  {...field}
+                  size="small"
+                  fullWidth
+                  error={Boolean(errors.bathRoomType)}
+                >
+                  <MenuItem value={'private'}>private</MenuItem>
+                  <MenuItem value={'shared'}>shared</MenuItem>
+                </Select>
+                <FormHelperText error>
+                  {errors.bathRoomType?.message}
+                </FormHelperText>
+              </Stack>
             )}
             control={control}
           />
@@ -233,11 +291,21 @@ export default function CreateRoomForm() {
           <Controller
             name="kitchenType"
             render={({ field }) => (
-              <Select {...field} size="small" fullWidth>
-                <MenuItem value={'in-room'}>in-room</MenuItem>
-                <MenuItem value={'private'}>private</MenuItem>
-                <MenuItem value={'shared'}>shared</MenuItem>
-              </Select>
+              <Stack width="100%">
+                <Select
+                  {...field}
+                  size="small"
+                  fullWidth
+                  error={Boolean(errors.kitchenType)}
+                >
+                  <MenuItem value={'in-room'}>in-room</MenuItem>
+                  <MenuItem value={'private'}>private</MenuItem>
+                  <MenuItem value={'shared'}>shared</MenuItem>
+                </Select>
+                <FormHelperText error>
+                  {errors.bathRoomType?.message}
+                </FormHelperText>
+              </Stack>
             )}
             control={control}
           />
@@ -246,28 +314,31 @@ export default function CreateRoomForm() {
           <Controller
             name="furnished"
             render={({ field }) => (
-              <RadioGroup
-                {...field}
+              <FormControl
+                error={Boolean(errors.furnished)}
                 sx={{
                   width: '100%',
                 }}
               >
-                <FormControlLabel
-                  value={'furnished'}
-                  control={<Radio size="small" />}
-                  label="furnished"
-                />
-                <FormControlLabel
-                  value={'unfurnished'}
-                  control={<Radio size="small" />}
-                  label="unfurnished"
-                />
-                <FormControlLabel
-                  value={'partially-furnished'}
-                  control={<Radio size="small" />}
-                  label="partially-furnished"
-                />
-              </RadioGroup>
+                <RadioGroup {...field}>
+                  <FormControlLabel
+                    value={'furnished'}
+                    control={<Radio size="small" />}
+                    label="furnished"
+                  />
+                  <FormControlLabel
+                    value={'unfurnished'}
+                    control={<Radio size="small" />}
+                    label="unfurnished"
+                  />
+                  <FormControlLabel
+                    value={'partially-furnished'}
+                    control={<Radio size="small" />}
+                    label="partially-furnished"
+                  />
+                </RadioGroup>
+                <FormHelperText>{errors.furnished?.message}</FormHelperText>
+              </FormControl>
             )}
             control={control}
           />
@@ -276,55 +347,61 @@ export default function CreateRoomForm() {
           <Controller
             name="smoking"
             render={({ field }) => (
-              <RadioGroup
-                {...field}
+              <FormControl
+                error={Boolean(errors.smoking)}
                 sx={{
                   width: '100%',
                 }}
               >
-                <FormControlLabel
-                  value={true}
-                  control={<Radio size="small" />}
-                  label="smoking ok"
-                />
-                <FormControlLabel
-                  value={false}
-                  control={<Radio size="small" />}
-                  label="non-smoking"
-                />
-              </RadioGroup>
+                <RadioGroup {...field}>
+                  <FormControlLabel
+                    value={true}
+                    control={<Radio size="small" />}
+                    label="smoking ok"
+                  />
+                  <FormControlLabel
+                    value={false}
+                    control={<Radio size="small" />}
+                    label="non-smoking"
+                  />
+                </RadioGroup>
+                <FormHelperText>{errors.smoking?.message}</FormHelperText>
+              </FormControl>
             )}
             control={control}
           />
         </InputRow>
-        <InputRow label={'Pet'}>
+        <InputRow label={'Pets'}>
           <Controller
             name="pets"
             render={({ field }) => (
-              <RadioGroup
-                {...field}
+              <FormControl
+                error={Boolean(errors.pets)}
                 sx={{
                   width: '100%',
                 }}
               >
-                <FormControlLabel
-                  value={true}
-                  control={<Radio size="small" />}
-                  label="allowed"
-                />
-                <FormControlLabel
-                  value={false}
-                  control={<Radio size="small" />}
-                  label="not allowed"
-                />
-              </RadioGroup>
+                <RadioGroup {...field}>
+                  <FormControlLabel
+                    value={true}
+                    control={<Radio size="small" />}
+                    label="allowed"
+                  />
+                  <FormControlLabel
+                    value={false}
+                    control={<Radio size="small" />}
+                    label="not allowed"
+                  />
+                </RadioGroup>
+                <FormHelperText>{errors.pets?.message}</FormHelperText>
+              </FormControl>
             )}
             control={control}
           />
         </InputRow>
       </Stack>
       <Stack gap={1}>
-        <Stack direction="row">
+        <Stack direction="row" gap={1}>
           <Looks3Icon color="primary" />
           <Typography>Address</Typography>
         </Stack>
@@ -332,7 +409,13 @@ export default function CreateRoomForm() {
           <Controller
             name="address.street"
             render={({ field }) => (
-              <TextField {...field} size="small" fullWidth />
+              <TextField
+                {...field}
+                size="small"
+                fullWidth
+                error={Boolean(errors.address?.street)}
+                helperText={errors.address?.street?.message}
+              />
             )}
             control={control}
           />
@@ -341,7 +424,13 @@ export default function CreateRoomForm() {
           <Controller
             name="address.streetNumber"
             render={({ field }) => (
-              <TextField {...field} size="small" fullWidth />
+              <TextField
+                {...field}
+                size="small"
+                fullWidth
+                error={Boolean(errors.address?.streetNumber)}
+                helperText={errors.address?.streetNumber?.message}
+              />
             )}
             control={control}
           />
@@ -350,7 +439,13 @@ export default function CreateRoomForm() {
           <Controller
             name="address.postalCode"
             render={({ field }) => (
-              <TextField {...field} size="small" fullWidth />
+              <TextField
+                {...field}
+                size="small"
+                fullWidth
+                error={Boolean(errors.address?.postalCode)}
+                helperText={errors.address?.postalCode?.message}
+              />
             )}
             control={control}
           />
@@ -359,14 +454,20 @@ export default function CreateRoomForm() {
           <Controller
             name="address.municipality"
             render={({ field }) => (
-              <TextField {...field} size="small" fullWidth />
+              <TextField
+                {...field}
+                size="small"
+                fullWidth
+                error={Boolean(errors.address?.municipality)}
+                helperText={errors.address?.municipality?.message}
+              />
             )}
             control={control}
           />
         </InputRow>
       </Stack>
       <Stack gap={1}>
-        <Stack direction="row">
+        <Stack direction="row" gap={1}>
           <Looks4Icon color="primary" />
           <Typography>Rent</Typography>
         </Stack>
@@ -378,6 +479,8 @@ export default function CreateRoomForm() {
                 {...field}
                 size="small"
                 fullWidth
+                error={Boolean(errors.rent)}
+                helperText={errors.rent?.message}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -392,7 +495,7 @@ export default function CreateRoomForm() {
         </InputRow>
       </Stack>
       <Button type="submit" variant="contained">
-        Save
+        Create
       </Button>
     </form>
   )
