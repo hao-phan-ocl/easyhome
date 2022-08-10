@@ -41,7 +41,6 @@ function MyRow({ title, text }: MyRowProps) {
 
 export default function RoomCard({ room }: RoomProps) {
   const router = useRouter()
-  console.log(router.pathname)
   const date = new Date(room.availableFrom)
   const dateArray = date.toDateString().split(' ')
   const [flip, setFlip] = useState(false)

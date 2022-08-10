@@ -22,11 +22,16 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useRouter } from 'next/router'
 
 import InputRow from './InputRow'
-import { useAppSelector } from '../../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import instance from '../../../axios/instance'
 import { request } from '../../../axios/requests'
+import {
+  openSnackBarSuccess,
+  setSnackBarMsg,
+} from '../../../redux/features/popUpSlice'
 
 type CreateFormType = {
   housingType: 'studio' | 'apartment' | 'shared' | ''
@@ -70,6 +75,8 @@ const schema = yup
   .required()
 
 export default function CreateRoomForm() {
+  const router = useRouter()
+  const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.auth)
   const {
     control,
@@ -139,6 +146,12 @@ export default function CreateRoomForm() {
             },
           },
         )
+
+        if (newRoom.status === 201) {
+          router.push('/')
+          dispatch(openSnackBarSuccess(true))
+          dispatch(setSnackBarMsg('New room created'))
+        }
       }
     } catch (error) {
       console.log(error)

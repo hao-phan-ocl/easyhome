@@ -11,6 +11,8 @@ import {
 import NavBar from './Nav/NavBar'
 import SnackBarSuccess from './SnackBar/SnackBarSuccess'
 import SnackBarError from './SnackBar/SnackBarError'
+import Footer from './Footer'
+import { Stack } from '@mui/material'
 
 type Props = {
   children?: ReactNode
@@ -35,8 +37,11 @@ export default function Layout({ children }: Props) {
 
   return (
     <Container maxWidth="lg">
-      <NavBar />
-      <main>{children}</main>
+      <Stack minHeight="100vh">
+        <NavBar />
+        <main style={{ marginTop: '70px' }}>{children}</main>
+        <Footer />
+      </Stack>
       {snackBarMsg && <SnackBarSuccess text={snackBarMsg} />}
       {snackBarMsg && <SnackBarError text={snackBarMsg} />}
     </Container>

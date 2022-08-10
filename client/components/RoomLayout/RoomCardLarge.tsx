@@ -4,7 +4,6 @@ import { useState } from 'react'
 
 import { Room } from '../../types/types'
 import RoomCard from './RoomCard'
-import DeleteRoomBtn from '../Button/DeleteRoomBtn'
 import FlipBtn from '../Button/FlipBtn'
 
 type RoomProps = {
@@ -49,7 +48,6 @@ export default function RoomCardLarge({ room }: RoomProps) {
         {/* Card container */}
         <Stack position="relative" width="75%" minHeight="350px">
           <Stack position="absolute" right="0" zIndex="10" direction="row">
-            <DeleteRoomBtn roomId={room._id} />
             <FlipBtn handleFlip={() => setFlip(!flip)} />
           </Stack>
           {/* The card */}
