@@ -11,7 +11,6 @@ import { fetchAllRooms } from '../redux/features/allRoomsSlice'
 const Home: NextPage = () => {
   const dispatch = useAppDispatch()
   const { rooms, filteredRooms } = useAppSelector((state) => state.allRooms)
-  const { user } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
     dispatch(fetchAllRooms())
@@ -24,7 +23,6 @@ const Home: NextPage = () => {
           <SearchBar />
         </Grid>
         <Grid item xs={12} sm={6} md={7.7} lg={9}>
-          {/* {filteredRooms.length ? } */}
           <RoomGrid rooms={filteredRooms.length ? filteredRooms : rooms} />
         </Grid>
       </Grid>
