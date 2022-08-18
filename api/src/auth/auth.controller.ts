@@ -33,16 +33,16 @@ export class AuthController {
     // Guard redirects
   }
 
-  @UseGuards(GoogleAuthGuard)
-  @Get('oauth2/redirect/google')
-  async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
-    const jwt = await this.authService.googleLogin(req.user)
+  // @UseGuards(GoogleAuthGuard)
+  // @Get('oauth2/redirect/google')
+  // async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
+  //   const jwt = await this.authService.googleLogin(req.user)
 
-    const hostURL = this.configService.get<string>('HOST_URL_FRONTEND')
+  //   const hostURL = this.configService.get<string>('HOST_URL_FRONTEND')
 
-    if (jwt) res.redirect(`${hostURL}/login/success/` + jwt.access_token)
-    else res.redirect(`${hostURL}/login/failed`)
+  //   if (jwt) res.redirect(`${hostURL}/login/success/` + jwt.access_token)
+  //   else res.redirect(`${hostURL}/login/failed`)
 
-    return jwt
-  }
+  //   return jwt
+  // }
 }
