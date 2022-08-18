@@ -12,8 +12,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { Room } from '../../types/types'
-import AddFavBtn from '../Button/AddFavBtn'
 import logo from '../../public/logo.png'
+import AddFavBtn from '../Button/AddFavBtn'
 import FlipBtn from '../Button/FlipBtn'
 import DeleteRoomBtn from '../Button/DeleteRoomBtn'
 
