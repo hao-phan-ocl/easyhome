@@ -7,7 +7,7 @@ import { RoomsModule } from './rooms/rooms.module'
 import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
 
-const ENV = process.env.NODE_ENV
+const prod = process.env.NODE_ENV === 'production'
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ const ENV = process.env.NODE_ENV
       inject: [ConfigService],
     }),
     ConfigModule.forRoot({
-      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
+      envFilePath: prod ? '.env.production' : '.env',
       isGlobal: true,
       cache: true,
     }),
