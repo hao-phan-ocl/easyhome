@@ -38,7 +38,7 @@ export class AuthController {
   async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
     const jwt = await this.authService.googleLogin(req.user)
 
-    const hostURL = this.configService.get<string>('HOST_URL')
+    const hostURL = this.configService.get<string>('HOST_URL_FRONTEND')
 
     if (jwt) res.redirect(`${hostURL}/login/success/` + jwt.access_token)
     else res.redirect(`${hostURL}/login/failed`)
