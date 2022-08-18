@@ -39,3 +39,4 @@ lerna-debug.log*
 
 # API key and secret
 .env
+.env.production

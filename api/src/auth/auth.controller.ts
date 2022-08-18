@@ -7,6 +7,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Response } from 'express'
 
 import { AuthService } from './auth.service'
@@ -15,7 +16,10 @@ import { LocalAuthGuard } from './local-strategy/local-auth.guard'
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login/local')
@@ -34,9 +38,10 @@ export class AuthController {
   async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
     const jwt = await this.authService.googleLogin(req.user)
 
-    if (jwt)
-      res.redirect('http://localhost:3000/login/success/' + jwt.access_token)
-    else res.redirect('http://localhost:3000/login/failed')
+    const hostURL = this.configService.get<string>('HOST_URL')
+
+    if (jwt) res.redirect(`${hostURL}/login/success/` + jwt.access_token)
+    else res.redirect(`${hostURL}/login/failed`)
 
     return jwt
   }
