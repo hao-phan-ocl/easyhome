@@ -41,7 +41,7 @@ export default function TableBody({ users }: Props) {
               {elem?.avatar ? (
                 <Avatar
                   alt="Avatar"
-                  src={`http://${elem?.avatar}`}
+                  src={elem?.avatar}
                   sx={{ width: 40, height: 40, mr: 'auto' }}
                 />
               ) : (

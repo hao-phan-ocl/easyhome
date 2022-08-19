@@ -11,8 +11,9 @@ export default function GoogleLogin() {
   const router = useRouter()
 
   function googleLogin() {
+    const url = process.env.NEXT_PUBLIC_BACKEND
     const newWindow = window.open(
-      'http://localhost:5000/login/google',
+      url + '/login/google',
       '_blank',
       'width=400, height=500',
     )

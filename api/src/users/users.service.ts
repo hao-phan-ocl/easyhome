@@ -17,12 +17,14 @@ import { AddRoomDto } from './dto/add-room.dto'
 import { Role } from './enum/role.enum'
 import { RegisterUserDto } from 'src/users/dto/register-user.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('User') private userModel: Model<UserDocument>,
     @InjectModel('Room') private roomModel: Model<RoomDocument>,
+    private configService: ConfigService,
   ) {}
 
   // GET all users
@@ -230,7 +232,8 @@ export class UsersService {
   // UPLOAD avatar
   async uploadAvatar(userId: string, avatar: Express.Multer.File) {
     const foundUser = await this.userModel.findById(userId)
-    const imgPath = `localhost:5000/users/image/${avatar.filename}`
+    const url = this.configService.get<string>('HOST_URL_BACKEND')
+    const imgPath = `${url}/users/image/${avatar.filename}`
 
     // Delete existed avatar from server
     if (foundUser.avatar) {
@@ -253,9 +256,10 @@ export class UsersService {
   async uploadRoomImages(roomId: string, images: Express.Multer.File[]) {
     const imagePaths: string[] = []
 
-    images.forEach((img) =>
-      imagePaths.push(`localhost:5000/users/image/${img.filename}`),
-    )
+    images.forEach((img) => {
+      const url = this.configService.get<string>('HOST_URL_BACKEND')
+      imagePaths.push(`${url}/users/image/${img.filename}`)
+    })
 
     const foundRoom = await this.roomModel.findByIdAndUpdate(
       roomId,

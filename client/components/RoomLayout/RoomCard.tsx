@@ -95,7 +95,7 @@ export default function RoomCard({ room }: RoomProps) {
                   <CardMedia
                     component="img"
                     height={200}
-                    src={`http://${room.images[0]}`}
+                    src={room.images[0]}
                     alt={`Room ${room._id}`}
                   />
                 ) : (

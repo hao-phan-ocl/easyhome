@@ -27,7 +27,7 @@ export default function Account() {
             {user?.avatar ? (
               <Avatar
                 alt="Avatar"
-                src={`http://${user?.avatar}`}
+                src={user?.avatar}
                 sx={{ width: 80, height: 80, m: 'auto' }}
               />
             ) : (
