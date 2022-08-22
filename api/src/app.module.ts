@@ -7,7 +7,7 @@ import { RoomsModule } from './rooms/rooms.module'
 import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
 
-const prod = process.env.NODE_ENV === 'production'
+const prod = process.env.NODE_ENV
 
 @Module({
   imports: [
