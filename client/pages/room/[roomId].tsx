@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
@@ -18,6 +19,10 @@ export default function RoomId() {
 
   return (
     <Stack>
+      <Head>
+        <title>Room Detail</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       {room && <RoomCardLarge room={room} />}
       <Stack></Stack>
     </Stack>

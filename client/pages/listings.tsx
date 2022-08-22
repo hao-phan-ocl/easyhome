@@ -3,6 +3,7 @@ import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import { ReactNode, SyntheticEvent, useState } from 'react'
 import { Paper, Typography } from '@mui/material'
+import Head from 'next/head'
 
 import CreateRoomForm from '../components/Form/CreateRoom/CreateRoomForm'
 import AuthCheck from '../components/AuthCheck'
@@ -52,6 +53,10 @@ export default function Listings() {
 
   return (
     <AuthCheck>
+      <Head>
+        <title>Listings</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Paper sx={{ bgcolor: 'rgb(225 225 225)' }}>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

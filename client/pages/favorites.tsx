@@ -1,4 +1,5 @@
-import { Stack, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
+import Head from 'next/head'
 
 import AuthCheck from '../components/AuthCheck'
 import RoomGridLarge from '../components/RoomLayout/RoomGridLarge'
@@ -9,6 +10,10 @@ export default function Favorites() {
 
   return (
     <AuthCheck>
+      <Head>
+        <title>Favorites</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       {user?.favLists.length ? (
         <RoomGridLarge rooms={user.favLists} />
       ) : (
