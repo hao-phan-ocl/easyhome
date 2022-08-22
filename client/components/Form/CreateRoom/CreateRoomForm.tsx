@@ -137,7 +137,7 @@ export default function CreateRoomForm() {
           formData.append('images', data.images[i])
         }
 
-        const newRoom = await instance.post(
+        await instance.post(
           request('users', 'upload', res.data._id),
           formData,
           {
@@ -146,12 +146,12 @@ export default function CreateRoomForm() {
             },
           },
         )
+      }
 
-        if (newRoom.status === 201) {
-          router.push('/')
-          dispatch(openSnackBarSuccess(true))
-          dispatch(setSnackBarMsg('New room created'))
-        }
+      if (res.status === 201) {
+        router.push('/')
+        dispatch(openSnackBarSuccess(true))
+        dispatch(setSnackBarMsg('New room created'))
       }
     } catch (error) {
       console.log(error)
