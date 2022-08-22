@@ -5,7 +5,7 @@ import { ReactNode, SyntheticEvent, useState } from 'react'
 import { Paper, Typography } from '@mui/material'
 import Head from 'next/head'
 
-import CreateRoomForm from '../components/MyForm/CreateRoom/CreateRoomForm'
+import CreateRoomForm from '../components/Form/CreateRoom/CreateRoomForm'
 import AuthCheck from '../components/AuthCheck'
 import { useAppSelector } from '../hooks/hooks'
 import RoomGridLarge from '../components/RoomLayout/RoomGridLarge'

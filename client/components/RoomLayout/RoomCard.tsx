@@ -13,9 +13,9 @@ import { useRouter } from 'next/router'
 
 import { Room } from '../../types/types'
 import logo from '../../public/logo.png'
-import AddFavBtn from '../MyButton/AddFavBtn'
-import FlipBtn from '../MyButton/FlipBtn'
-import DeleteRoomBtn from '../MyButton/DeleteRoomBtn'
+import AddFavBtn from '../Button/AddFavBtn'
+import FlipBtn from '../Button/FlipBtn'
+import DeleteRoomBtn from '../Button/DeleteRoomBtn'
 
 type RoomProps = {
   room: Room

@@ -13,7 +13,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import AuthCheck from '../../components/AuthCheck'
-import RemoveAccountBtn from '../../components/MyButton/RemoveAccountBtn'
+import RemoveAccountBtn from '../../components/Button/RemoveAccountBtn'
 import { useAppSelector } from '../../hooks/hooks'
 import emptyAvatar from '../../public/gray-avatar.jpg'
 

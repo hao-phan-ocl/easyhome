@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { Room } from '../../types/types'
 import RoomCard from './RoomCard'
-import FlipBtn from '../MyButton/FlipBtn'
+import FlipBtn from '../Button/FlipBtn'
 
 type RoomProps = {
   room: Room

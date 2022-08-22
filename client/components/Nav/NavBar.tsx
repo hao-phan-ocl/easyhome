@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import { useAppSelector } from '../../hooks/hooks'
 import logo from '../../public/logo.png'
-import MenuBtn from '../MyButton/MenuBtn'
+import MenuBtn from '../Button/MenuBtn'
 
 import ProfileMenu from './ProfileMenu'
 import SubNav from './SubNav'
