@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import MyDrawer from '../MyDrawer'
 
-export default function MenuBtn() {
+export default function HamburgerMenu() {
   const [open, setOpen] = useState(false)
 
   return (
