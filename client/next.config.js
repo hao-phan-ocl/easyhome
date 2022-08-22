@@ -4,7 +4,6 @@ const nextConfig = {
   images: {
     domains: ['localhost', 'flagcdn.com', 'upload.wikimedia.org'],
   },
-  target: 'serverless',
 }
 
 module.exports = nextConfig
