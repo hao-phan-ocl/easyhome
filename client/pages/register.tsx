@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material'
 import Head from 'next/head'
 
-import RegisterForm from '../components/Form/RegisterForm'
+import RegisterForm from '../components/MyForm/RegisterForm'
 
 export default function RegisterPage() {
   return (

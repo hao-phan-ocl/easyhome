@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import { useAppSelector } from '../../hooks/hooks'
 import logo from '../../public/logo.png'
-import HamburgerMenu from '../Button/HamburgerMenu'
+import MenuBtn from '../MyButton/MenuBtn'
 
 import ProfileMenu from './ProfileMenu'
 import SubNav from './SubNav'
@@ -24,7 +24,7 @@ export default function NavBar() {
       }}
       alignItems="center"
     >
-      <HamburgerMenu />
+      <MenuBtn />
       <Image
         priority
         style={{ cursor: 'pointer' }}

@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material'
 import Head from 'next/head'
 
-import LoginForm from '../../components/Form/LoginForm'
+import LoginForm from '../../components/MyForm/LoginForm'
 import { useAppSelector } from '../../hooks/hooks'
 
 export default function LoginPage() {

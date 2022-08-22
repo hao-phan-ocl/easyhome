@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import AuthCheck from '../../components/AuthCheck'
-import AccountForm from '../../components/Form/AccountForm'
+import AccountForm from '../../components/MyForm/AccountForm'
 
 export default function AccountInfo() {
   return (

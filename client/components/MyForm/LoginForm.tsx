@@ -1,34 +1,30 @@
+import { useRouter } from 'next/router'
 import { Button, Divider, Stack, TextField, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 import { useAppDispatch } from '../../hooks/hooks'
-import GoogleLoginBtn from '../Button/GoogleLoginBtn'
+import GoogleLoginBtn from '../MyButton/GoogleLoginBtn'
 import instance from '../../axios/instance'
 import { request } from '../../axios/requests'
 import { getProfile, loginSuccess } from '../../redux/features/authSlice'
-import { useRouter } from 'next/router'
 
 type LoginFormData = {
-  firstName: string
-  lastName: string
   email: string
   password: string
 }
 
 const schema = yup
   .object({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
     email: yup.string().email().required(),
     password: yup.string().required(),
   })
   .required()
 
-export default function RegisterForm() {
-  const dispatch = useAppDispatch()
+export default function LoginForm() {
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const {
     control,
     handleSubmit,
@@ -37,8 +33,6 @@ export default function RegisterForm() {
   } = useForm<LoginFormData>({
     mode: 'onBlur',
     defaultValues: {
-      firstName: '',
-      lastName: '',
       email: '',
       password: '',
     },
@@ -47,9 +41,7 @@ export default function RegisterForm() {
 
   async function onSubmit(data: LoginFormData) {
     try {
-      const res = await instance.post(request('users', 'register'), {
-        firstName: data.firstName,
-        lastName: data.lastName,
+      const res = await instance.post(request('login', 'local'), {
         email: data.email,
         password: data.password,
       })
@@ -72,43 +64,13 @@ export default function RegisterForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2} p="15px">
         <Typography color="primary" fontWeight={700}>
-          Register with Google:
+          Log in with Google:
         </Typography>
         <GoogleLoginBtn />
         <Divider>OR</Divider>
         <Typography color="primary" fontWeight={700}>
-          Register with your email address:
+          Log in with your email address:
         </Typography>
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              error={Boolean(errors.firstName)}
-              label="First name"
-              helperText={errors.firstName?.message}
-              // fullWidth
-              size="small"
-            />
-          )}
-        />
-
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              error={Boolean(errors.lastName)}
-              label="Last name"
-              helperText={errors.lastName?.message}
-              // fullWidth
-              size="small"
-            />
-          )}
-        />
-
         <Controller
           name="email"
           control={control}
@@ -140,7 +102,7 @@ export default function RegisterForm() {
           )}
         />
         <Button type="submit" variant="contained" color="primary">
-          Register
+          Login
         </Button>
       </Stack>
     </form>

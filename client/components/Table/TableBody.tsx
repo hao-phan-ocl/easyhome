@@ -11,9 +11,9 @@ import {
 
 import { User } from '../../types/types'
 import { useAppSelector } from '../../hooks/hooks'
-import RemoveAccountBtn from '../Button/RemoveAccountBtn'
+import RemoveAccountBtn from '../MyButton/RemoveAccountBtn'
 import emptyAvatar from '../../public/gray-avatar.jpg'
-import SetRoleBtn from '../Button/SetRoleBtn'
+import SetRoleBtn from '../MyButton/SetRoleBtn'
 
 type Props = {
   users: User[]
