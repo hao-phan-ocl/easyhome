@@ -6,13 +6,11 @@ import { Room } from '../../types/types'
 
 type InitialState = {
   rooms: Room[]
-  filteredRooms: Room[]
   status: 'success' | 'error' | 'loading' | 'idle'
 }
 
 const initialState: InitialState = {
   rooms: [],
-  filteredRooms: [],
   status: 'idle',
 }
 
@@ -28,8 +26,8 @@ export const allRoomsSlice = createSlice({
   name: 'allRoom',
   initialState,
   reducers: {
-    setAllRooms: (state, action) => {
-      state.filteredRooms = action.payload
+    setSearchedRooms: (state, action) => {
+      state.rooms = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -43,5 +41,5 @@ export const allRoomsSlice = createSlice({
   },
 })
 
-export const { setAllRooms } = allRoomsSlice.actions
+export const { setSearchedRooms } = allRoomsSlice.actions
 export default allRoomsSlice.reducer

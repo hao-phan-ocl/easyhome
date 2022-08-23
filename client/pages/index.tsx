@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import { useEffect } from 'react'
 import { Box } from '@mui/system'
@@ -11,7 +11,7 @@ import { fetchAllRooms } from '../redux/features/allRoomsSlice'
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch()
-  const { rooms, filteredRooms } = useAppSelector((state) => state.allRooms)
+  const { rooms } = useAppSelector((state) => state.allRooms)
 
   useEffect(() => {
     dispatch(fetchAllRooms())
@@ -27,8 +27,13 @@ const Home: NextPage = () => {
         <Grid item xs={12} sm={6} md={4.3} lg={3}>
           <SearchBar />
         </Grid>
+
         <Grid item xs={12} sm={6} md={7.7} lg={9}>
-          <RoomGrid rooms={filteredRooms.length ? filteredRooms : rooms} />
+          {!rooms.length ? (
+            <Typography fontWeight={700}>No data</Typography>
+          ) : (
+            <RoomGrid rooms={rooms} />
+          )}
         </Grid>
       </Grid>
     </Box>
