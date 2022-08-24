@@ -45,7 +45,7 @@ export default function RoomCard({ room }: RoomProps) {
   const dateArray = date.toDateString().split(' ')
   const [flip, setFlip] = useState(false)
   const [show, setShow] = useState(false)
-  console.log(room)
+
   return (
     // The container
     <Card
