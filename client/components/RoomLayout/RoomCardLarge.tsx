@@ -46,7 +46,7 @@ export default function RoomCardLarge({ room }: RoomProps) {
         </Stack>
 
         {/* Card container */}
-        <Stack position="relative" width="75%" minHeight="350px">
+        <Stack position="relative" width="75%" minHeight="370px">
           <Stack position="absolute" right="0" zIndex="10" direction="row">
             <FlipBtn handleFlip={() => setFlip(!flip)} />
           </Stack>
@@ -73,6 +73,7 @@ export default function RoomCardLarge({ room }: RoomProps) {
                 flexDirection: 'column',
                 gap: '16px',
                 backgroundColor: 'rgb(225 225 225)',
+                justifyContent: 'center',
               }}
             >
               <Typography color="primary" fontWeight={800}>
