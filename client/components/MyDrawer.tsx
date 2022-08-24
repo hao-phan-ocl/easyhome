@@ -56,15 +56,16 @@ export default function MyDrawer({ open, setOpen }: Props) {
             >
               {user?.avatar ? (
                 <Avatar
+                  sx={{ marginRight: '15px', width: 35, height: 35 }}
+                  src={user?.avatar}
                   alt="Avatar"
-                  src={`http://${user?.avatar}`}
-                  sx={{ width: 40, height: 40 }}
                 />
               ) : (
-                <Avatar sx={{ width: 35, height: 35, marginRight: '15px' }}>
+                <Avatar sx={{ marginRight: '15px', width: 35, height: 35 }}>
                   <Image src={emptyAvatar} alt="Avatar" />
                 </Avatar>
               )}
+
               <Typography color="primary" fontSize={18}>
                 {user?.firstName} {user?.lastName}
               </Typography>

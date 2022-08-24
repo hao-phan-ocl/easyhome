@@ -30,11 +30,11 @@ export default function NavBar() {
         style={{ cursor: 'pointer' }}
         src={logo}
         alt="Logo of Easyhome"
-        width="100%"
-        height="100%"
+        width={100}
+        height={100}
+        layout="fixed"
         onClick={() => router.push('/')}
       />
-
       <Stack
         direction="row"
         gap="20px"

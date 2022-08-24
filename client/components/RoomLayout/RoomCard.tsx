@@ -92,22 +92,23 @@ export default function RoomCard({ room }: RoomProps) {
             <a>
               <CardActionArea>
                 {room.images?.length ? (
-                  <CardMedia
-                    component="img"
-                    height={200}
+                  <Image
+                    priority
                     src={room.images[0]}
                     alt={`Room ${room._id}`}
+                    height={200}
+                    width={270}
+                    layout="responsive"
                   />
                 ) : (
-                  <Stack>
-                    <Image
-                      priority
-                      src={logo}
-                      alt={`Room ${room._id}`}
-                      height={200}
-                      width="100%"
-                    />
-                  </Stack>
+                  <Image
+                    priority
+                    src={logo}
+                    alt={`Room ${room._id}`}
+                    height={200}
+                    width={270}
+                    layout="responsive"
+                  />
                 )}
               </CardActionArea>
             </a>
