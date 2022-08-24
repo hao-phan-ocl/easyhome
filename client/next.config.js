@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost', 'flagcdn.com', 'upload.wikimedia.org'],
+    domains: [
+      'localhost',
+      'flagcdn.com',
+      'upload.wikimedia.org',
+      'hp-easyhome.herokuapp.com',
+    ],
   },
 }
 
