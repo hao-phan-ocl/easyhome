@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:/data/db
+  
+  backend:
+    build: ./api
+    ports:
+      - '5000:5000'
+    volumes:
+      - upload:/app/upload
+    depends_on: # docker will run mongodb first before it creates the backend container
+      - mongodb
+
+  frontend:
+    build: ./client
+    ports:
+      - '3000:3000'
+    # volumes:
+    #   - ./client:/app
+    #   - /app/node_modules
+    depends_on:
+      - backend
+
+# Only named volumes need to be specified here
+# Anonymous volumes or bind mounts dont need to
+volumes:
+  data:
+  upload:
